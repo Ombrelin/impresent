@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+<div class="h-screen w-screen relative">
+  <div class="absolute top-0 left-0 h-full w-full bg-gray-600">
+    <Particles id="tsparticles" [options]="particlesOptions"></Particles>
+  </div>
+
+  <div class="relative w-full h-full flex items-center justify-center" style="justify-content: center;">
+    <router-outlet></router-outlet>
+  </div>
+</div>
