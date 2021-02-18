@@ -3,10 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
 import { CreatePromotionComponent } from './pages/promotion/create-promotion/create-promotion.component';
+import { ViewPromotionComponent } from './pages/promotion/view-promotion/view-promotion.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'promotion/create', component: CreatePromotionComponent }
+  { path: 'promotion/create', component: CreatePromotionComponent },
+  { path: 'promotion/:id', component: ViewPromotionComponent },
+  { path: '**', component: HomeComponent },
 ];
 
 @NgModule({
