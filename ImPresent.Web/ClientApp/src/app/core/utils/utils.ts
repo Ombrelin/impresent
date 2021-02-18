@@ -1,37 +1,29 @@
 export const particlesOptions = {
-  fpsLimit: 60,
+  fpsLimit: 120,
   particles: {
     color: {
-      value: "#ffffff"
+      value: '#ffffff'
     },
     links: {
-      color: "#ffffff",
+      color: '#ffffff',
       distance: 150,
       enable: true,
-      opacity: 0.5,
+      opacity: 0.8,
       width: 1
-    },
-    collisions: {
-      enable: true
     },
     move: {
       enable: true,
       random: false,
       speed: 6,
-      straight: false
     },
     number: {
       density: {
         enable: true,
-        value_area: 800
       },
-      value: 80
+      value: 42
     },
     opacity: {
       value: 0.5
-    },
-    shape: {
-      type: "circle"
     },
     size: {
       random: true,
