@@ -114,7 +114,7 @@ namespace Impresent.Web
                 ;
             
             services.AddControllersWithViews();
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist/ImPresent.Web"; });
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ApplicationDbContext db)
