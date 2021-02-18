@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "impresent", "impresent\impresent.csproj", "{114AB9B9-143E-4822-8C7F-7CAB8F18F922}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImPresent.Web", "ImPresent.Web\ImPresent.Web.csproj", "{114AB9B9-143E-4822-8C7F-7CAB8F18F922}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImPresent.Tests", "ImPresent.Tests\ImPresent.Tests.csproj", "{7458D5C6-95AD-4FAC-AEC5-D019CBCB5A58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,9 @@ Global
 		{114AB9B9-143E-4822-8C7F-7CAB8F18F922}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114AB9B9-143E-4822-8C7F-7CAB8F18F922}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{114AB9B9-143E-4822-8C7F-7CAB8F18F922}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7458D5C6-95AD-4FAC-AEC5-D019CBCB5A58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7458D5C6-95AD-4FAC-AEC5-D019CBCB5A58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7458D5C6-95AD-4FAC-AEC5-D019CBCB5A58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7458D5C6-95AD-4FAC-AEC5-D019CBCB5A58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
