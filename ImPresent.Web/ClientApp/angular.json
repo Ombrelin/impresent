@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "impresent": {
+    "ImPresent.Web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/impresent",
+            "outputPath": "dist/ImPresent.Web",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,18 +68,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "impresent:build"
+            "browserTarget": "ImPresent.Web:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "impresent:build:production"
+              "browserTarget": "ImPresent.Web:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "impresent:build"
+            "browserTarget": "ImPresent.Web:build"
           }
         },
         "test": {
@@ -116,16 +116,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "impresent:serve"
+            "devServerTarget": "ImPresent.Web:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "impresent:serve:production"
+              "devServerTarget": "ImPresent.Web:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "impresent"
+  "defaultProject": "ImPresent.Web"
 }
