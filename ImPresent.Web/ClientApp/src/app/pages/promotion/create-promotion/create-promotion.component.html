@@ -1,0 +1,14 @@
+<div class="h-screen w-screen bg-blue-300">
+  <Particles id="tsparticles" [options]="particlesOptions"></Particles>
+</div>
+
+<div class="absolute top-1/4 container mx-auto flex flex-col items-center">
+  <h1 class="text-center font-semibold text-4xl m-8 text-blue-500">
+    Create a new promotion
+  </h1>
+  <form class="shadow-lg w-80 p-4 flex flex-col bg-white rounded-lg">
+    <input appInput type="text" placeholder="Name"/>
+    <input appInput type="password" placeholder="Password"/>
+    <button (click)="create" class="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold text-lg">Create</button>
+  </form>
+</div>
