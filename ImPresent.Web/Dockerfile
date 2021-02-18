@@ -15,7 +15,8 @@ RUN apt-get update -yq \
     && apt-get install nodejs -yq
 WORKDIR /src
 COPY ["ImPresent.Web.csproj", "ImPresent/"]
-RUN dotnet restore "ImPresent.Web/ImPresent.Web.csproj"
+RUN ls
+RUN dotnet restore "ImPresent.Web.csproj"
 
 COPY ./ /src/alkoholspiele
 WORKDIR "/src/impresent"
