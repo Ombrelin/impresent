@@ -16,9 +16,9 @@ RUN apt-get update -yq \
 WORKDIR /src
 COPY ["ImPresent.Web.csproj", "ImPresent/"]
 RUN ls
-RUN dotnet restore "ImPresent.Web.csproj"
+RUN dotnet restore "ImPresent/ImPresent.Web.csproj"
 
-COPY ./ /src/alkoholspiele
+COPY ./ /src/impresent
 WORKDIR "/src/impresent"
 RUN ls
 RUN dotnet build "ImPresent.Web.csproj" -c Release -o /app/build
