@@ -13,10 +13,9 @@ export class CreatePromotionComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   create(): void {
-    
   }
 }
