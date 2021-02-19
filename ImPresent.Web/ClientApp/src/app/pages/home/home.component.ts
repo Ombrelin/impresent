@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
 
         if (res.status === 200) {
           this.storageService.setToken(res.data.token);
-          this.router.navigate(['/promotion', this.form.value.name]);
+          this.router.navigate(['/promotion', res.data.id]);
         }
         else if (res.status === 401) {
           error = 'Invalid name or password';
