@@ -92,7 +92,7 @@ namespace Impresent.Web
             
             // JWT Auth
             
-            var key = Encoding.ASCII.GetBytes(Configuration["JwtSecret"]);
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
             services.AddAuthentication(auth =>
                 {

@@ -40,9 +40,9 @@ namespace Impresent.Web.Database
 
         public async Task<Promotion> GetByIdWithStudents(Guid promotionId)
         {
-            var promo = PromotionsDb
+            var promo = await PromotionsDb
                 .Include(p=> p.Students)
-                .First(p => p.Id == promotionId);
+                .FirstAsync(p => p.Id == promotionId);
 
             if (promo == null)
             {
