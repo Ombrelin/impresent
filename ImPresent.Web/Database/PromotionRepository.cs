@@ -61,13 +61,15 @@ namespace Impresent.Web.Database
 
         public async Task<Promotion> GetByName(string name)
         {
-            var promo = await PromotionsDb.FirstAsync(p => p.ClassName == name);
-            
-            if (promo == null)
+            try
             {
-                throw new ArgumentException($"No promotion with name {name}");
+                return await PromotionsDb.FirstAsync(p => p.ClassName == name);
+
             }
-            return promo;
+            catch (Exception e) when (e is InvalidOperationException)
+            {
+                throw new ArgumentException($"No promotion with name : {name}");
+            }
         }
     }
 }
