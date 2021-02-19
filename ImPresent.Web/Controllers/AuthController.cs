@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Impresent.Web.Database;
+using Impresent.Web.Model;
 using Impresent.Web.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +27,15 @@ namespace Impresent.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<TokenDto>> Login([FromBody] AuthDto dto)
         {
-            var promo = await repository.GetByName(dto.PromotionName);
+            Promotion promo = null;
+            try
+            {
+                promo = await repository.GetByName(dto.PromotionName);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            }
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, promo.Password))
             {
                 return Unauthorized();
