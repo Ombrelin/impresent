@@ -1,0 +1,4 @@
+.list {
+    @apply w-full overflow-y-auto overflow-x-hidden scrollbar scrollbar-thumb-blue-400 scrollbar-track-blue-100 scrollbar-thin;
+    max-height: 60vh;
+}

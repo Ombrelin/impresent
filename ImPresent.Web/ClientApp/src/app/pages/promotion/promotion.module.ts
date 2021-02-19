@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgParticlesModule } from 'ng-particles';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PromotionComponent } from './promotion.component';
@@ -13,14 +16,17 @@ import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-stud
   declarations: [
     PromotionComponent,
     CreatePromotionDialogComponent,
-    AddStudentDialogComponent,
+    AddStudentDialogComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     NgParticlesModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatListModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
 })
 export class PromotionModule { }
