@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PromotionComponent } from './promotion.component';
@@ -24,7 +25,8 @@ import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-stud
     MatDialogModule,
     ReactiveFormsModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
 })
 export class PromotionModule { }
