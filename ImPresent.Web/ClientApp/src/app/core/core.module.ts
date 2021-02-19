@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService, createApiService } from './http/api.service';
 import { DialogService } from './services/dialog/dialog.service';
 import { SnackbarService } from './services/snackbar/snackbar.service';
+import { StorageService } from './services/storage/storage.service';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { SnackbarService } from './services/snackbar/snackbar.service';
   providers: [
     { provide: ApiService, useValue: createApiService() },
     DialogService,
-    SnackbarService
+    SnackbarService,
+    StorageService
   ]
 })
 export class CoreModule { }
