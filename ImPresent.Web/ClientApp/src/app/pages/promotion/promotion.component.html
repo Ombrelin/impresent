@@ -1,12 +1,12 @@
-<div class="container bg-white p-4 rounded-lg">
+<div class="container bg-white p-4 rounded-lg select-none">
   <mat-spinner *ngIf="!loaded"></mat-spinner>
   <div *ngIf="loaded">
-    <h1 class="text-3xl text-green-500">Promotion : </h1>
+    <h1 class="text-3xl text-green-500">Promotion : {{ promotion.className }}</h1>
     <h2 *ngIf="promotion.students.length === 0" class="text-2xl text-red-400 m-4">There is no student in this promotion</h2>
     <mat-list class="list">
       <mat-list-item *ngFor="let student of promotion.students">
-        <div class="flex m-2 w-96 justify-between">
-          <p class="text-xl text-blue-400">{{ student.fullName }}</p>
+        <div class="flex m-2 justify-between">
+          <p class="w-96 text-xl text-blue-400 truncate mr-2">{{ student.fullName }}</p>
           <mat-icon class="text-white bg-green-500">check</mat-icon>
           <!--<mat-icon class="text-white bg-red-500">close</mat-icon>-->
         </div>

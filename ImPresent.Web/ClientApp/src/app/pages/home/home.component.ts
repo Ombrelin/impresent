@@ -33,11 +33,11 @@ export class HomeComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       name: ['', [
-        UniversalValidators.noWhitespace,
+        UniversalValidators.noEmptyString,
         Validators.required
       ]],
       password: ['', [
-        UniversalValidators.noWhitespace,
+        UniversalValidators.noEmptyString,
         Validators.required
       ]]
     });

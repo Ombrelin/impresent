@@ -30,7 +30,7 @@ export class AddStudentDialogComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       name: ['', [
-        UniversalValidators.noWhitespace,
+        UniversalValidators.noEmptyString,
         Validators.required
       ]]
     });
