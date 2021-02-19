@@ -14,8 +14,8 @@ export class CreatePromotionDialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private readonly dialogRef: MatDialogRef<CreatePromotionDialogComponent>
-  ) { 
+    private readonly dialog: MatDialogRef<CreatePromotionDialogComponent>
+  ) {
     this.form = this.fb.group({
       name: ['', [
         UniversalValidators.noWhitespace,
@@ -32,8 +32,8 @@ export class CreatePromotionDialogComponent implements OnInit {
   }
 
   create(): void {
-    if(this.form.valid) {
-      this.dialogRef.close(this.form.value);
+    if (this.form.valid) {
+      this.dialog.close(this.form.value);
     }
   }
 }
