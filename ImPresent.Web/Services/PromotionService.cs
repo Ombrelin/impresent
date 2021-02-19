@@ -47,7 +47,7 @@ namespace Impresent.Web.Services
             var student = new Student()
             {
                 FullName = dto.FullName,
-                LastPresence = dto.LastPresence
+                LastPresence = dto.LastPresence ?? new DateTime(1970,1,1)
             };
 
             promo.Students.Add(student);
