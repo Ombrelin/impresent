@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgParticlesModule } from 'ng-particles';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { HomeComponent } from './home.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -12,7 +13,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     NgParticlesModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
   ],
 })
 export class HomeModule { }

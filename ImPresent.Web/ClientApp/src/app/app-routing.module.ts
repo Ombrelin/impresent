@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
-import { CreatePromotionComponent } from './pages/promotion/create-promotion/create-promotion.component';
+import { PromotionComponent } from './pages/promotion/promotion.component';
 
 const routes: Routes = [
+  { path: 'promotion/:id', component: PromotionComponent },
   { path: '', component: HomeComponent },
-  { path: 'promotion/create', component: CreatePromotionComponent }
 ];
 
 @NgModule({

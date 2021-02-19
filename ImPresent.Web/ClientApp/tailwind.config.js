@@ -1,7 +1,7 @@
 module.exports = {
   prefix: '',
   purge: {
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: true,
     content: [
       './src/**/*.{html,ts}',
     ]
@@ -11,7 +11,9 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      opacity: ['disabled'],
+    }
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };
