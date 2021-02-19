@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Impresent.Web;
 using Impresent.Web.Database;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,7 @@ namespace ImPresent.Tests.Integration
         
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            Environment.SetEnvironmentVariable("JWT_SECRET","L*$w56jr!XZQZ$CFNQ7w$bM&@oDQccNX4Um4RpKhtMQLhzRWM^fo$MGgoEPoSCrmonNn6pBqePLC&kTyb6@KcWd3U%zRftyVzQvJSMZW*QAg3!kHh&gD8zR7w6yGrS64");
             builder.UseEnvironment("Development");
             builder.ConfigureServices(services =>
             {
@@ -44,6 +46,7 @@ namespace ImPresent.Tests.Integration
                 var appDb = scopedServices.GetRequiredService<ApplicationDbContext>();
 
                 var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory>>();
+
                 // Ensure the database is created.
                 appDb.Database.EnsureCreated();
                 Context = appDb;
