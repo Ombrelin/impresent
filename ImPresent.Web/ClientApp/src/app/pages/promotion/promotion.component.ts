@@ -17,7 +17,11 @@ export class PromotionComponent implements OnInit {
 
   students: Array<string> = [];
   loaded = false;
-  promotion: Promotion | null = null;
+  promotion: Promotion = {
+    id: '',
+    className: '',
+    students: []
+  };
   private token = '';
 
   constructor(
@@ -77,10 +81,12 @@ export class PromotionComponent implements OnInit {
   }
 
   add(): void {
-    const dialog = this.dialog.open(AddStudentDialogComponent);
+    const dialog = this.dialog.open(AddStudentDialogComponent, {
+      data: this.promotion.id
+    });
 
     dialog.afterClosed().subscribe((data) => {
-      console.log(data);
+      this.fetch(this.promotion.id);
     });
   }
 }

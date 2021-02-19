@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PromotionComponent } from './promotion.component';
-import { CreatePromotionDialogComponent } from './dialogs/create-promotion-dialog/create-promotion-dialog.component';
+import { CreatePromotionDialogComponent } from '../home/dialogs/create-promotion-dialog/create-promotion-dialog.component';
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
 
 @NgModule({

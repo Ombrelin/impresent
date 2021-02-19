@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { particlesOptions } from 'src/app/core/utils/utils';
 import { ApiService } from 'src/app/core/http/api.service';
-import { CreatePromotionDialogComponent } from 'src/app/pages/promotion/dialogs/create-promotion-dialog/create-promotion-dialog.component';
+import { CreatePromotionDialogComponent } from 'src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
@@ -87,8 +87,7 @@ export class HomeComponent implements OnInit {
   create(): void {
     const dialog = this.dialog.open(CreatePromotionDialogComponent);
     dialog.afterClosed().subscribe((data) => {
-      this.form.value.name = data.name;
-      this.form.value.password = data.password;
+      this.router.navigate(['promotion', data.id]);
     });
   }
 }

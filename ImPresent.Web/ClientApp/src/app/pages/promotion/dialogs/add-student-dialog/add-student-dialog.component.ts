@@ -57,7 +57,7 @@ export class AddStudentDialogComponent implements OnInit {
         const res = await this.api.addStudent(this.token, this.data, data);
 
         if (res.status === 200) {
-          this.dialog.close(data);
+          this.dialog.close(res.data);
         }
         else if (res.status === 401) {
           error = 'Expired token';
