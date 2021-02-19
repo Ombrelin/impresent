@@ -10,7 +10,7 @@ import { PromotionModule } from './pages/promotion/promotion.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
