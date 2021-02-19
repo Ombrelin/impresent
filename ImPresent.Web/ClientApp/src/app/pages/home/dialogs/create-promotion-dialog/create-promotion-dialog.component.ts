@@ -52,7 +52,7 @@ export class CreatePromotionDialogComponent implements OnInit {
         const res = await this.api.addPromotion(addPromotion);
 
         if (res.status === 200) {
-          this.dialog.close(addPromotion);
+          this.dialog.close(res.data);
         }
         else {
           this.snackbarService.show(`${res.data}`, {
