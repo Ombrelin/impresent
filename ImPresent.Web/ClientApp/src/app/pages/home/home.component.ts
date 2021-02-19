@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/core/http/api.service';
 import { CreatePromotionDialogComponent } from 'src/app/pages/promotion/dialogs/create-promotion-dialog/create-promotion-dialog.component';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
     private readonly api: ApiService,
     private readonly dialogService: DialogService,
     private readonly snackbarService: SnackbarService,
+    private readonly storageService: StorageService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private fb: FormBuilder,
@@ -49,6 +51,8 @@ export class HomeComponent implements OnInit {
 
       const loadingDialog = this.dialogService.showLoading();
 
+      let error: string | null = null;
+
       try {
         const res = await this.api.auth({
           promotionName: this.form.value.name,
@@ -56,16 +60,24 @@ export class HomeComponent implements OnInit {
         });
 
         if (res.status === 200) {
+          this.storageService.setToken(res.data.token);
           this.router.navigate(['/promotion', this.form.value.name]);
         }
+        else if (res.status === 401) {
+          error = 'Invalid name or password';
+        }
         else {
-          this.snackbarService.show(`${res.data}`, {
-            duration: 3000
-          });
+          error = `${res.status} : ${res.data}`;
         }
       }
       catch (e) {
-        this.snackbarService.show('Request timeout...');
+        error = 'Request timeout';
+      }
+
+      if (error != null) {
+        this.snackbarService.show(error, {
+          duration: 3000
+        });
       }
 
       loadingDialog.close();
@@ -75,7 +87,8 @@ export class HomeComponent implements OnInit {
   create(): void {
     const dialog = this.dialog.open(CreatePromotionDialogComponent);
     dialog.afterClosed().subscribe((data) => {
-      console.log(data);
+      this.form.value.name = data.name;
+      this.form.value.password = data.password;
     });
   }
 }
