@@ -6,7 +6,7 @@ import { PromotionComponent } from './pages/promotion/promotion.component';
 
 const routes: Routes = [
   { path: 'promotion/:id', component: PromotionComponent },
-  { path: '', component: HomeComponent },
+  { path: '**', component: HomeComponent },
 ];
 
 @NgModule({
