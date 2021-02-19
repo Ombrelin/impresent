@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -67,6 +68,22 @@ namespace ImPresent.Tests.Integration
             var result = await loginResponse.Content.ReadAsAsync<TokenDto>();
             Assert.NotNull(result.Token);
             return (result.Token, promoId);
+        }
+
+        [Fact]
+        public async Task Auth_PromotionDoesNotExist()
+        {
+            var loginDto = new AuthDto()
+            {
+                PromotionName = "M1 APP LSI 1",
+                Password = "Lahlou<3"
+            };
+
+            // When
+            var loginResponse = await client.PostAsJsonAsync("api/auth", loginDto);
+            Assert.Equal(HttpStatusCode.BadRequest,loginResponse.StatusCode);
+            var body = await loginResponse.Content.ReadAsStringAsync();
+            Assert.Equal("No promotion with name : M1 APP LSI 1", body);
         }
 
         [Fact]
