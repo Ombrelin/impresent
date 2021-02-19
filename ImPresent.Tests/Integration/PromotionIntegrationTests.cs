@@ -35,12 +35,34 @@ namespace ImPresent.Tests.Integration
             
             
             Assert.Equal("M1 APP LSI 1", result.ClassName);
-            Assert.NotNull(result.Id);
+            Assert.NotNull(result.Id.ToString());
 
             Assert.Single(db.Promotions.ToList());
             var promo = await db.Promotions.FindAsync(result.Id);
             Assert.NotNull(promo);
             Assert.Equal("M1 APP LSI 1", promo.ClassName);
+        }
+
+        [Fact]
+        public async Task<string> Auth()
+        {
+            // Given
+            await CreatePromotion();
+
+            var loginDto = new AuthDto()
+            {
+                PromotionName = "M1 APP LSI 1",
+                Password = "Lahlou<3"
+            };
+            
+            // When
+            var loginResponse = await client.PostAsJsonAsync("api/auth", loginDto);
+            
+            // Then
+            Assert.True(loginResponse.IsSuccessStatusCode);
+            var result = await loginResponse.Content.ReadAsAsync<TokenDto>();
+            Assert.NotNull(result.Token);
+            return result.Token;
         }
     }
 }

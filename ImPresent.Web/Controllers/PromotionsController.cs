@@ -33,12 +33,12 @@ namespace Impresent.Web.Controllers
             
 
         [Authorize]
-        [HttpPost("/{id:Guid}")]
+        [HttpPost("{id:Guid}/students")]
         public Task<StudentDto> AddStudentToPromotion(Guid id, [FromBody] CreateStudentDto dto)
             => promotionService.AddStudentToPromotion(id, dto);
 
         [Authorize]
-        [HttpGet("/{id:Guid}")]
+        [HttpGet("{id:Guid}")]
         public Task<PromotionFullDto> GetPromotion(Guid id) => promotionService.GetPromotion(id);
     }
 }

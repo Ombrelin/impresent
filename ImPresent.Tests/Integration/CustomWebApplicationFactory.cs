@@ -15,6 +15,7 @@ namespace ImPresent.Tests.Integration
         
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.UseEnvironment("Development");
             builder.ConfigureServices(services =>
             {
                 var descriptor = services.SingleOrDefault(
