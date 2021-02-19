@@ -67,6 +67,7 @@ namespace ImPresent.Tests.Integration
             Assert.True(loginResponse.IsSuccessStatusCode);
             var result = await loginResponse.Content.ReadAsAsync<TokenDto>();
             Assert.NotNull(result.Token);
+            Assert.Equal(promoId,result.Id);
             return (result.Token, promoId);
         }
 
