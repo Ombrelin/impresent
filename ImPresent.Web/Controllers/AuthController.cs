@@ -36,6 +36,7 @@ namespace Impresent.Web.Controllers
             {
                 return BadRequest(e.Message);
             }
+
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, promo.Password))
             {
                 return Unauthorized();
@@ -57,7 +58,7 @@ namespace Impresent.Web.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string tokenString = tokenHandler.WriteToken(token);
 
-            return new TokenDto() {Token = tokenString};
+            return new TokenDto() {Token = tokenString, Id = promo.Id};
         }
     }
 }
