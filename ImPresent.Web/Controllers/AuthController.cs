@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Impresent.Web.Database;
 using Impresent.Web.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Impresent.Web.Controllers
@@ -15,6 +16,7 @@ namespace Impresent.Web.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IPromotionRepository repository;
+        private readonly IConfiguration configuration;
 
         public AuthController(IPromotionRepository repository)
         {
