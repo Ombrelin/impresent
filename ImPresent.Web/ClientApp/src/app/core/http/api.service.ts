@@ -12,16 +12,16 @@ import {
 
 class ApiService extends BaseService {
 
-  @POST('/api/auth')
-  auth(@Body auth: AuthDto): ApiResponse<AuthToken> { }
+  @POST('/auth')
+  async auth(@Body auth: AuthDto): Promise<ApiResponse<AuthToken>> { return {} as Promise<ApiResponse<AuthToken>>; }
 
-  @POST('/api/promotions')
+  @POST('/promotions')
   addPromotion(@Body promotion: AddPromotionDto): ApiResponse<Promotion> { }
 
-  @POST('/api/promotions/{id}/students')
+  @POST('/promotions/{id}/students')
   addStudent(@Path('id') id: string, @Body student: AddStudentDto): ApiResponse<Student> { }
 
-  @GET('/api/promotions/{id}')
+  @GET('/promotions/{id}')
   getStudent(@Path('id') id: string): ApiResponse<Promotion> { }
 }
 

@@ -5,8 +5,16 @@ import { NgParticlesModule } from 'ng-particles';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
 import { HomeModule } from './pages/home/home.module';
 import { PromotionModule } from './pages/promotion/promotion.module';
+
+import axios from 'axios';
+
+axios.defaults.withCredentials = false;
+axios.defaults.validateStatus = () => {
+  return true;
+};
 
 @NgModule({
   declarations: [
@@ -16,9 +24,10 @@ import { PromotionModule } from './pages/promotion/promotion.module';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    CoreModule,
     NgParticlesModule,
     HomeModule,
-    PromotionModule
+    PromotionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
