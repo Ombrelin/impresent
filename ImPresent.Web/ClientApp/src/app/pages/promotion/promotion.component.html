@@ -1,15 +1,19 @@
 <div class="container bg-white p-4 rounded-lg">
-  <h1 class="text-3xl text-green-500">Promotion : </h1>
-  <mat-list class="list">
-    <mat-list-item *ngFor="let student of students" class="flex flex-col m-2 w-80">
-      <p class="text-xl text-blue-400">Test</p>
-      <div class="w-96"></div>
-      <mat-icon class="text-white bg-green-500">check</mat-icon>
-      <!--<mat-icon class="text-white bg-red-500">close</mat-icon>-->
-    </mat-list-item>
-  </mat-list>
-  <div class="flex justify-between mt-4">
-    <button (click)="delete()" class="bg-red-500 mr-4" appButton>Delete</button>
-    <button (click)="add()" class="bg-blue-500" appButton>Add student</button>
+  <mat-spinner *ngIf="!loaded"></mat-spinner>
+  <div *ngIf="loaded">
+    <h1 class="text-3xl text-green-500">Promotion : </h1>
+    <h2 *ngIf="students.length === 0" class="text-2xl text-red-400 m-4">There is no student in this promotion</h2>
+    <mat-list class="list">
+      <mat-list-item *ngFor="let student of students" class="flex flex-col m-2 w-80">
+        <p class="text-xl text-blue-400">Test</p>
+        <div class="w-96"></div>
+        <mat-icon class="text-white bg-green-500">check</mat-icon>
+        <!--<mat-icon class="text-white bg-red-500">close</mat-icon>-->
+      </mat-list-item>
+    </mat-list>
+    <div class="flex justify-between mt-4">
+      <button (click)="delete()" class="bg-red-500 mr-4" appButton>Delete</button>
+      <button (click)="add()" class="bg-blue-500" appButton>Add student</button>
+    </div>
   </div>
 </div>
