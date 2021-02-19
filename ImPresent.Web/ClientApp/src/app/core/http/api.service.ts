@@ -1,4 +1,4 @@
-import { ApiResponse, BaseService, Body, GET, Path, POST, ServiceBuilder } from 'ts-retrofit2';
+import { ApiResponse, BaseService, Body, GET, Header, Path, POST, ServiceBuilder } from 'ts-retrofit2';
 
 import { API_URL } from 'src/app/core/constants/api-constants';
 import {
@@ -19,10 +19,17 @@ class ApiService extends BaseService {
   addPromotion(@Body promotion: AddPromotionDto): ApiResponse<Promotion> { }
 
   @POST('/promotions/{id}/students')
-  addStudent(@Path('id') id: string, @Body student: AddStudentDto): ApiResponse<Student> { }
+  addStudent(
+    @Header('Authorization') authorization: string,
+    @Path('id') id: string,
+    @Body student: AddStudentDto
+  ): ApiResponse<Student> { }
 
   @GET('/promotions/{id}')
-  getStudent(@Path('id') id: string): ApiResponse<Promotion> { }
+  getPromotion(
+    @Header('Authorization') authorization: string,
+    @Path('id') id: string
+  ): ApiResponse<Promotion> { }
 }
 
 function createApiService(): ApiService {
