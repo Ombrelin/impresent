@@ -55,11 +55,13 @@ export class CreatePromotionDialogComponent implements OnInit {
           this.dialog.close(addPromotion);
         }
         else {
-          this.snackbarService.show(`${res.data}`);
+          this.snackbarService.show(`${res.data}`, {
+            duration: 3000
+          });
         }
       }
       catch (e) {
-        this.snackbarService.show('Request timeout...');
+        this.snackbarService.show('Request timeout');
       }
 
       loadingDialog.close();
