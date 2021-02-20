@@ -1,6 +1,6 @@
 <div class="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 select-none">
   <h1 class="text-center font-semibold text-5xl p-3 text-green-500">I'm present !</h1>
-  <div class="w-80 p-4 flex flex-col" [formGroup]="form">
+  <div class="w-full p-4 flex flex-col" [formGroup]="form">
     <input class="mb-4"appInput type="text" placeholder="Name" formControlName="name"/>
     <input class="mb-6" appInput type="password" placeholder="Password" formControlName="password"/>
     <button appButton (click)="login()" class="w-full bg-blue-500" [disabled]="!form.valid">Login</button>
