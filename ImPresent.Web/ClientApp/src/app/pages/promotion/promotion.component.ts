@@ -48,6 +48,10 @@ export class PromotionComponent implements OnInit {
 
   }
 
+  toDate(date: string): Date {
+    return new Date(date);
+  }
+
   private async fetch(id: string): Promise<void> {
     let error: string | null = null;
     try {
