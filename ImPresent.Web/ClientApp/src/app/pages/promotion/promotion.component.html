@@ -13,7 +13,7 @@
             </div>
             <div class="flex items-center">
               <mat-icon class="mr-1 text-blue-400">date_range</mat-icon>
-              <p class="font-semibold text-green-400 text-sm">{{ student.lastPresence }}</p>
+              <p class="font-semibold text-green-400 text-sm">{{ toDate(student.lastPresence) | date:'d MMMM y' }}</p>
             </div>
          </div>
           <!--<mat-icon class="text-white bg-green-500">check</mat-icon>-->
