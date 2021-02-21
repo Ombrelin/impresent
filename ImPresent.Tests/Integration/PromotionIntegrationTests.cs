@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -67,7 +68,7 @@ namespace ImPresent.Tests.Integration
             Assert.True(loginResponse.IsSuccessStatusCode);
             var result = await loginResponse.Content.ReadAsAsync<TokenDto>();
             Assert.NotNull(result.Token);
-            Assert.Equal(promoId,result.Id);
+            Assert.Equal(promoId, result.Id);
             return (result.Token, promoId);
         }
 
@@ -82,7 +83,7 @@ namespace ImPresent.Tests.Integration
 
             // When
             var loginResponse = await client.PostAsJsonAsync("api/auth", loginDto);
-            Assert.Equal(HttpStatusCode.BadRequest,loginResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, loginResponse.StatusCode);
             var body = await loginResponse.Content.ReadAsStringAsync();
             Assert.Equal("No promotion with name : M1 APP LSI 1", body);
         }
@@ -162,32 +163,109 @@ namespace ImPresent.Tests.Integration
         public async Task GetPromotion_ReturnsPromotionAndStudents()
         {
             // Given
-            var (token, promoId) = await Auth();
+            var promo = await CreateTestPromotion();
 
-            var promo = await db.Promotions
-                .Include(p => p.Students)
-                .FirstAsync(p => p.Id == promoId);
 
-            promo.Students.Add(new Student()
-                {FullName = "Arsène LAPOSTOLET", LastPresence = new DateTime(2020, 2, 18)});
-            db.Promotions.Update(promo);
-            await db.SaveChangesAsync();
-
-            client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
-
-            var getPromotion = await client.GetAsync($"api/promotions/{promoId}");
+            // When
+            var getPromotion = await client.GetAsync($"api/promotions/{promo.Id}");
 
             // Then
             Assert.True(getPromotion.IsSuccessStatusCode);
             var result = await getPromotion.Content.ReadAsAsync<PromotionFullDto>();
 
             Assert.Equal("M1 APP LSI 1", result.ClassName);
-            Assert.Equal(promoId, result.Id);
+            Assert.Equal(promo.Id, result.Id);
             Assert.Single(result.Students);
             var student = result.Students.First();
             Assert.Equal("Arsène LAPOSTOLET", student.FullName);
             Assert.Equal(new DateTime(2020, 2, 18), student.LastPresence);
+        }
+
+
+        [Fact]
+        public async Task AddNewPresenceDay()
+        {
+            // Given
+            var date = DateTime.Today.AddDays(3);
+            var promo = await CreateTestPromotion();
+            var presenceDayDto = new CreatePresenceDayDto() {Date = date};
+
+            var loginDto = new AuthDto()
+            {
+                PromotionName = "M1 APP LSI 1",
+                Password = "TestTest1"
+            };
+
+
+            var tokenResponse = await client.PostAsJsonAsync("api/auth", loginDto);
+            var tokenDto = await tokenResponse.Content.ReadAsAsync<TokenDto>();
+
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", tokenDto.Token);
+
+            // When
+            var addPresenceDay = await client.PostAsJsonAsync($"api/promotions/{promo.Id}/days", presenceDayDto);
+
+            // Then
+            Assert.True(addPresenceDay.IsSuccessStatusCode);
+            var result = await addPresenceDay.Content.ReadAsAsync<PresenceDayDto>();
+
+            Assert.Equal(result.Date, presenceDayDto.Date);
+
+            promo = await db.Promotions
+                .Include(p => p.PresenceDays)
+                .FirstAsync(p => p.Id == promo.Id);
+
+            Assert.Single(promo.PresenceDays);
+            var presenceDay = promo.PresenceDays.First();
+            Assert.Equal(date, presenceDay.Date);
+        }
+
+        private async Task<Promotion> CreateTestPromotion()
+        {
+            var promo = new Promotion()
+            {
+                Password = BCrypt.Net.BCrypt.HashPassword("TestTest1"),
+                ClassName = "M1 APP LSI 1",
+                Students = new List<Student>
+                {
+                    new Student()
+                        {FullName = "Arsène LAPOSTOLET", LastPresence = new DateTime(2020, 2, 18)}
+                }
+            };
+            await db.Promotions.AddAsync(promo);
+            await db.SaveChangesAsync();
+            return promo;
+        }
+
+        [Fact]
+        public async Task GetPromotion_ReturnsPromotionAndStudentsAndDays()
+        {
+            // Given
+            var promo = await CreateTestPromotion();
+            promo.PresenceDays = new List<PresenceDay> {new PresenceDay() {Date = DateTime.Today.AddDays(3)}};
+
+            db.Promotions.Update(promo);
+            await db.SaveChangesAsync();
+
+            // When
+            var getPromotion = await client.GetAsync($"api/promotions/{promo.Id}");
+
+            // Then
+            Assert.True(getPromotion.IsSuccessStatusCode);
+            var result = await getPromotion.Content.ReadAsAsync<PromotionFullDto>();
+
+            Assert.Equal("M1 APP LSI 1", result.ClassName);
+            Assert.Equal(promo.Id, result.Id);
+            Assert.Single(result.Students);
+            Assert.Single(result.PresenceDays);
+
+            var student = result.Students.First();
+            Assert.Equal("Arsène LAPOSTOLET", student.FullName);
+            Assert.Equal(new DateTime(2020, 2, 18), student.LastPresence);
+
+            var day = result.PresenceDays.First();
+            Assert.Equal(DateTime.Today.AddDays(3), day.Date);
         }
     }
 }

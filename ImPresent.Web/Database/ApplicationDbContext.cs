@@ -19,11 +19,17 @@ namespace Impresent.Web.Database
             modelBuilder.Entity<Promotion>().Property(u => u.Password).IsRequired();
             modelBuilder.Entity<Promotion>().HasMany<Student>(p => p.Students).WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Promotion>().HasMany<PresenceDay>(p => p.PresenceDays).WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
             
             modelBuilder.Entity<Student>().HasKey(u => u.Id);
             modelBuilder.Entity<Student>().Property(u => u.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Student>().Property(u => u.FullName).IsRequired();
             modelBuilder.Entity<Student>().Property(u => u.LastPresence).IsRequired();
+
+            modelBuilder.Entity<PresenceDay>().HasKey(pd => pd.Id);
+            modelBuilder.Entity<PresenceDay>().Property(pd => pd.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<PresenceDay>().Property(pd => pd.Date);
         }
     }
 }

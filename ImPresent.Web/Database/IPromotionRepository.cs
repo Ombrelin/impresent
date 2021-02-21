@@ -9,6 +9,8 @@ namespace Impresent.Web.Database
     {
         Task<Promotion> Insert(Promotion p);
         Task<Promotion> GetByIdWithStudents(Guid promotionId);
+        Task<Promotion> GetByIdWithDays(Guid promotionId);
+        Task<Promotion> GetByIdWithDaysAndStudents(Guid promotionId);
         Task<Promotion> GetById(Guid promotionId);
         Task<Promotion> Update(Promotion p);
         Task<Promotion> GetByName(string name);

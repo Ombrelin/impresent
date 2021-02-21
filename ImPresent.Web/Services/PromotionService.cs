@@ -47,7 +47,7 @@ namespace Impresent.Web.Services
             var student = new Student()
             {
                 FullName = dto.FullName,
-                LastPresence = dto.LastPresence ?? new DateTime(1970,1,1)
+                LastPresence = dto.LastPresence ?? new DateTime(1970, 1, 1)
             };
 
             promo.Students.Add(student);
@@ -61,17 +61,43 @@ namespace Impresent.Web.Services
             };
         }
 
+        public async Task<PresenceDayDto> AddPresenceDay(Guid id, CreatePresenceDayDto dto)
+        {
+            var promo = await repository.GetByIdWithDays(id);
+            if (dto.Date <= DateTime.Today)
+            {
+                throw new ArgumentException($"Can't add a past date : {dto.Date}");
+            }
+
+            var presenceDay = new PresenceDay()
+            {
+                Date = dto.Date
+            };
+
+            promo.PresenceDays.Add(presenceDay);
+            await repository.Update(promo);
+
+            return new PresenceDayDto()
+            {
+                Id = presenceDay.Id,
+                Date = presenceDay.Date
+            };
+        }
+
         public async Task<PromotionFullDto> GetPromotion(Guid promotionId)
         {
-            var promo = await repository.GetByIdWithStudents(promotionId);
+            var promo = await repository.GetByIdWithDaysAndStudents(promotionId);
             return new PromotionFullDto()
             {
                 Id = promo.Id,
                 ClassName = promo.ClassName,
                 Students = promo.Students.Select(s => new StudentDto()
-                    {Id = s.Id, FullName = s.FullName, LastPresence = s.LastPresence}).ToList()
+                    {Id = s.Id, FullName = s.FullName, LastPresence = s.LastPresence}).ToList(),
+                PresenceDays = promo.PresenceDays.Select(pd => new PresenceDayDto() {Id = pd.Id, Date = pd.Date})
+                    .ToList()
             };
         }
+
 
         private string ValidatePassword(string password)
         {
