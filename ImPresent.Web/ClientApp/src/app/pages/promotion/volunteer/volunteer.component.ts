@@ -43,16 +43,16 @@ export class VolunteerComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      if (params.id != null) {
-        this.fetch(params.id);
+      if (params.promotionId != null) {
+        this.fetch(params.promotionId);
       }
     });
   }
 
-  private async fetch(id: string): Promise<void> {
+  private async fetch(promotionId: string): Promise<void> {
     const loadingDialog = this.dialogService.showLoading();
     try {
-      const res = await this.api.getPromotion(id);
+      const res = await this.api.getPromotion(promotionId);
 
       if (res.status === 200) {
         this.promotion = res.data;
@@ -76,6 +76,7 @@ export class VolunteerComponent implements OnInit {
 
   volunteer(): void {
     if (this.form.valid) {
+      //todo: use api
     }
   }
 }

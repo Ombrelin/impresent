@@ -1,43 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService } from 'src/app/core/http/api.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading-dialog/loading-dialog.component';
-import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
-import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
-import { PromotionDto, DayDto } from 'src/app/shared/models/model';
+import { PromotionDto } from 'src/app/shared/models/model';
 
 
 @Component({
-  selector: 'app-promotion',
-  templateUrl: './promotion.component.html',
-  styleUrls: ['./promotion.component.scss']
+  selector: 'app-day',
+  templateUrl: './day.component.html',
+  styleUrls: ['./day.component.scss']
 })
-export class PromotionComponent implements OnInit {
+export class DayComponent implements OnInit {
 
-  loaded = false;
   error: string | null = null;
+  loaded = false;
   promotion: PromotionDto = {
     id: '',
     className: '',
     students: [],
     presenceDays: []
   };
+  private token = '';
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly dialog: MatDialog,
     private readonly dialogService: DialogService,
+    private readonly storageService: StorageService,
     private readonly snackbarService: SnackbarService,
     private readonly api: ApiService
   ) {
+    const token = this.storageService.getToken();
+    if (token != null) {
+      this.token = token;
+    }
+
     this.route.params.subscribe((params) => {
-      if (params.promotionId != null) {
-        this.fetch(params.promotionId, true);
+      if (params.promotionId != null && params.dayId != null) {
+        this.fetch(params.promotionId, params.dayId, true);
       }
       else {
         this.router.navigate(['']);
@@ -53,7 +58,7 @@ export class PromotionComponent implements OnInit {
     return new Date(date);
   }
 
-  private async fetch(promotionId: string, first = false): Promise<void> {
+  private async fetch(promotionId: string, dayId: string, first = false): Promise<void> {
     let loadingDialog: MatDialogRef<LoadingDialogComponent> | null = null;
     if (first) {
       loadingDialog = this.dialogService.showLoading();
@@ -88,29 +93,5 @@ export class PromotionComponent implements OnInit {
       });
       this.router.navigate(['']);
     }
-  }
-
-  openDay(day: DayDto): void {
-    this.router.navigate(['promotion', this.promotion.id, 'day', day.id]);
-  }
-
-  addDay(): void {
-    const dialog = this.dialog.open(AddDayDialogComponent, {
-      data: this.promotion.id
-    });
-
-    dialog.afterClosed().subscribe((data) => {
-      this.fetch(this.promotion.id);
-    });
-  }
-
-  addStudent(): void {
-    const dialog = this.dialog.open(AddStudentDialogComponent, {
-      data: this.promotion.id
-    });
-
-    dialog.afterClosed().subscribe((data) => {
-      this.fetch(this.promotion.id);
-    });
   }
 }
