@@ -5,10 +5,11 @@ import { IsSignedInGuard } from './core/guards/is-signed-in/is-signed-in.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { PromotionComponent } from './pages/promotion/promotion.component';
 import { VolunteerComponent } from './pages/promotion/volunteer/volunteer.component';
+import { DayComponent } from './pages/promotion/day/day.component';
 
 const routes: Routes = [
   {
-    path: 'promotion/:id',
+    path: 'promotion/:promotionId',
     children: [
       {
         path: '',
@@ -20,6 +21,13 @@ const routes: Routes = [
       {
         path: 'volunteer',
         component: VolunteerComponent
+      },
+      {
+        path: 'day/:dayId',
+        component: DayComponent,
+        canActivate: [
+          IsSignedInGuard
+        ]
       }
     ]
   },
