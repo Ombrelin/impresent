@@ -1,4 +1,5 @@
 ﻿using Impresent.Web.Model;
+using Impresent.Web.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Impresent.Web.Database
@@ -6,6 +7,7 @@ namespace Impresent.Web.Database
     public class ApplicationDbContext: DbContext
     {
         public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<Volunteering> Volunteerings { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -30,6 +32,11 @@ namespace Impresent.Web.Database
             modelBuilder.Entity<PresenceDay>().HasKey(pd => pd.Id);
             modelBuilder.Entity<PresenceDay>().Property(pd => pd.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<PresenceDay>().Property(pd => pd.Date);
+            
+            modelBuilder.Entity<Volunteering>().HasKey(pd => pd.Id);
+            modelBuilder.Entity<Volunteering>().Property(pd => pd.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Volunteering>().HasOne<Student>(v => v.Student).WithMany();
+            modelBuilder.Entity<Volunteering>().HasOne<PresenceDay>(v => v.PresenceDay).WithMany();
         }
     }
 }

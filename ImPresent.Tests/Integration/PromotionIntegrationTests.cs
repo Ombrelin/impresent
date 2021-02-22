@@ -238,15 +238,23 @@ namespace ImPresent.Tests.Integration
             return promo;
         }
 
+        private async Task<Promotion> CreateTestPromotionWithDays()
+        {
+            var promo = await CreateTestPromotion();
+            var day = new PresenceDay() {Date = DateTime.Today.AddDays(3)};
+            promo.PresenceDays = new List<PresenceDay> {day};
+
+            db.Promotions.Update(promo);
+            await db.SaveChangesAsync();
+
+            return promo;
+        }
+
         [Fact]
         public async Task GetPromotion_ReturnsPromotionAndStudentsAndDays()
         {
             // Given
-            var promo = await CreateTestPromotion();
-            promo.PresenceDays = new List<PresenceDay> {new PresenceDay() {Date = DateTime.Today.AddDays(3)}};
-
-            db.Promotions.Update(promo);
-            await db.SaveChangesAsync();
+            var promo = await CreateTestPromotionWithDays();
 
             // When
             var getPromotion = await client.GetAsync($"api/promotions/{promo.Id}");
@@ -266,6 +274,35 @@ namespace ImPresent.Tests.Integration
 
             var day = result.PresenceDays.First();
             Assert.Equal(DateTime.Today.AddDays(3), day.Date);
+        }
+
+        [Fact]
+        public async Task Volunteer()
+        {
+            // Given
+            var promo = await CreateTestPromotionWithDays();
+            var student = promo.Students.First();
+            var presenceDay = promo.PresenceDays.First();
+            var dto = new CreateVolunteeringDto()
+            {
+                StudentId = student.Id
+            };
+            
+            // When
+            
+            var volunteer = await client
+                .PostAsJsonAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers", dto);
+            
+            // Then
+            Assert.True(volunteer.IsSuccessStatusCode);
+            var result = await volunteer.Content.ReadAsAsync<VolunteeringDto>();
+            Assert.Equal(student.Id,result.Student.Id);
+            Assert.Equal(presenceDay.Id,result.PresenceDay.Id);
+
+            Assert.Single(db.Volunteerings);
+            var volunteering = await db.Volunteerings.FirstAsync();
+            Assert.Equal(student.Id,volunteering.Student.Id);
+            Assert.Equal(presenceDay.Id,volunteering.PresenceDay.Id);
         }
     }
 }
