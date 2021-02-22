@@ -37,6 +37,8 @@ namespace Impresent.Web
             });
             services.AddScoped<IPromotionRepository, PromotionRepository>();
             services.AddScoped<IPromotionService, PromotionService>();
+            services.AddScoped<IVolunteeringRepository, VolunteeringRepository>();
+            services.AddScoped<IVolunteeringService, VolunteeringService>();
             
             // Swagger
             

@@ -12,10 +12,12 @@ namespace Impresent.Web.Controllers
     public class PromotionsController : ControllerBase
     {
         private readonly IPromotionService promotionService;
+        private readonly IVolunteeringService volunteeringService;
 
-        public PromotionsController(IPromotionService promotionService)
+        public PromotionsController(IPromotionService promotionService, IVolunteeringService volunteeringService)
         {
             this.promotionService = promotionService;
+            this.volunteeringService = volunteeringService;
         }
 
         [HttpPost]
@@ -42,7 +44,29 @@ namespace Impresent.Web.Controllers
 
         [Authorize]
         [HttpPost("{id:Guid}/days")]
-        public Task<PresenceDayDto> AddPresenceDay(Guid id, [FromBody] CreatePresenceDayDto dto)
-            => promotionService.AddPresenceDay(id,dto);
+        public async Task<ActionResult<PresenceDayDto>> AddPresenceDay(Guid id, [FromBody] CreatePresenceDayDto dto)
+        {
+            try
+            {
+                return await promotionService.AddPresenceDay(id, dto);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("{promoId:Guid}/days/{dayId:Guid}/volunteers")]
+        public async Task<ActionResult<VolunteeringDto>> Volunteer(Guid promoId, Guid dayId, [FromBody] CreateVolunteeringDto dto)
+        {
+            try
+            {
+                return await volunteeringService.Volunteer(promoId,dayId, dto);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            } 
+        }
     }
 }

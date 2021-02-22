@@ -17,7 +17,6 @@ namespace Impresent.Web.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IPromotionRepository repository;
-        private readonly IConfiguration configuration;
 
         public AuthController(IPromotionRepository repository)
         {

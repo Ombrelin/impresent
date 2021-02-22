@@ -8,20 +8,20 @@ namespace Impresent.Web.Database
 {
     public class PromotionRepository : IPromotionRepository
     {
-        private readonly DbSet<Promotion> PromotionsDb;
-        private readonly ApplicationDbContext DbContext;
+        private readonly DbSet<Promotion> promotionsDb;
+        private readonly ApplicationDbContext dbContext;
 
         public PromotionRepository(ApplicationDbContext dbContext)
         {
-            DbContext = dbContext;
-            PromotionsDb = dbContext.Set<Promotion>();
+            this.dbContext = dbContext;
+            promotionsDb = dbContext.Set<Promotion>();
         }
 
 
         public async Task<Promotion> Insert(Promotion p)
         {
-            await PromotionsDb.AddAsync(p);
-            await DbContext.SaveChangesAsync();
+            await promotionsDb.AddAsync(p);
+            await dbContext.SaveChangesAsync();
 
             return p;
         }
@@ -30,7 +30,7 @@ namespace Impresent.Web.Database
 
         public async Task<Promotion> GetById(Guid promotionId)
         {
-            var promo = await PromotionsDb.FindAsync(promotionId);
+            var promo = await promotionsDb.FindAsync(promotionId);
 
             if (promo == null)
             {
@@ -42,7 +42,7 @@ namespace Impresent.Web.Database
 
         public async Task<Promotion> GetByIdWithStudents(Guid promotionId)
         {
-            var promo = await PromotionsDb
+            var promo = await promotionsDb
                 .Include(p=> p.Students)
                 .FirstAsync(p => p.Id == promotionId);
 
@@ -56,7 +56,7 @@ namespace Impresent.Web.Database
 
         public async Task<Promotion> GetByIdWithDays(Guid promotionId)
         {
-            var promo = await PromotionsDb
+            var promo = await promotionsDb
                 .Include(p=> p.PresenceDays)
                 .FirstAsync(p => p.Id == promotionId);
 
@@ -70,7 +70,7 @@ namespace Impresent.Web.Database
         
         public async Task<Promotion> GetByIdWithDaysAndStudents(Guid promotionId)
         {
-            var promo = await PromotionsDb
+            var promo = await promotionsDb
                 .Include(p=> p.PresenceDays)
                 .Include(p => p.Students)
                 .FirstAsync(p => p.Id == promotionId);
@@ -85,8 +85,8 @@ namespace Impresent.Web.Database
 
         public async Task<Promotion> Update(Promotion p)
         {
-            PromotionsDb.Update(p);
-            await DbContext.SaveChangesAsync();
+            promotionsDb.Update(p);
+            await dbContext.SaveChangesAsync();
             return p;
         }
 
@@ -94,7 +94,7 @@ namespace Impresent.Web.Database
         {
             try
             {
-                return await PromotionsDb.FirstAsync(p => p.ClassName == name);
+                return await promotionsDb.FirstAsync(p => p.ClassName == name);
 
             }
             catch (Exception e) when (e is InvalidOperationException)

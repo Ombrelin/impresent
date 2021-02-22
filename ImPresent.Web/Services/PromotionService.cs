@@ -84,6 +84,8 @@ namespace Impresent.Web.Services
             };
         }
 
+
+
         public async Task<PromotionFullDto> GetPromotion(Guid promotionId)
         {
             var promo = await repository.GetByIdWithDaysAndStudents(promotionId);
