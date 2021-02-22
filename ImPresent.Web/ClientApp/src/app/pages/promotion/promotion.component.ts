@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { ApiService } from 'src/app/core/http/api.service';
+import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
-import { Promotion } from 'src/app/shared/models/model';
-
+import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading-dialog/loading-dialog.component';
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
+import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
+import { PromotionDto } from 'src/app/shared/models/model';
+
 
 @Component({
   selector: 'app-promotion',
@@ -17,10 +21,11 @@ export class PromotionComponent implements OnInit {
 
   students: Array<string> = [];
   loaded = false;
-  promotion: Promotion = {
+  promotion: PromotionDto = {
     id: '',
     className: '',
-    students: []
+    students: [],
+    presenceDays: []
   };
   private token = '';
 
@@ -28,6 +33,7 @@ export class PromotionComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly dialog: MatDialog,
+    private readonly dialogService: DialogService,
     private readonly storageService: StorageService,
     private readonly snackbarService: SnackbarService,
     private readonly api: ApiService
@@ -39,7 +45,7 @@ export class PromotionComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       if (params.id != null) {
-        this.fetch(params.id);
+        this.fetch(params.id, true);
       }
     });
   }
@@ -52,10 +58,14 @@ export class PromotionComponent implements OnInit {
     return new Date(date);
   }
 
-  private async fetch(id: string): Promise<void> {
+  private async fetch(id: string, first = false): Promise<void> {
+    let loadingDialog: MatDialogRef<LoadingDialogComponent> | null = null;
+    if (first) {
+      loadingDialog = this.dialogService.showLoading();
+    }
     let error: string | null = null;
     try {
-      const res = await this.api.getPromotion(this.token, id);
+      const res = await this.api.getPromotion(id);
 
       if (res.status === 200) {
         this.loaded = true;
@@ -74,6 +84,10 @@ export class PromotionComponent implements OnInit {
       this.router.navigate(['']);
     }
 
+    if (first && loadingDialog != null) {
+      loadingDialog.close();
+    }
+
     if (error != null) {
       this.snackbarService.show(error, {
         duration: 3000
@@ -81,10 +95,17 @@ export class PromotionComponent implements OnInit {
     }
   }
 
-  delete(): void {
+  addDay(): void {
+    const dialog = this.dialog.open(AddDayDialogComponent, {
+      data: this.promotion.id
+    });
+
+    dialog.afterClosed().subscribe((data) => {
+      this.fetch(this.promotion.id);
+    });
   }
 
-  add(): void {
+  addStudent(): void {
     const dialog = this.dialog.open(AddStudentDialogComponent, {
       data: this.promotion.id
     });
