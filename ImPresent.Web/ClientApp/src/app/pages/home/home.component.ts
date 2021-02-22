@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { UniversalValidators } from 'ngx-validators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { particlesOptions } from 'src/app/core/utils/utils';
 import { ApiService } from 'src/app/core/http/api.service';
 import { CreatePromotionDialogComponent } from 'src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
@@ -17,8 +16,6 @@ import { StorageService } from 'src/app/core/services/storage/storage.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
-  particlesOptions = particlesOptions;
 
   form: FormGroup;
 
