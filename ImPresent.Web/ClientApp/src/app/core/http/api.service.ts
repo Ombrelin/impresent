@@ -1,13 +1,14 @@
 import { ApiResponse, BaseService, Body, GET, Header, Path, POST, ServiceBuilder } from 'ts-retrofit2';
-
 import { API_URL } from 'src/app/core/constants/api-constants';
 import {
   AuthDto,
   AuthToken,
   AddPromotionDto,
   AddStudentDto,
-  Promotion,
-  Student
+  PromotionDto,
+  StudentDto,
+  AddDayDto,
+  DayDto
 } from 'src/app/shared/models/model';
 
 class ApiService extends BaseService {
@@ -16,20 +17,26 @@ class ApiService extends BaseService {
   async auth(@Body auth: AuthDto): Promise<ApiResponse<AuthToken>> { return {} as Promise<ApiResponse<AuthToken>>; }
 
   @POST('/promotions')
-  addPromotion(@Body promotion: AddPromotionDto): ApiResponse<Promotion> { }
+  addPromotion(@Body promotion: AddPromotionDto): ApiResponse<PromotionDto> { }
 
   @POST('/promotions/{id}/students')
   addStudent(
     @Header('Authorization') authorization: string,
     @Path('id') id: string,
     @Body student: AddStudentDto
-  ): ApiResponse<Student> { }
+  ): ApiResponse<StudentDto> { }
 
   @GET('/promotions/{id}')
   getPromotion(
-    @Header('Authorization') authorization: string,
     @Path('id') id: string
-  ): ApiResponse<Promotion> { }
+  ): ApiResponse<PromotionDto> { }
+
+  @POST('/promotions/{id}/days')
+  addDay(
+    @Header('Authorization') authorization: string,
+    @Path('id') id: string,
+    @Body day: AddDayDto
+  ): ApiResponse<DayDto> { }
 }
 
 function createApiService(): ApiService {
