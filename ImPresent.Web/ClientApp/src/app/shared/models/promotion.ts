@@ -1,7 +1,9 @@
-import { Student } from './students';
+import { DayDto } from './day-dto';
+import { StudentDto } from './students';
 
-export interface Promotion {
+export interface PromotionDto {
   id: string;
   className: string;
-  students: Array<Student>;
+  students: Array<StudentDto>;
+  presenceDays: Array<DayDto>;
 }
