@@ -15,6 +15,7 @@ import { CreatePromotionDialogComponent } from '../home/dialogs/create-promotion
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
 import { VolunteerComponent } from './volunteer/volunteer.component';
 import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
+import { DayComponent } from './day/day.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.c
     AddStudentDialogComponent,
     VolunteerComponent,
     AddDayDialogComponent,
+    DayComponent,
   ],
   imports: [
     CommonModule,
