@@ -1,4 +1,4 @@
 export interface DayDto {
     id: string;
-    data: string;
+    date: string;
 }
