@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService } from 'src/app/core/http/api.service';
@@ -17,6 +17,7 @@ import { PromotionDto } from 'src/app/shared/models/model';
 })
 export class DayComponent implements OnInit {
 
+  error: string | null = null;
   loaded = false;
   promotion: PromotionDto = {
     id: '',
@@ -29,7 +30,6 @@ export class DayComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly dialog: MatDialog,
     private readonly dialogService: DialogService,
     private readonly storageService: StorageService,
     private readonly snackbarService: SnackbarService,
@@ -58,38 +58,39 @@ export class DayComponent implements OnInit {
     return new Date(date);
   }
 
-  private async fetch(promotionId: string, dayId: string,  first = false): Promise<void> {
+  private async fetch(promotionId: string, dayId: string, first = false): Promise<void> {
     let loadingDialog: MatDialogRef<LoadingDialogComponent> | null = null;
     if (first) {
       loadingDialog = this.dialogService.showLoading();
     }
-    let error: string | null = null;
+    let snackBarError: string | null = null;
     try {
       const res = await this.api.getPromotion(promotionId);
 
       if (res.status === 200) {
-        this.loaded = true;
         this.promotion = res.data;
       }
       else if (res.status === 401) {
-        error = 'Expired token';
+        snackBarError = 'Expired token';
         this.router.navigate(['']);
       }
       else {
-        error = `${res.status} : ${res.data}`;
+        this.error = `${res.status} : ${res.data}`;
       }
     }
     catch (e) {
-      error = 'Request timeout';
+      this.error = 'Request timeout';
       this.router.navigate(['']);
     }
+
+    this.loaded = true;
 
     if (first && loadingDialog != null) {
       loadingDialog.close();
     }
 
-    if (error != null) {
-      this.snackbarService.show(error, {
+    if (snackBarError != null) {
+      this.snackbarService.show(snackBarError, {
         duration: 3000
       });
     }
