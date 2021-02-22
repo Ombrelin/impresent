@@ -20,7 +20,7 @@ import { PromotionDto } from 'src/app/shared/models/model';
 export class PromotionComponent implements OnInit {
 
   students: Array<string> = [];
-  loaded = true;
+  loaded = false;
   promotion: PromotionDto = {
     id: '',
     className: '',
