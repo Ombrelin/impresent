@@ -67,15 +67,13 @@ export class PromotionComponent implements OnInit {
       }
       else if (res.status === 401) {
         snackBarError = 'Expired token';
-        this.router.navigate(['']);
       }
       else {
         this.error = `${res.status} : ${res.data}`;
       }
     }
     catch (e) {
-      this.error = 'Request timeout';
-      this.router.navigate(['']);
+      snackBarError = 'Request timeout';
     }
 
     this.loaded = true;
@@ -88,6 +86,7 @@ export class PromotionComponent implements OnInit {
       this.snackbarService.show(snackBarError, {
         duration: 3000
       });
+      this.router.navigate(['']);
     }
   }
 
