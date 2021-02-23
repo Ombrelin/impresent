@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Impresent.Web.Model.Dtos;
 using Impresent.Web.Services;
@@ -62,6 +63,19 @@ namespace Impresent.Web.Controllers
             try
             {
                 return await volunteeringService.Volunteer(promoId,dayId, dto);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            } 
+        }
+        
+        [HttpGet("{promoId:Guid}/days/{dayId:Guid}/volunteers")]
+        public async Task<ActionResult<List<VolunteeringDto>>> Volunteer(Guid promoId, Guid dayId)
+        {
+            try
+            {
+                return await volunteeringService.GetsVolunteers(promoId,dayId);
             }
             catch (Exception e) when (e is ArgumentException)
             {

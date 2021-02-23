@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Impresent.Web.Database;
@@ -11,7 +12,8 @@ namespace Impresent.Web.Services
         private readonly IVolunteeringRepository volunteeringRepository;
         private readonly IPromotionRepository promotionRepository;
 
-        public VolunteeringService(IVolunteeringRepository volunteeringRepository, IPromotionRepository promotionRepository)
+        public VolunteeringService(IVolunteeringRepository volunteeringRepository,
+            IPromotionRepository promotionRepository)
         {
             this.volunteeringRepository = volunteeringRepository;
             this.promotionRepository = promotionRepository;
@@ -31,7 +33,7 @@ namespace Impresent.Web.Services
                 Id = volunteering.Id,
                 Student = new StudentDto()
                 {
-                    Id = volunteering.Student.Id, 
+                    Id = volunteering.Student.Id,
                     FullName = volunteering.Student.FullName,
                     LastPresence = volunteering.Student.LastPresence
                 },
@@ -41,6 +43,26 @@ namespace Impresent.Web.Services
                     Date = volunteering.PresenceDay.Date
                 }
             };
+        }
+
+        public async Task<List<VolunteeringDto>> GetsVolunteers(Guid promoId, Guid dayId)
+        {
+            var volunteerings = await this.volunteeringRepository.GetFromPromoAndDay(promoId, dayId);
+            return volunteerings.Select(volunteering => new VolunteeringDto()
+            {
+                Id = volunteering.Id,
+                Student = new StudentDto()
+                {
+                    Id = volunteering.Student.Id,
+                    FullName = volunteering.Student.FullName,
+                    LastPresence = volunteering.Student.LastPresence
+                },
+                PresenceDay = new PresenceDayDto()
+                {
+                    Id = volunteering.PresenceDay.Id,
+                    Date = volunteering.PresenceDay.Date
+                }
+            }).ToList();
         }
     }
 }
