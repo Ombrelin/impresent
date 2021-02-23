@@ -33,15 +33,34 @@ namespace Impresent.Web.Controllers
                 return BadRequest(e.Message);
             }
         }
-            
+
 
         [Authorize]
         [HttpPost("{id:Guid}/students")]
-        public Task<StudentDto> AddStudentToPromotion(Guid id, [FromBody] CreateStudentDto dto)
-            => promotionService.AddStudentToPromotion(id, dto);
-        
+        public async Task<ActionResult<StudentDto>> AddStudentToPromotion(Guid id, [FromBody] CreateStudentDto dto)
+        {
+            try
+            {
+                return await promotionService.AddStudentToPromotion(id, dto);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpGet("{id:Guid}")]
-        public Task<PromotionFullDto> GetPromotion(Guid id) => promotionService.GetPromotion(id);
+        public async Task<ActionResult<PromotionFullDto>> GetPromotion(Guid id)
+        {
+            try
+            {
+                return await promotionService.GetPromotion(id);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [Authorize]
         [HttpPost("{id:Guid}/days")]
@@ -58,29 +77,30 @@ namespace Impresent.Web.Controllers
         }
 
         [HttpPost("{promoId:Guid}/days/{dayId:Guid}/volunteers")]
-        public async Task<ActionResult<VolunteeringDto>> Volunteer(Guid promoId, Guid dayId, [FromBody] CreateVolunteeringDto dto)
+        public async Task<ActionResult<VolunteeringDto>> Volunteer(Guid promoId, Guid dayId,
+            [FromBody] CreateVolunteeringDto dto)
         {
             try
             {
-                return await volunteeringService.Volunteer(promoId,dayId, dto);
+                return await volunteeringService.Volunteer(promoId, dayId, dto);
             }
             catch (Exception e) when (e is ArgumentException)
             {
                 return BadRequest(e.Message);
-            } 
+            }
         }
-        
+
         [HttpGet("{promoId:Guid}/days/{dayId:Guid}/volunteers")]
         public async Task<ActionResult<List<VolunteeringDto>>> Volunteer(Guid promoId, Guid dayId)
         {
             try
             {
-                return await volunteeringService.GetsVolunteers(promoId,dayId);
+                return await volunteeringService.GetsVolunteers(promoId, dayId);
             }
             catch (Exception e) when (e is ArgumentException)
             {
                 return BadRequest(e.Message);
-            } 
+            }
         }
     }
 }
