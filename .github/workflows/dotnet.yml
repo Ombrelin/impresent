@@ -29,3 +29,9 @@ jobs:
       run: echo '${{ secrets.DOCKER_TOKEN }}' | docker login --username ombrelin --password-stdin
     - name: Publish to Docker hub
       run: docker push ombrelin/impresent:1.0
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
