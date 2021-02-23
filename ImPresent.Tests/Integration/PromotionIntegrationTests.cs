@@ -304,5 +304,27 @@ namespace ImPresent.Tests.Integration
             Assert.Equal(student.Id,volunteering.Student.Id);
             Assert.Equal(presenceDay.Id,volunteering.PresenceDay.Id);
         }
+
+        [Fact]
+        public async Task GetVolunteerings()
+        {
+            // Given
+            var promo = await CreateTestPromotionWithDays();
+            var student = promo.Students.First();
+            var presenceDay = promo.PresenceDays.First();
+            var volunteering = new Volunteering() {Student = student, PresenceDay = presenceDay};
+            await db.Volunteerings.AddAsync(volunteering);
+            await db.SaveChangesAsync();
+            
+            // When
+            var volunteers = await client.GetAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers");
+            Assert.True(volunteers.IsSuccessStatusCode);
+            var result =await volunteers.Content.ReadAsAsync<List<VolunteeringDto>>();
+            Assert.Single(result);
+
+            var resultDto = result.First();
+            Assert.Equal(student.Id, resultDto.Student.Id);
+            Assert.Equal(presenceDay.Id, resultDto.PresenceDay.Id);
+        } 
     }
 }
