@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -53,12 +54,7 @@ namespace Impresent.Web.Services
             promo.Students.Add(student);
 
             promo = await repository.Update(promo);
-            return new StudentDto()
-            {
-                Id = student.Id,
-                FullName = student.FullName,
-                LastPresence = student.LastPresence
-            };
+            return MapStudentToDto(student);
         }
 
         public async Task<PresenceDayDto> AddPresenceDay(Guid id, CreatePresenceDayDto dto)
@@ -84,6 +80,11 @@ namespace Impresent.Web.Services
             };
         }
 
+        public async Task<List<StudentDto>> GetDesignated(Guid promoId, int number)
+        {
+            var designated = await repository.GetDesignated(promoId, number);
+            return designated.Select(MapStudentToDto).ToList();
+        }
 
 
         public async Task<PromotionFullDto> GetPromotion(Guid promotionId)
@@ -93,12 +94,15 @@ namespace Impresent.Web.Services
             {
                 Id = promo.Id,
                 ClassName = promo.ClassName,
-                Students = promo.Students.Select(s => new StudentDto()
-                    {Id = s.Id, FullName = s.FullName, LastPresence = s.LastPresence}).ToList(),
+                Students = promo.Students.Select(MapStudentToDto).ToList(),
                 PresenceDays = promo.PresenceDays.Select(pd => new PresenceDayDto() {Id = pd.Id, Date = pd.Date})
                     .ToList()
             };
         }
+
+        private static StudentDto MapStudentToDto(Student s) => new StudentDto()
+                {Id = s.Id, FullName = s.FullName, LastPresence = s.LastPresence};
+        
 
 
         private string ValidatePassword(string password)

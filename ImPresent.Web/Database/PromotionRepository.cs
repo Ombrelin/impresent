@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Impresent.Web.Model;
+using Impresent.Web.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Impresent.Web.Database
@@ -70,17 +72,19 @@ namespace Impresent.Web.Database
         
         public async Task<Promotion> GetByIdWithDaysAndStudents(Guid promotionId)
         {
-            var promo = await promotionsDb
-                .Include(p=> p.PresenceDays)
-                .Include(p => p.Students)
-                .FirstAsync(p => p.Id == promotionId);
-
-            if (promo == null)
+            try
             {
-                throw new ArgumentException($"No promotion with id {promotionId}");
+                var promo = await promotionsDb
+                    .Include(p=> p.PresenceDays)
+                    .Include(p => p.Students)
+                    .FirstAsync(p => p.Id == promotionId);
+                return promo;
             }
-            
-            return promo;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException($"No promotion with id : {promotionId}");
+            }
         }
 
         public async Task<Promotion> Update(Promotion p)
@@ -88,7 +92,7 @@ namespace Impresent.Web.Database
             promotionsDb.Update(p);
             await dbContext.SaveChangesAsync();
             return p;
-        }
+        }   
 
         public async Task<Promotion> GetByName(string name)
         {
@@ -101,6 +105,15 @@ namespace Impresent.Web.Database
             {
                 throw new ArgumentException($"No promotion with name : {name}");
             }
+        }
+
+        public async Task<List<Student>> GetDesignated(Guid promoId, int number)
+        {
+            var promo = await GetByIdWithStudents(promoId);
+            return promo.Students
+                .OrderBy(s => s.LastPresence)
+                .Take(number)
+                .ToList();
         }
     }
 }
