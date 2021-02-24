@@ -90,6 +90,20 @@ namespace Impresent.Web.Controllers
             }
         }
 
+        [HttpGet("{promoId}/designated")]
+        public async Task<ActionResult<List<StudentDto>>> GetDesignated([FromQuery(Name = "number")] int number,
+            Guid promoId)
+        {
+            try
+            {
+                return await promotionService.GetDesignated(promoId, number);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
         [HttpGet("{promoId:Guid}/days/{dayId:Guid}/volunteers")]
         public async Task<ActionResult<List<VolunteeringDto>>> Volunteer(Guid promoId, Guid dayId)
         {
