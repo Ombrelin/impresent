@@ -53,7 +53,9 @@ export class PromotionComponent implements OnInit {
       this.snackbarService.show(state.snackbarError, {
         duration: 3000
       });
-      this.router.navigate(['']);
+      if (state.status === 401) {
+        this.router.navigate(['']);
+      }
     }
     else if (state.success) {
       this.promotion = state.data;

@@ -7,7 +7,7 @@ import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading-dialog/loading-dialog.component';
-import { PromotionDto } from 'src/app/shared/models/model';
+import { PromotionDto, VolunteerDto } from 'src/app/shared/models/model';
 
 
 @Component({
@@ -19,12 +19,7 @@ export class DayComponent implements OnInit {
 
   error: string | null = null;
   loaded = false;
-  promotion: PromotionDto = {
-    id: '',
-    className: '',
-    students: [],
-    presenceDays: []
-  };
+  volunteers: Array<VolunteerDto> = [];
   private token = '';
 
   constructor(
@@ -65,10 +60,10 @@ export class DayComponent implements OnInit {
     }
     let snackBarError: string | null = null;
     try {
-      const res = await this.api.getPromotion(promotionId);
+      const res = await this.api.getVolunteers(this.token, promotionId, dayId);
 
       if (res.status === 200) {
-        this.promotion = res.data;
+        this.volunteers = res.data;
       }
       else if (res.status === 401) {
         snackBarError = 'Expired token';
