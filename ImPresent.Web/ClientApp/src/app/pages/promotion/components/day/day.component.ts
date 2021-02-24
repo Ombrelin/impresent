@@ -5,9 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/core/http/api.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { invalidPromotionId, State, StateService } from 'src/app/core/services/state/state.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading-dialog/loading-dialog.component';
-import { PromotionDto, VolunteerDto } from 'src/app/shared/models/model';
+import { DayDto, PromotionDto, VolunteerDto } from 'src/app/shared/models/model';
 
 
 @Component({
@@ -19,6 +20,13 @@ export class DayComponent implements OnInit {
 
   error: string | null = null;
   loaded = false;
+  day: DayDto | undefined;
+  promotion: PromotionDto  = {
+    className: '',
+    id: '',
+    presenceDays: [],
+    students: []
+  };
   volunteers: Array<VolunteerDto> = [];
   private token = '';
 
@@ -28,6 +36,7 @@ export class DayComponent implements OnInit {
     private readonly dialogService: DialogService,
     private readonly storageService: StorageService,
     private readonly snackbarService: SnackbarService,
+    private readonly stateService: StateService,
     private readonly api: ApiService
   ) {
     const token = this.storageService.getToken();
@@ -37,7 +46,7 @@ export class DayComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       if (params.promotionId != null && params.dayId != null) {
-        this.fetch(params.promotionId, params.dayId, true);
+        this.setData(params.promotionId, params.dayId, true);
       }
       else {
         this.router.navigate(['']);
@@ -49,44 +58,43 @@ export class DayComponent implements OnInit {
 
   }
 
-  toDate(date: string): Date {
-    return new Date(date);
+  private async setData(promotionId: string, dayId: string, loading = false): Promise<void> {
+    if (promotionId == null) {
+      this.managePromotion(invalidPromotionId, dayId);
+    }
+    else {
+      const state = await this.stateService.fetch(this.api.getPromotion(promotionId), loading);
+      this.managePromotion(state, dayId);
+    }
   }
 
-  private async fetch(promotionId: string, dayId: string, first = false): Promise<void> {
-    let loadingDialog: MatDialogRef<LoadingDialogComponent> | null = null;
-    if (first) {
-      loadingDialog = this.dialogService.showLoading();
+  private managePromotion(state: State<PromotionDto>, dayId: string): void {
+    if (state.error != null) {
+      this.error = state.error;
     }
-    let snackBarError: string | null = null;
-    try {
-      const res = await this.api.getVolunteers(this.token, promotionId, dayId);
-
-      if (res.status === 200) {
-        this.volunteers = res.data;
-      }
-      else if (res.status === 401) {
-        snackBarError = 'Expired token';
-      }
-      else {
-        this.error = `${res.status} : ${res.data}`;
+    else if (state.snackbarError != null) {
+      this.snackbarService.show(state.snackbarError, {
+        duration: 3000
+      });
+      if (state.status === 401) {
+        this.router.navigate(['']);
       }
     }
-    catch (e) {
-      snackBarError = 'Request timeout';
+    else if (state.success && state.data != null) {
+      this.promotion = state.data;
+      this.day = this.promotion?.presenceDays.find((val) => val.id === dayId);
+      if (this.day == null) {
+        this.error = 'Invalid day';
+      }
+    }
+    else {
+      this.error = 'Invalid promotion';
     }
 
     this.loaded = true;
+  }
 
-    if (first && loadingDialog != null) {
-      loadingDialog.close();
-    }
-
-    if (snackBarError != null) {
-      this.snackbarService.show(snackBarError, {
-        duration: 3000
-      });
-      this.router.navigate(['']);
-    }
+  toDate(date: string): Date {
+    return new Date(date);
   }
 }

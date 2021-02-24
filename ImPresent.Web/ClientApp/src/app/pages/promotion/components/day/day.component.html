@@ -1,7 +1,7 @@
 <div *ngIf="loaded" class="w-full bg-white p-4 rounded-lg select-none">
   <div *ngIf="error == null" class="w-full md:w-screen max-w-2xl">
     <h1 class="text-3xl text-green-500 select-text md:text-center">Promotion : {{ promotion.className }}</h1>
-    <h2 *ngIf="volunteers.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4">There is no students in this promotion</h2>
+    <h2 *ngIf="volunteers.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4">There is no volunteers for this day</h2>
     <mat-list *ngIf="volunteers.length !== 0" class="list">
       <mat-list-item *ngFor="let volunteer of volunteers" class="mb-2">
         <div class="w-full flex justify-between items-center">
