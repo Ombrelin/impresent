@@ -9,16 +9,14 @@ import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loadin
 import { CacheService } from 'src/app/core/services/cache/cache.service';
 
 export interface State<T> {
-  data: T | null;
-  snackbarError: string | null;
-  error: string | null;
+  data?: T;
+  snackbarError?: string;
+  error?: string;
   success: boolean;
 }
 
 const invalidPromotionId: State<PromotionDto> = {
-  data: null,
   snackbarError: 'Invalid promotion id',
-  error: null,
   success: false
 };
 
@@ -40,8 +38,6 @@ export class StateService {
     const promotion = this.cacheService.getPromotion(promotionId);
     let state: State<PromotionDto> = {
       data: promotion,
-      snackbarError: null,
-      error: null,
       success: promotion != null
     };
     if (promotion == null) {
@@ -67,9 +63,9 @@ export class StateService {
     if (loading) {
       loadingDialog = this.dialogService.showLoading();
     }
-    let snackbarError: string | null = null;
-    let error: string | null = null;
-    let result: T | null = null;
+    let snackbarError: string | undefined;
+    let error: string | undefined;
+    let result: T | undefined;
     try {
       const res = await promise;
 

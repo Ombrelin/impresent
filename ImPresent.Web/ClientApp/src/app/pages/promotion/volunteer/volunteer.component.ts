@@ -17,8 +17,8 @@ export class VolunteerComponent implements OnInit {
   form: FormGroup;
 
   loaded = false;
-  error: string | null = null;
-  promotion: PromotionDto | null = null;
+  error: string | undefined;
+  promotion: PromotionDto | undefined;
 
   constructor(
     private readonly api: ApiService,

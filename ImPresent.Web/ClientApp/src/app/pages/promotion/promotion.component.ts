@@ -18,7 +18,7 @@ export class PromotionComponent implements OnInit {
 
   loaded = false;
   error: string | null = null;
-  promotion: PromotionDto | null = null;
+  promotion: PromotionDto | undefined;
 
   constructor(
     private readonly route: ActivatedRoute,
