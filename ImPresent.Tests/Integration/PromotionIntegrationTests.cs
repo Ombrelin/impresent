@@ -181,6 +181,16 @@ namespace ImPresent.Tests.Integration
             Assert.Equal(new DateTime(2020, 2, 18), student.LastPresence);
         }
 
+        [Fact]
+        public async Task GetNonExistingPromotion_Returns404()
+        {
+            // When
+            var getPromotion = await client.GetAsync($"api/promotions/639d1a4e-8e5d-425c-8cb1-799b15c253e4");
+
+            // Then
+            Assert.Equal(HttpStatusCode.NotFound, getPromotion.StatusCode);
+        }
+
 
         [Fact]
         public async Task AddNewPresenceDay()
@@ -287,22 +297,48 @@ namespace ImPresent.Tests.Integration
             {
                 StudentId = student.Id
             };
-            
+
             // When
-            
+
             var volunteer = await client
                 .PostAsJsonAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers", dto);
-            
+
             // Then
             Assert.True(volunteer.IsSuccessStatusCode);
             var result = await volunteer.Content.ReadAsAsync<VolunteeringDto>();
-            Assert.Equal(student.Id,result.Student.Id);
-            Assert.Equal(presenceDay.Id,result.PresenceDay.Id);
+            Assert.Equal(student.Id, result.Student.Id);
+            Assert.Equal(presenceDay.Id, result.PresenceDay.Id);
 
             Assert.Single(db.Volunteerings);
             var volunteering = await db.Volunteerings.FirstAsync();
-            Assert.Equal(student.Id,volunteering.Student.Id);
-            Assert.Equal(presenceDay.Id,volunteering.PresenceDay.Id);
+            Assert.Equal(student.Id, volunteering.Student.Id);
+            Assert.Equal(presenceDay.Id, volunteering.PresenceDay.Id);
+        }
+
+        [Fact]
+        public async Task GetDesignated()
+        {
+            // Given
+            var promo = await CreateTestPromotion();
+            promo.Students.Add(new Student()
+            {
+                FullName = "Jean Michel REMEUR",
+                LastPresence = new DateTime(2021, 2, 24)
+            });
+            db.Promotions.Update(promo);
+            await db.SaveChangesAsync();
+
+            // When
+
+            var designated = await client
+                .GetAsync($"api/promotions/{promo.Id}/designated?number=1");
+
+            // Then
+            Assert.True(designated.IsSuccessStatusCode);
+            var result = await designated.Content.ReadAsAsync<List<StudentDto>>();
+            Assert.Single(result);
+            
+            Assert.Equal("Arsène LAPOSTOLET", result.First().FullName);
         }
 
         [Fact]
@@ -315,16 +351,16 @@ namespace ImPresent.Tests.Integration
             var volunteering = new Volunteering() {Student = student, PresenceDay = presenceDay};
             await db.Volunteerings.AddAsync(volunteering);
             await db.SaveChangesAsync();
-            
+
             // When
             var volunteers = await client.GetAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers");
             Assert.True(volunteers.IsSuccessStatusCode);
-            var result =await volunteers.Content.ReadAsAsync<List<VolunteeringDto>>();
+            var result = await volunteers.Content.ReadAsAsync<List<VolunteeringDto>>();
             Assert.Single(result);
 
             var resultDto = result.First();
             Assert.Equal(student.Id, resultDto.Student.Id);
             Assert.Equal(presenceDay.Id, resultDto.PresenceDay.Id);
-        } 
+        }
     }
 }

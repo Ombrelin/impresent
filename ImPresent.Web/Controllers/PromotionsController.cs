@@ -58,7 +58,7 @@ namespace Impresent.Web.Controllers
             }
             catch (Exception e) when (e is ArgumentException)
             {
-                return BadRequest(e.Message);
+                return NotFound(e.Message);
             }
         }
 
@@ -87,6 +87,20 @@ namespace Impresent.Web.Controllers
             catch (Exception e) when (e is ArgumentException)
             {
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("{promoId}/designated")]
+        public async Task<ActionResult<List<StudentDto>>> GetDesignated([FromQuery(Name = "number")] int number,
+            Guid promoId)
+        {
+            try
+            {
+                return await promotionService.GetDesignated(promoId, number);
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return NotFound(e.Message);
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Impresent.Web.Model;
+using Impresent.Web.Model.Dtos;
 
 namespace Impresent.Web.Database
 {
@@ -14,5 +15,6 @@ namespace Impresent.Web.Database
         Task<Promotion> GetById(Guid promotionId);
         Task<Promotion> Update(Promotion p);
         Task<Promotion> GetByName(string name);
+        Task<List<Student>> GetDesignated(Guid promoId, int number);
     }
 }
