@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UniversalValidators } from 'ngx-validators';
+
 import { ApiService } from 'src/app/core/http/api.service';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { State, StateService } from 'src/app/core/services/state/state.service';
 import { PromotionDto } from 'src/app/shared/models/model';
 
 @Component({
@@ -17,17 +18,12 @@ export class VolunteerComponent implements OnInit {
 
   loaded = false;
   error: string | null = null;
-  promotion: PromotionDto = {
-    id: '',
-    className: '',
-    students: [],
-    presenceDays: []
-  };
+  promotion: PromotionDto | null = null;
 
   constructor(
     private readonly api: ApiService,
-    private readonly dialogService: DialogService,
     private readonly route: ActivatedRoute,
+    private readonly stateService: StateService,
     private fb: FormBuilder,
   ) {
     this.form = this.fb.group({
@@ -42,31 +38,25 @@ export class VolunteerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(async (params) => {
       if (params.promotionId != null) {
-        this.fetch(params.promotionId);
+        const state = await this.stateService.getPromotion(params.promotionId, true);
+        this.manageState(state);
       }
     });
   }
 
-  private async fetch(promotionId: string): Promise<void> {
-    const loadingDialog = this.dialogService.showLoading();
-    try {
-      const res = await this.api.getPromotion(promotionId);
-
-      if (res.status === 200) {
-        this.promotion = res.data;
-      }
-      else {
-        this.error = `${res.status} : ${res.data}`;
-      }
-    }
-    catch (e) {
-      this.error = 'Request timeout';
-    }
-
+  private manageState(state: State<PromotionDto>): void {
     this.loaded = true;
-    loadingDialog.close();
+    if (state.error != null || state.snackbarError != null) {
+      this.error = state.error;
+    }
+    else if (state.success) {
+      this.promotion = state.data;
+    }
+    else {
+      this.error = 'Invalid promotion';
+    }
   }
 
   dateFilter = (d: Date | null): boolean => {
