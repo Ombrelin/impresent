@@ -13,7 +13,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PromotionComponent } from './promotion.component';
 import { CreatePromotionDialogComponent } from '../home/dialogs/create-promotion-dialog/create-promotion-dialog.component';
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
-import { VolunteerComponent } from './components/volunteer/volunteer.component';
+import { VolunteerComponent } from './components/day/components/volunteer/volunteer.component';
 import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
 import { DayComponent } from './components/day/day.component';
 
