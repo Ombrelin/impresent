@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { IsSignedInGuard } from './core/guards/is-signed-in/is-signed-in.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { PromotionComponent } from './pages/promotion/promotion.component';
-import { VolunteerComponent } from './pages/promotion/volunteer/volunteer.component';
+import { VolunteerComponent } from './pages/promotion/components/volunteer/volunteer.component';
 import { DayComponent } from './pages/promotion/day/day.component';
 
 const routes: Routes = [
@@ -19,14 +19,19 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'volunteer',
-        component: VolunteerComponent
-      },
-      {
         path: 'day/:dayId',
-        component: DayComponent,
-        canActivate: [
-          IsSignedInGuard
+        children: [
+          {
+            path: '',
+            component: DayComponent,
+            canActivate: [
+              IsSignedInGuard
+            ]
+          },
+          {
+            path: 'volunteer',
+            component: VolunteerComponent
+          }
         ]
       }
     ]
