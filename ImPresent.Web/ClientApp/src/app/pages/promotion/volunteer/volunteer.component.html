@@ -1,6 +1,6 @@
 <div *ngIf="loaded" class="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 select-none">
   <div *ngIf="error == null">
-    <h1 class="text-center font-semibold text-5xl p-3 text-green-500">Promotion : {{ promotion.className }}</h1>
+    <h1 class="text-center font-semibold text-5xl p-3 text-green-500">Promotion : {{ promotion?.className }}</h1>
     <div class="w-full p-4 flex flex-col" [formGroup]="form">
       <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" />
       <mat-datepicker #picker></mat-datepicker>
