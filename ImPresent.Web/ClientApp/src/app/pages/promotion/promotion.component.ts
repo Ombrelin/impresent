@@ -19,7 +19,12 @@ export class PromotionComponent implements OnInit {
 
   loaded = false;
   error: string | null = null;
-  promotion: PromotionDto | undefined;
+  promotion: PromotionDto  = {
+    className: '',
+    id: '',
+    presenceDays: [],
+    students: []
+  };
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -40,10 +45,6 @@ export class PromotionComponent implements OnInit {
   }
 
   ngOnInit(): void { }
-
-  toDate(date: string): Date {
-    return new Date(date);
-  }
 
   private async setPromotion(promotionId: string | undefined, loading = false): Promise<void> {
     if (promotionId == null) {
@@ -68,12 +69,16 @@ export class PromotionComponent implements OnInit {
         this.router.navigate(['']);
       }
     }
-    else if (state.success) {
+    else if (state.success && state.data != null) {
       this.promotion = state.data;
     }
     else {
       this.error = 'Invalid promotion';
     }
+  }
+
+  toDate(date: string): Date {
+    return new Date(date);
   }
 
   openDay(day: DayDto): void {
