@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Impresent.Web.Model;
+using Impresent.Web.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Impresent.Web.Database
@@ -103,6 +105,15 @@ namespace Impresent.Web.Database
             {
                 throw new ArgumentException($"No promotion with name : {name}");
             }
+        }
+
+        public async Task<List<Student>> GetDesignated(Guid promoId, int number)
+        {
+            var promo = await GetByIdWithStudents(promoId);
+            return promo.Students
+                .OrderBy(s => s.LastPresence)
+                .Take(number)
+                .ToList();
         }
     }
 }
