@@ -9,6 +9,7 @@ import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loadin
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
 import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
 import { PromotionDto, DayDto } from 'src/app/shared/models/model';
+import { State, StateService } from 'src/app/core/services/state/state.service';
 
 
 @Component({
@@ -20,12 +21,7 @@ export class PromotionComponent implements OnInit {
 
   loaded = false;
   error: string | null = null;
-  promotion: PromotionDto = {
-    id: '',
-    className: '',
-    students: [],
-    presenceDays: []
-  };
+  promotion: PromotionDto | null = null;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -33,11 +29,13 @@ export class PromotionComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly dialogService: DialogService,
     private readonly snackbarService: SnackbarService,
-    private readonly api: ApiService
+    private readonly api: ApiService,
+    private readonly stateService: StateService
   ) {
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(async (params) => {
       if (params.promotionId != null) {
-        this.fetch(params.promotionId, true);
+        const state = await this.stateService.getPromotion(params.promotionId, true);
+        this.manageState(state);
       }
       else {
         this.router.navigate(['']);
@@ -51,6 +49,22 @@ export class PromotionComponent implements OnInit {
 
   toDate(date: string): Date {
     return new Date(date);
+  }
+
+  private manageState(state: State<PromotionDto>): void {
+    this.loaded = true;
+    if (state.error != null) {
+      this.error = state.error;
+    }
+    else if (state.snackbarError != null) {
+      this.snackbarService.show(state.snackbarError, {
+        duration: 3000
+      });
+      this.router.navigate(['']);
+    }
+    else {
+      this.promotion = state.data;
+    }
   }
 
   private async fetch(promotionId: string, first = false): Promise<void> {
@@ -91,26 +105,28 @@ export class PromotionComponent implements OnInit {
   }
 
   openDay(day: DayDto): void {
-    this.router.navigate(['promotion', this.promotion.id, 'day', day.id]);
+    this.router.navigate(['promotion', this.promotion?.id, 'day', day.id]);
   }
 
   addDay(): void {
     const dialog = this.dialog.open(AddDayDialogComponent, {
-      data: this.promotion.id
+      data: this.promotion?.id
     });
 
-    dialog.afterClosed().subscribe((data) => {
-      this.fetch(this.promotion.id);
+    dialog.afterClosed().subscribe(async (data) => {
+      const state = await this.stateService.updatePromotion(this.promotion?.id);
+      this.manageState(state);
     });
   }
 
   addStudent(): void {
     const dialog = this.dialog.open(AddStudentDialogComponent, {
-      data: this.promotion.id
+      data: this.promotion?.id
     });
 
-    dialog.afterClosed().subscribe((data) => {
-      this.fetch(this.promotion.id);
+    dialog.afterClosed().subscribe(async (data) => {
+      const state = await this.stateService.updatePromotion(this.promotion?.id);
+      this.manageState(state);
     });
   }
 }
