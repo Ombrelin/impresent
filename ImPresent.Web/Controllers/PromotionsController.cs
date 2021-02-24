@@ -58,7 +58,7 @@ namespace Impresent.Web.Controllers
             }
             catch (Exception e) when (e is ArgumentException)
             {
-                return BadRequest(e.Message);
+                return NotFound(e.Message);
             }
         }
 
