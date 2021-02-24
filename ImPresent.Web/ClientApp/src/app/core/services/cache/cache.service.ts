@@ -10,8 +10,8 @@ export class CacheService {
 
   constructor() { }
 
-  getPromotion(id: string): PromotionDto | null {
-    return this.promotions.get(id) ?? null;
+  getPromotion(id: string): PromotionDto | undefined {
+    return this.promotions.get(id);
   }
 
   setPromotion(promotion: PromotionDto): void {
