@@ -6,7 +6,8 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
 import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
 import { PromotionDto, DayDto } from 'src/app/shared/models/model';
-import { State, StateService } from 'src/app/core/services/state/state.service';
+import { invalidPromotionId, State, StateService } from 'src/app/core/services/state/state.service';
+import { ApiService } from 'src/app/core/http/api.service';
 
 
 @Component({
@@ -25,12 +26,12 @@ export class PromotionComponent implements OnInit {
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly snackbarService: SnackbarService,
-    private readonly stateService: StateService
+    private readonly stateService: StateService,
+    private readonly api: ApiService
   ) {
     this.route.params.subscribe(async (params) => {
       if (params.promotionId != null) {
-        const state = await this.stateService.getPromotion(params.promotionId, true);
-        this.manageState(state);
+        this.setPromotion(params.promotionId, true);
       }
       else {
         this.router.navigate(['']);
@@ -44,7 +45,17 @@ export class PromotionComponent implements OnInit {
     return new Date(date);
   }
 
-  private manageState(state: State<PromotionDto>): void {
+  private async setPromotion(promotionId: string | undefined, loading = false): Promise<void> {
+    if (promotionId == null) {
+      this.managePromotion(invalidPromotionId);
+    }
+    else {
+      const state = await this.stateService.fetch(this.api.getPromotion(promotionId), loading);
+      this.managePromotion(state);
+    }
+  }
+
+  private managePromotion(state: State<PromotionDto>): void {
     this.loaded = true;
     if (state.error != null) {
       this.error = state.error;
@@ -75,8 +86,7 @@ export class PromotionComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(async (data) => {
-      const state = await this.stateService.updatePromotion(this.promotion?.id);
-      this.manageState(state);
+      this.setPromotion(this.promotion?.id);
     });
   }
 
@@ -86,8 +96,7 @@ export class PromotionComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(async (data) => {
-      const state = await this.stateService.updatePromotion(this.promotion?.id);
-      this.manageState(state);
+      this.setPromotion(this.promotion?.id);
     });
   }
 }

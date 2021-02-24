@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { UniversalValidators } from 'ngx-validators';
 
 import { ApiService } from 'src/app/core/http/api.service';
-import { State, StateService } from 'src/app/core/services/state/state.service';
-import { PromotionDto } from 'src/app/shared/models/model';
+import { invalidPromotionId, State, StateService } from 'src/app/core/services/state/state.service';
+import { DayDto, PromotionDto } from 'src/app/shared/models/model';
 
 @Component({
   selector: 'app-volunteer',
@@ -19,6 +19,7 @@ export class VolunteerComponent implements OnInit {
   loaded = false;
   error: string | undefined;
   promotion: PromotionDto | undefined;
+  day: DayDto | undefined;
 
   constructor(
     private readonly api: ApiService,
@@ -39,24 +40,37 @@ export class VolunteerComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(async (params) => {
-      if (params.promotionId != null) {
-        const state = await this.stateService.getPromotion(params.promotionId, true);
-        this.manageState(state);
+      if (params.promotionId != null && params.dayId != null) {
+        this.setData(params.promotionId, params.dayId, true);
+      }
+      else {
+        this.loaded = true;
+        this.error = 'Missing promotion or day ids';
       }
     });
   }
 
-  private manageState(state: State<PromotionDto>): void {
-    this.loaded = true;
+  private async setData(promotionId: string, dayId: string, loading = false): Promise<void> {
+    const state = await this.stateService.fetch(this.api.getPromotion(promotionId), loading);
+    this.manageData(state, dayId);
+  }
+
+  private manageData(state: State<PromotionDto>, dayId: string): void {
     if (state.error != null || state.snackbarError != null) {
       this.error = state.error;
     }
     else if (state.success) {
       this.promotion = state.data;
+      this.day = this.promotion?.presenceDays.find((val) => val.id === dayId);
+      if (this.day == null) {
+        this.error = 'Invalid day';
+      }
     }
     else {
       this.error = 'Invalid promotion';
     }
+
+    this.loaded = true;
   }
 
   dateFilter = (d: Date | null): boolean => {
