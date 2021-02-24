@@ -70,17 +70,19 @@ namespace Impresent.Web.Database
         
         public async Task<Promotion> GetByIdWithDaysAndStudents(Guid promotionId)
         {
-            var promo = await promotionsDb
-                .Include(p=> p.PresenceDays)
-                .Include(p => p.Students)
-                .FirstAsync(p => p.Id == promotionId);
-
-            if (promo == null)
+            try
             {
-                throw new ArgumentException($"No promotion with id {promotionId}");
+                var promo = await promotionsDb
+                    .Include(p=> p.PresenceDays)
+                    .Include(p => p.Students)
+                    .FirstAsync(p => p.Id == promotionId);
+                return promo;
             }
-            
-            return promo;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ArgumentException($"No promotion with id : {promotionId}");
+            }
         }
 
         public async Task<Promotion> Update(Promotion p)
@@ -88,7 +90,7 @@ namespace Impresent.Web.Database
             promotionsDb.Update(p);
             await dbContext.SaveChangesAsync();
             return p;
-        }
+        }   
 
         public async Task<Promotion> GetByName(string name)
         {
