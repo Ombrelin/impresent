@@ -46,7 +46,7 @@ export class DayComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       if (params.promotionId != null && params.dayId != null) {
-        this.setData(params.promotionId, params.dayId, true);
+        this.setData(params.promotionId, params.dayId);
       }
       else {
         this.router.navigate(['']);
@@ -58,13 +58,15 @@ export class DayComponent implements OnInit {
 
   }
 
-  private async setData(promotionId: string, dayId: string, loading = false): Promise<void> {
+  private async setData(promotionId: string, dayId: string): Promise<void> {
     if (promotionId == null) {
       this.managePromotion(invalidPromotionId, dayId);
     }
     else {
-      const state = await this.stateService.fetch(this.api.getPromotion(promotionId), loading);
-      this.managePromotion(state, dayId);
+      const statePromotion = await this.stateService.fetch(this.api.getPromotion(promotionId));
+      this.managePromotion(statePromotion, dayId);
+      const stateVolunteers = await this.stateService.fetch(this.api.getVolunteers(this.token, promotionId, dayId));
+      this.manageVolunteers(stateVolunteers);
     }
   }
 
@@ -89,6 +91,27 @@ export class DayComponent implements OnInit {
     }
     else {
       this.error = 'Invalid promotion';
+    }
+  }
+
+  private manageVolunteers(state: State<Array<VolunteerDto>>): void {
+    if (state.error != null) {
+      this.error = state.error;
+    }
+    else if (state.snackbarError != null) {
+      this.snackbarService.show(state.snackbarError, {
+        duration: 3000
+      });
+      if (state.status === 401) {
+        this.router.navigate(['']);
+      }
+    }
+    else if (state.success && state.data != null) {
+      this.volunteers = state.data;
+      console.log(this.volunteers);
+    }
+    else if (this.error == null) {
+      this.error = 'Invalid promotion or day';
     }
 
     this.loaded = true;
