@@ -45,7 +45,7 @@ export class VolunteerComponent implements OnInit {
       }
       else {
         this.loaded = true;
-        this.error = 'Missing promotion or day ids';
+        this.error = 'Missing promotion or day id';
       }
     });
   }
