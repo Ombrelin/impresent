@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { UniversalValidators } from 'ngx-validators';
 
 import { ApiService } from 'src/app/core/http/api.service';
@@ -26,7 +27,8 @@ export class AddStudentDialogComponent implements OnInit {
     private readonly snackbarService: SnackbarService,
     private readonly dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA) private readonly data: string,
-    private readonly dialog: MatDialogRef<AddStudentDialogComponent>
+    private readonly dialog: MatDialogRef<AddStudentDialogComponent>,
+    private readonly router: Router
   ) {
     this.form = this.fb.group({
       name: ['', [
@@ -61,6 +63,7 @@ export class AddStudentDialogComponent implements OnInit {
         }
         else if (res.status === 401) {
           error = 'Expired token';
+          this.router.navigate(['']);
         }
         else {
           error = `${res.status} : ${res.data}`;
