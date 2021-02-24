@@ -10,6 +10,7 @@ import { CacheService } from 'src/app/core/services/cache/cache.service';
 
 export interface State<T> {
   data?: T;
+  status?: number;
   snackbarError?: string;
   error?: string;
   success: boolean;
@@ -65,12 +66,14 @@ export class StateService {
     }
     let snackbarError: string | undefined;
     let error: string | undefined;
-    let result: T | undefined;
+    let data: T | undefined;
+    let status: number | undefined;
     try {
       const res = await promise;
+      status = res.status;
 
       if (res.status === 200) {
-        result = res.data;
+        data = res.data;
       }
       else if (res.status === 401) {
         snackbarError = 'Expired token';
@@ -88,7 +91,8 @@ export class StateService {
     }
 
     return {
-      data: result,
+      data,
+      status,
       snackbarError,
       error,
       success: snackbarError == null && error == null
