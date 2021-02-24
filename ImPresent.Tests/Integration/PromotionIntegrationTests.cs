@@ -180,6 +180,16 @@ namespace ImPresent.Tests.Integration
             Assert.Equal("Arsène LAPOSTOLET", student.FullName);
             Assert.Equal(new DateTime(2020, 2, 18), student.LastPresence);
         }
+        
+        [Fact]
+        public async Task GetNonExistingPromotion_Returns404()
+        {
+            // When
+            var getPromotion = await client.GetAsync($"api/promotions/639d1a4e-8e5d-425c-8cb1-799b15c253e4");
+
+            // Then
+            Assert.Equal(HttpStatusCode.NotFound, getPromotion.StatusCode);
+        }
 
 
         [Fact]
