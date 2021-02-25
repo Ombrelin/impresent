@@ -106,7 +106,6 @@ export class VolunteerComponent implements OnInit {
   }
 
   selectStudent(student: StudentDto): void {
-    console.log(student);
     this.selectedStudent = student;
   }
 
