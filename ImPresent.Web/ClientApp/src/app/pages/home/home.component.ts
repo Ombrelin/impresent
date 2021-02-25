@@ -6,10 +6,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ApiService } from 'src/app/core/http/api.service';
 import { CreatePromotionDialogComponent } from 'src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
-import { Page, PageComponent } from 'src/app/shared/components/page/page.component';
+import { Page } from 'src/app/shared/components/page/page';
+import { StateService } from 'src/app/core/services/state/state.service';
+import { AuthToken } from 'src/app/shared/models/model';
 
 @Component({
   selector: 'app-home',
@@ -22,9 +23,9 @@ export class HomeComponent extends Page {
 
   constructor(
     private readonly api: ApiService,
-    private readonly dialogService: DialogService,
     private readonly snackbarService: SnackbarService,
     private readonly storageService: StorageService,
+    private readonly stateService: StateService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private fb: FormBuilder,
@@ -48,38 +49,23 @@ export class HomeComponent extends Page {
   async login(): Promise<void> {
     if (this.form.valid) {
 
-      const loadingDialog = this.dialogService.showLoading();
+      const state = await this.stateService.fetch<AuthToken>(this.api.auth({
+        promotionName: this.form.value.name,
+        password: this.form.value.password
+      }), true);
 
-      let error: string | null = null;
-
-      try {
-        const res = await this.api.auth({
-          promotionName: this.form.value.name,
-          password: this.form.value.password
-        });
-
-        if (res.status === 200) {
-          this.storageService.setToken(res.data.token);
-          this.router.navigate(['/promotion', res.data.id]);
-        }
-        else if (res.status === 401) {
-          error = 'Invalid name or password';
-        }
-        else {
-          error = `${res.status} : ${res.data}`;
+      if (state.success && state.data != null) {
+        this.storageService.setToken(state.data.token);
+        this.router.navigate(['/promotion', state.data.id]);
+      }
+      else if (state.error != null || state.snackbarError != null) {
+        const error = state.error ?? state.snackbarError;
+        if (error != null) {
+          this.snackbarService.show(error, {
+            duration: 3000
+          });
         }
       }
-      catch (e) {
-        error = 'Request timeout';
-      }
-
-      if (error != null) {
-        this.snackbarService.show(error, {
-          duration: 3000
-        });
-      }
-
-      loadingDialog.close();
     }
   }
 
