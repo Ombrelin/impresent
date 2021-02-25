@@ -5,9 +5,9 @@ import { AddVolunteerDto } from './add-volunteer-dto';
 import { AuthDto } from './auth-dto';
 import { AuthToken } from './auth-token';
 import { DayDto } from './day-dto';
+import { DayVolunteerDto } from './day-volunteer-dto';
 import { PromotionDto } from './promotion';
 import { StudentDto } from './students';
-import { VolunteerDto } from './volunteer-dto';
 
 export {
   AddDayDto,
@@ -19,6 +19,6 @@ export {
   DayDto,
   PromotionDto,
   StudentDto,
-  VolunteerDto
+  DayVolunteerDto
 };
 
