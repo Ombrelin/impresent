@@ -5,6 +5,7 @@ import { UniversalValidators } from 'ngx-validators';
 
 import { ApiService } from 'src/app/core/http/api.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { AddPromotionDto } from 'src/app/shared/models/model';
 
@@ -19,8 +20,8 @@ export class CreatePromotionDialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private readonly dialogService: DialogService,
     private readonly snackbarService: SnackbarService,
+    private readonly fetchService: FetchService,
     private readonly api: ApiService,
     private readonly dialog: MatDialogRef<CreatePromotionDialogComponent>
   ) {
@@ -46,29 +47,22 @@ export class CreatePromotionDialogComponent implements OnInit {
   async create(): Promise<void> {
     if (this.form.valid) {
 
-      const loadingDialog = this.dialogService.showLoading();
-      const addPromotion: AddPromotionDto = {
+      const fetch = await this.fetchService.fetch(this.api.addPromotion({
         name: this.form.value.name,
         password: this.form.value.password
-      };
+      }), true);
 
-      try {
-        const res = await this.api.addPromotion(addPromotion);
-
-        if (res.status === 200) {
-          this.dialog.close(res.data);
-        }
-        else {
-          this.snackbarService.show(`${res.data}`, {
+      if (fetch.success && fetch.data != null) {
+        this.dialog.close(fetch.data);
+      }
+      else if (fetch.error != null || fetch.snackbarError != null) {
+        const error = fetch.error ?? fetch.snackbarError;
+        if (error != null) {
+          this.snackbarService.show(error, {
             duration: 3000
           });
         }
       }
-      catch (e) {
-        this.snackbarService.show('Request timeout');
-      }
-
-      loadingDialog.close();
     }
   }
 }
