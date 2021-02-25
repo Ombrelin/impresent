@@ -90,13 +90,13 @@ namespace Impresent.Web.Controllers
             }
         }
 
-        [HttpGet("{promoId}/designated")]
+        [HttpGet("{promoId}/days/{dayId}/designated")]
         public async Task<ActionResult<List<StudentDto>>> GetDesignated([FromQuery(Name = "number")] int number,
-            Guid promoId)
+            Guid promoId, Guid dayId)
         {
             try
             {
-                return await promotionService.GetDesignated(promoId, number);
+                return await promotionService.GetDesignated(promoId,dayId, number);
             }
             catch (Exception e) when (e is ArgumentException)
             {

@@ -75,9 +75,9 @@ namespace Impresent.Web.Services
             return new PresenceDayDto(presenceDay);
         }
 
-        public async Task<List<StudentDto>> GetDesignated(Guid promoId, int number)
+        public async Task<List<StudentDto>> GetDesignated(Guid promoId, Guid dayId, int number)
         {
-            var designated = await repository.GetDesignated(promoId, number);
+            var designated = await repository.GetDesignated(promoId, dayId,number);
             return designated
                 .Select(s => new StudentDto(s))
                 .ToList();
