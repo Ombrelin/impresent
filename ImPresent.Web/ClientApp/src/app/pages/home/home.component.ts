@@ -25,7 +25,7 @@ export class HomeComponent extends Page {
     private readonly api: ApiService,
     private readonly snackbarService: SnackbarService,
     private readonly storageService: StorageService,
-    private readonly stateService: FetchService,
+    private readonly fetchService: FetchService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private fb: FormBuilder,
@@ -49,7 +49,7 @@ export class HomeComponent extends Page {
   async login(): Promise<void> {
     if (this.form.valid) {
 
-      const state = await this.stateService.fetch<AuthToken>(this.api.auth({
+      const state = await this.fetchService.fetch<AuthToken>(this.api.auth({
         promotionName: this.form.value.name,
         password: this.form.value.password
       }), true);
@@ -72,7 +72,9 @@ export class HomeComponent extends Page {
   create(): void {
     const dialog = this.dialog.open(CreatePromotionDialogComponent);
     dialog.afterClosed().subscribe((data) => {
-      this.router.navigate(['promotion', data.id]);
+      if (data != null) {
+        this.router.navigate(['promotion', data.id]);
+      }
     });
   }
 }
