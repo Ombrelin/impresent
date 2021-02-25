@@ -9,6 +9,6 @@ namespace Impresent.Web.Services
     public interface IVolunteeringService
     {
         Task<VolunteeringDto> Volunteer(Guid promoId, Guid dayId, CreateVolunteeringDto dto);
-        Task<List<VolunteeringDto>> GetsVolunteers(Guid promoId, Guid dayId);
+        Task<VolunteeringsDto> GetsVolunteers(Guid promoId, Guid dayId);
     }
 }
