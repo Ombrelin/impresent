@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Impresent.Web.Database;
+using Impresent.Web.Model;
 using Impresent.Web.Model.Dtos;
 
 namespace Impresent.Web.Services
@@ -31,38 +32,19 @@ namespace Impresent.Web.Services
             return new VolunteeringDto()
             {
                 Id = volunteering.Id,
-                Student = new StudentDto()
-                {
-                    Id = volunteering.Student.Id,
-                    FullName = volunteering.Student.FullName,
-                    LastPresence = volunteering.Student.LastPresence
-                },
-                PresenceDay = new PresenceDayDto()
-                {
-                    Id = volunteering.PresenceDay.Id,
-                    Date = volunteering.PresenceDay.Date
-                }
+                Student = new StudentDto(volunteering.Student),
+                PresenceDay = new PresenceDayDto(volunteering.PresenceDay)
             };
         }
 
-        public async Task<List<VolunteeringDto>> GetsVolunteers(Guid promoId, Guid dayId)
+        public async Task<VolunteeringsDto> GetsVolunteers(Guid promoId, Guid dayId)
         {
             var volunteerings = await this.volunteeringRepository.GetFromPromoAndDay(promoId, dayId);
-            return volunteerings.Select(volunteering => new VolunteeringDto()
+            return new VolunteeringsDto()
             {
-                Id = volunteering.Id,
-                Student = new StudentDto()
-                {
-                    Id = volunteering.Student.Id,
-                    FullName = volunteering.Student.FullName,
-                    LastPresence = volunteering.Student.LastPresence
-                },
-                PresenceDay = new PresenceDayDto()
-                {
-                    Id = volunteering.PresenceDay.Id,
-                    Date = volunteering.PresenceDay.Date
-                }
-            }).ToList();
+                PresenceDay = new PresenceDayDto(volunteerings.First().PresenceDay),
+                Students = volunteerings.Select(v => new StudentDto(v.Student)).ToList()
+            };
         }
     }
 }
