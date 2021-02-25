@@ -83,6 +83,20 @@ namespace Impresent.Web.Services
                 .ToList();
         }
 
+        public async Task ValidateList(Guid promoId, Guid dayId, List<Guid> listIds)
+        {
+            var promo = await repository.GetByIdWithDaysAndStudents(promoId);
+            var date = promo.PresenceDays.First(pd => pd.Id == dayId).Date;
+
+            
+            foreach (var student in promo.Students)
+            {
+                student.LastPresence = date;
+            }
+
+            await repository.Update(promo);
+        }
+
 
         public async Task<PromotionFullDto> GetPromotion(Guid promotionId)
         {

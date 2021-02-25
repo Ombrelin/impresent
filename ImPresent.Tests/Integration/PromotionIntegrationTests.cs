@@ -373,12 +373,52 @@ namespace ImPresent.Tests.Integration
 
             // When
             var volunteers = await client.GetAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers");
+
+            // Then
             Assert.True(volunteers.IsSuccessStatusCode);
             var result = await volunteers.Content.ReadAsAsync<VolunteeringsDto>();
             Assert.Single(result.Students);
 
             Assert.Equal(student.Id, result.Students.First().Id);
             Assert.Equal(presenceDay.Id, result.PresenceDay.Id);
+        }
+
+        [Fact]
+        public async Task ValidateList()
+        {
+            // Given
+            var promo = await CreateTestPromotionWithDays();
+            var presenceDay = promo.PresenceDays.First();
+            promo.Students.Add(new Student()
+            {
+                FullName = "Maud GELLEE",
+                LastPresence = DateTime.Today.AddDays(-5)
+            });
+            promo.Students.Add(new Student()
+            {
+                FullName = "Thomas LACAZE",
+                LastPresence = DateTime.Today.AddDays(-4)
+            });
+            db.Promotions.Update(promo);
+            await db.SaveChangesAsync();
+
+            var listIds = promo.Students.Select(s => s.Id).ToList();
+
+            // When
+            var validateList =
+                await client.PostAsJsonAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/validate", listIds);
+
+            // Then
+            Assert.True(validateList.IsSuccessStatusCode);
+            
+            var getPromotion = await client.GetAsync($"api/promotions/{promo.Id}");
+            Assert.True(getPromotion.IsSuccessStatusCode);
+            var result = await getPromotion.Content.ReadAsAsync<PromotionFullDto>();
+            Assert.Equal(3,result.Students.Count);
+            foreach (var student in result.Students)
+            {
+                Assert.Equal(presenceDay.Date, student.LastPresence);
+            }
         }
     }
 }

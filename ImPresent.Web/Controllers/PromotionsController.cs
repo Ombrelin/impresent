@@ -116,5 +116,19 @@ namespace Impresent.Web.Controllers
                 return BadRequest(e.Message);
             }
         }
+        
+        [HttpPost("{promoId:Guid}/days/{dayId:Guid}/validate")]
+        public async Task<IActionResult> ValidateList(Guid promoId, Guid dayId, [FromBody] List<Guid> listIds)
+        {
+            try
+            {
+                await promotionService.ValidateList(promoId, dayId, listIds);
+                return Ok();
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
