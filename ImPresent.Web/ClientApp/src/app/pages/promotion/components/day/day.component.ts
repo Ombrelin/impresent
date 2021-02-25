@@ -7,9 +7,12 @@ import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { invalidPromotionId, State, StateService } from 'src/app/core/services/state/state.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
-import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading-dialog/loading-dialog.component';
-import { DayDto, PromotionDto, VolunteerDto } from 'src/app/shared/models/model';
+import { DayDto, PromotionDto, StudentDto, DayVolunteerDto } from 'src/app/shared/models/model';
 
+interface Volunteer {
+  student: StudentDto;
+  present: boolean;
+}
 
 @Component({
   selector: 'app-day',
@@ -20,14 +23,24 @@ export class DayComponent implements OnInit {
 
   error: string | null = null;
   loaded = false;
-  day: DayDto | undefined;
+  day: DayDto = {
+    id: '',
+    date: ''
+  };
   promotion: PromotionDto  = {
     className: '',
     id: '',
     presenceDays: [],
     students: []
   };
-  volunteers: Array<VolunteerDto> = [];
+  dayVolunteers: DayVolunteerDto = {
+    presenceDay: {
+      id: '',
+      date: ''
+    },
+    students: []
+  }
+  volunteers: Volunteer[] = [];
   private token = '';
 
   constructor(
@@ -65,8 +78,14 @@ export class DayComponent implements OnInit {
     else {
       const statePromotion = await this.stateService.fetch(this.api.getPromotion(promotionId));
       this.managePromotion(statePromotion, dayId);
-      const stateVolunteers = await this.stateService.fetch(this.api.getVolunteers(this.token, promotionId, dayId));
-      this.manageVolunteers(stateVolunteers);
+      if (this.error == null) {
+        const stateVolunteers = await this.stateService.fetch(this.api.getVolunteers(this.token, promotionId, dayId));
+        this.manageVolunteers(stateVolunteers);
+      }
+
+      if (this.error == null) {
+        this.process();
+      }
     }
   }
 
@@ -84,9 +103,12 @@ export class DayComponent implements OnInit {
     }
     else if (state.success && state.data != null) {
       this.promotion = state.data;
-      this.day = this.promotion?.presenceDays.find((val) => val.id === dayId);
-      if (this.day == null) {
+      const day = this.promotion?.presenceDays.find((val) => val.id === dayId);
+      if (day == null) {
         this.error = 'Invalid day';
+      }
+      else {
+        this.day = day;
       }
     }
     else {
@@ -94,7 +116,7 @@ export class DayComponent implements OnInit {
     }
   }
 
-  private manageVolunteers(state: State<Array<VolunteerDto>>): void {
+  private manageVolunteers(state: State<DayVolunteerDto>): void {
     if (state.error != null) {
       this.error = state.error;
     }
@@ -107,7 +129,7 @@ export class DayComponent implements OnInit {
       }
     }
     else if (state.success && state.data != null) {
-      this.volunteers = state.data;
+      this.dayVolunteers = state.data;
     }
     else if (this.error == null) {
       this.error = 'Invalid promotion or day';
@@ -116,7 +138,27 @@ export class DayComponent implements OnInit {
     this.loaded = true;
   }
 
+  private process(): void {
+
+    const volunteers = new Map<string, StudentDto>();
+
+    this.dayVolunteers.students.forEach((volunteer) => {
+      volunteers.set(volunteer.id, volunteer);
+    });
+
+    this.promotion.students.forEach((student) => {
+      this.volunteers.push({
+        student,
+        present: volunteers.has(student.id)
+      })
+    });
+  }
+
   toDate(date: string): Date {
     return new Date(date);
+  }
+
+  export(): void {
+    
   }
 }

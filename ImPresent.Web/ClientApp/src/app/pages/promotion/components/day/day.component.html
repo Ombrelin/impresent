@@ -1,6 +1,9 @@
 <div *ngIf="loaded" class="w-full bg-white p-4 rounded-lg select-none">
   <div *ngIf="error == null" class="w-full md:w-screen max-w-2xl">
-    <h1 class="text-4xl text-green-500 select-text md:text-center">Promotion : {{ promotion.className }}</h1>
+    <div class="flex justify-center">
+      <h1 class="text-3xl text-green-500 md:text-center">Promotion {{ promotion.className }}</h1>
+      <h2 class="ml-2 text-3xl text-green-500 md:text-center">the {{ toDate(day.date) | date:'d MMMM y' }}</h2>
+    </div>
     <h2 *ngIf="volunteers.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4">There is no volunteers for this day</h2>
     <mat-list *ngIf="volunteers.length !== 0" class="list">
       <mat-list-item *ngFor="let volunteer of volunteers" class="mb-2">
@@ -15,11 +18,14 @@
               <p class="font-semibold text-green-400 text-sm">{{ toDate(volunteer.student.lastPresence) | date:'d MMMM y' }}</p>
             </div>
           </div>
-          <!--<mat-icon class="text-white bg-green-500">check</mat-icon>-->
-          <!--<mat-icon class="text-white bg-red-500">close</mat-icon>-->
+          <mat-icon *ngIf="volunteer.present" class="text-white bg-green-500">check</mat-icon>
+          <mat-icon *ngIf="!volunteer.present" class="text-white bg-red-500">close</mat-icon>
         </div>
       </mat-list-item>
     </mat-list>
+    <div class="flex justify-end mt-4">
+      <button (click)="export()" class="bg-blue-500" appButton>Export</button>
+    </div>
   </div>
   <div *ngIf="error != null">
     <h1 class="text-center font-semibold text-4xl p-3 text-red-500">{{ error }}</h1>
