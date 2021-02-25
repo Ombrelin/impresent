@@ -52,9 +52,8 @@ namespace Impresent.Web.Services
             };
 
             promo.Students.Add(student);
-
-            promo = await repository.Update(promo);
-            return MapStudentToDto(student);
+            await repository.Update(promo);
+            return new StudentDto(student);
         }
 
         public async Task<PresenceDayDto> AddPresenceDay(Guid id, CreatePresenceDayDto dto)
@@ -73,17 +72,15 @@ namespace Impresent.Web.Services
             promo.PresenceDays.Add(presenceDay);
             await repository.Update(promo);
 
-            return new PresenceDayDto()
-            {
-                Id = presenceDay.Id,
-                Date = presenceDay.Date
-            };
+            return new PresenceDayDto(presenceDay);
         }
 
         public async Task<List<StudentDto>> GetDesignated(Guid promoId, int number)
         {
             var designated = await repository.GetDesignated(promoId, number);
-            return designated.Select(MapStudentToDto).ToList();
+            return designated
+                .Select(s => new StudentDto(s))
+                .ToList();
         }
 
 
@@ -94,15 +91,12 @@ namespace Impresent.Web.Services
             {
                 Id = promo.Id,
                 ClassName = promo.ClassName,
-                Students = promo.Students.Select(MapStudentToDto).ToList(),
-                PresenceDays = promo.PresenceDays.Select(pd => new PresenceDayDto() {Id = pd.Id, Date = pd.Date})
+                Students = promo.Students.Select(s => new StudentDto(s)).ToList(),
+                PresenceDays = promo.PresenceDays
+                    .Select(pd => new PresenceDayDto(pd))
                     .ToList()
             };
         }
-
-        private static StudentDto MapStudentToDto(Student s) => new StudentDto()
-                {Id = s.Id, FullName = s.FullName, LastPresence = s.LastPresence};
-        
 
 
         private string ValidatePassword(string password)

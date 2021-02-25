@@ -105,7 +105,7 @@ namespace Impresent.Web.Controllers
         }
 
         [HttpGet("{promoId:Guid}/days/{dayId:Guid}/volunteers")]
-        public async Task<ActionResult<List<VolunteeringDto>>> Volunteer(Guid promoId, Guid dayId)
+        public async Task<ActionResult<VolunteeringsDto>> GetVolunteers(Guid promoId, Guid dayId)
         {
             try
             {

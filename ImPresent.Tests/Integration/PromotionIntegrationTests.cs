@@ -355,12 +355,11 @@ namespace ImPresent.Tests.Integration
             // When
             var volunteers = await client.GetAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers");
             Assert.True(volunteers.IsSuccessStatusCode);
-            var result = await volunteers.Content.ReadAsAsync<List<VolunteeringDto>>();
-            Assert.Single(result);
-
-            var resultDto = result.First();
-            Assert.Equal(student.Id, resultDto.Student.Id);
-            Assert.Equal(presenceDay.Id, resultDto.PresenceDay.Id);
+            var result = await volunteers.Content.ReadAsAsync<VolunteeringsDto>();
+            Assert.Single(result.Students);
+            
+            Assert.Equal(student.Id, result.Students.First().Id);
+            Assert.Equal(presenceDay.Id, result.PresenceDay.Id);
         }
     }
 }
