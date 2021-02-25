@@ -39,6 +39,10 @@ export class CreatePromotionDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  close(): void {
+    this.dialog.close(null);
+  }
+
   async create(): Promise<void> {
     if (this.form.valid) {
 
