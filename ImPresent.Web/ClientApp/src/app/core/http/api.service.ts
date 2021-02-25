@@ -16,7 +16,7 @@ import {
 class ApiService extends BaseService {
 
   @POST('/auth')
-  async auth(@Body auth: AuthDto): Promise<ApiResponse<AuthToken>> { return {} as Promise<ApiResponse<AuthToken>>; }
+  auth(@Body auth: AuthDto): ApiResponse<AuthToken> { }
 
   @POST('/promotions')
   addPromotion(@Body promotion: AddPromotionDto): ApiResponse<PromotionDto> { }
