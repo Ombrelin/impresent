@@ -49,17 +49,17 @@ export class HomeComponent extends Page {
   async login(): Promise<void> {
     if (this.form.valid) {
 
-      const state = await this.fetchService.fetch<AuthToken>(this.api.auth({
+      const fetch = await this.fetchService.fetch<AuthToken>(this.api.auth({
         promotionName: this.form.value.name,
         password: this.form.value.password
       }), true);
 
-      if (state.success && state.data != null) {
-        this.storageService.setToken(state.data.token);
-        this.router.navigate(['/promotion', state.data.id]);
+      if (fetch.success && fetch.data != null) {
+        this.storageService.setToken(fetch.data.token);
+        this.router.navigate(['/promotion', fetch.data.id]);
       }
-      else if (state.error != null || state.snackbarError != null) {
-        const error = state.error ?? state.snackbarError;
+      else if (fetch.error != null || fetch.snackbarError != null) {
+        const error = fetch.error ?? fetch.snackbarError;
         if (error != null) {
           this.snackbarService.show(error, {
             duration: 3000
