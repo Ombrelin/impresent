@@ -6,7 +6,7 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
 import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
 import { PromotionDto, DayDto } from 'src/app/shared/models/model';
-import { invalidPromotionId, State, StateService } from 'src/app/core/services/state/state.service';
+import { invalidPromotionId, Fetch, FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { ApiService } from 'src/app/core/http/api.service';
 
 
@@ -31,7 +31,7 @@ export class PromotionComponent implements OnInit {
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly snackbarService: SnackbarService,
-    private readonly stateService: StateService,
+    private readonly stateService: FetchService,
     private readonly api: ApiService
   ) {
     this.route.params.subscribe(async (params) => {
@@ -56,7 +56,7 @@ export class PromotionComponent implements OnInit {
     }
   }
 
-  private managePromotion(state: State<PromotionDto>): void {
+  private managePromotion(state: Fetch<PromotionDto>): void {
     this.loaded = true;
     if (state.error != null) {
       this.error = state.error;

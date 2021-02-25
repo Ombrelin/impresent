@@ -9,7 +9,7 @@ import { CreatePromotionDialogComponent } from 'src/app/pages/home/dialogs/creat
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { Page } from 'src/app/shared/components/page/page';
-import { StateService } from 'src/app/core/services/state/state.service';
+import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { AuthToken } from 'src/app/shared/models/model';
 
 @Component({
@@ -25,7 +25,7 @@ export class HomeComponent extends Page {
     private readonly api: ApiService,
     private readonly snackbarService: SnackbarService,
     private readonly storageService: StorageService,
-    private readonly stateService: StateService,
+    private readonly stateService: FetchService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private fb: FormBuilder,

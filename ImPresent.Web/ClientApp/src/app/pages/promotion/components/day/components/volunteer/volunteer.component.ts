@@ -7,7 +7,7 @@ import { map, startWith } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/http/api.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { State, StateService } from 'src/app/core/services/state/state.service';
+import { Fetch, FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { DayDto, PromotionDto, StudentDto } from 'src/app/shared/models/model';
 
 @Component({
@@ -34,7 +34,7 @@ export class VolunteerComponent implements OnInit {
   constructor(
     private readonly api: ApiService,
     private readonly route: ActivatedRoute,
-    private readonly stateService: StateService,
+    private readonly stateService: FetchService,
     private readonly snackbarService: SnackbarService,
     private readonly dialogService: DialogService,
     private fb: FormBuilder,
@@ -75,7 +75,7 @@ export class VolunteerComponent implements OnInit {
     this.manageData(state, dayId);
   }
 
-  private manageData(state: State<PromotionDto>, dayId: string): void {
+  private manageData(state: Fetch<PromotionDto>, dayId: string): void {
     if (state.error != null || state.snackbarError != null) {
       this.error = state.error;
     }
