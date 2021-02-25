@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Impresent.Web.Model;
-using Impresent.Web.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Impresent.Web.Database
@@ -12,14 +11,15 @@ namespace Impresent.Web.Database
     {
         private readonly DbSet<Promotion> promotionsDb;
         private readonly DbSet<Volunteering> volunteeringsDb;
+        private readonly DbSet<Student> studentsDb;
         private readonly ApplicationDbContext dbContext;
 
         public PromotionRepository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.volunteeringsDb = volunteeringsDb;
             promotionsDb = dbContext.Set<Promotion>();
             volunteeringsDb = dbContext.Set<Volunteering>();
+            studentsDb = this.dbContext.Set<Student>();
         }
 
 
@@ -92,6 +92,10 @@ namespace Impresent.Web.Database
         public async Task<Promotion> Update(Promotion p)
         {
             promotionsDb.Update(p);
+            /*foreach (var student in p.Students)
+            {
+                studentsDb.Update(student);
+            }*/
             await dbContext.SaveChangesAsync();
             return p;
         }
