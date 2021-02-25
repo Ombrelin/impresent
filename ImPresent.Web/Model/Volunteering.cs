@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Impresent.Web.Model.Dtos
+namespace Impresent.Web.Model
 {
     public class Volunteering
     {
