@@ -1,14 +1,21 @@
 <div *ngIf="loaded" class="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 select-none">
-  <div *ngIf="error == null">
-    <h1 class="text-center font-semibold text-5xl p-3 text-green-500">Promotion : {{ promotion?.className }}</h1>
+  <div *ngIf="error == null && success == null">
+    <h1 class="text-center font-semibold text-4xl p-3 text-green-500">Promotion : {{ promotion.className }}</h1>
+    <h1 class="text-center font-semibold text-3xl p-3 text-green-500">Day : {{ toDate(day?.date) | date:'d MMMM y' }}</h1>
     <div class="w-full p-4 flex flex-col" [formGroup]="form">
-      <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" />
-      <mat-datepicker #picker></mat-datepicker>
-      <input (click)="picker.open()" [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" class="mb-6 cursor-pointer" appInput type="text" placeholder="Day" formControlName="day" readonly/>
+      <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
+      <mat-autocomplete (optionSelected)="selectStudent($event.option.value)" #auto="matAutocomplete" [displayWith]="displayStudent">
+        <mat-option *ngFor="let student of filteredStudents | async | slice : 0 : 5" [value]="student">
+          {{ student.fullName }}
+        </mat-option>
+      </mat-autocomplete>
       <button appButton (click)="volunteer()" class="w-full bg-blue-500" [disabled]="!form.valid">Volunteer</button>
     </div>
   </div>
   <div *ngIf="error != null">
     <h1 class="text-center font-semibold text-4xl p-3 text-red-500">{{ error }}</h1>
+  </div>
+  <div *ngIf="success != null">
+    <h1 class="text-center font-semibold text-4xl p-3 text-green-500">{{ success }}</h1>
   </div>
 </div>
