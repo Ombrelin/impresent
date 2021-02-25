@@ -42,7 +42,6 @@ class ApiService extends BaseService {
 
   @POST('/promotions/{promoId}/days/{dayId}/volunteers')
   addVolunteer(
-    @Header('Authorization') authorization: string,
     @Path('promoId') promoId: string,
     @Path('dayId') dayId: string,
     @Body day: AddVolunteerDto
