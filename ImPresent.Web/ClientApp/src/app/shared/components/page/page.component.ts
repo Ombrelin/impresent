@@ -1,11 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-export class Page {
-  loaded = false;
-  error: string | undefined;
-  success: string | undefined;
-}
-
 @Component({
   selector: 'app-page',
   templateUrl: './page.component.html',
