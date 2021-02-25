@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Impresent.Web.Model.Dtos;
+using Impresent.Web.Model;
 
 namespace Impresent.Web.Database
 {

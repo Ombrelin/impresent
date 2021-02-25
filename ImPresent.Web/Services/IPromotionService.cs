@@ -12,6 +12,6 @@ namespace Impresent.Web.Services
         Task<StudentDto> AddStudentToPromotion(Guid promotionId, CreateStudentDto dto);
         Task<PromotionFullDto> GetPromotion(Guid promotionId);
         Task<PresenceDayDto> AddPresenceDay(Guid id, CreatePresenceDayDto dto);
-        Task<List<StudentDto>> GetDesignated(Guid promoId, int number);
+        Task<List<StudentDto>> GetDesignated(Guid promoId, Guid dayId, int number);
     }
 }

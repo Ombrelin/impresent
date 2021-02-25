@@ -178,7 +178,7 @@ namespace ImPresent.Tests.Integration
             Assert.Single(result.Students);
             var student = result.Students.First();
             Assert.Equal("Arsène LAPOSTOLET", student.FullName);
-            Assert.Equal(new DateTime(2020, 2, 18), student.LastPresence);
+            Assert.Equal(DateTime.Today, student.LastPresence);
         }
 
         [Fact]
@@ -240,7 +240,7 @@ namespace ImPresent.Tests.Integration
                 Students = new List<Student>
                 {
                     new Student()
-                        {FullName = "Arsène LAPOSTOLET", LastPresence = new DateTime(2020, 2, 18)}
+                        {FullName = "Arsène LAPOSTOLET", LastPresence = DateTime.Today}
                 }
             };
             await db.Promotions.AddAsync(promo);
@@ -280,7 +280,7 @@ namespace ImPresent.Tests.Integration
 
             var student = result.Students.First();
             Assert.Equal("Arsène LAPOSTOLET", student.FullName);
-            Assert.Equal(new DateTime(2020, 2, 18), student.LastPresence);
+            Assert.Equal(DateTime.Today, student.LastPresence);
 
             var day = result.PresenceDays.First();
             Assert.Equal(DateTime.Today.AddDays(3), day.Date);
@@ -319,26 +319,45 @@ namespace ImPresent.Tests.Integration
         public async Task GetDesignated()
         {
             // Given
-            var promo = await CreateTestPromotion();
+            var promo = await CreateTestPromotionWithDays();
             promo.Students.Add(new Student()
             {
                 FullName = "Jean Michel REMEUR",
-                LastPresence = new DateTime(2021, 2, 24)
+                LastPresence = DateTime.Today.AddDays(-3)
+            });
+            var student = new Student()
+            {
+                FullName = "Maud GELLEE",
+                LastPresence = DateTime.Today.AddDays(-5)
+            };
+            promo.Students.Add(student);
+            promo.Students.Add(new Student()
+            {
+                FullName = "Thomas LACAZE",
+                LastPresence = DateTime.Today.AddDays(-4)
             });
             db.Promotions.Update(promo);
+            await db.SaveChangesAsync();
+
+            var presenceDay = promo.PresenceDays.First();
+            await db.Volunteerings.AddAsync(new Volunteering()
+            {
+                Student = student,
+                PresenceDay = presenceDay
+            });
             await db.SaveChangesAsync();
 
             // When
 
             var designated = await client
-                .GetAsync($"api/promotions/{promo.Id}/designated?number=1");
+                .GetAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/designated?number=1");
 
             // Then
             Assert.True(designated.IsSuccessStatusCode);
             var result = await designated.Content.ReadAsAsync<List<StudentDto>>();
             Assert.Single(result);
-            
-            Assert.Equal("Arsène LAPOSTOLET", result.First().FullName);
+
+            Assert.Equal("Thomas LACAZE", result.First().FullName);
         }
 
         [Fact]
@@ -357,7 +376,7 @@ namespace ImPresent.Tests.Integration
             Assert.True(volunteers.IsSuccessStatusCode);
             var result = await volunteers.Content.ReadAsAsync<VolunteeringsDto>();
             Assert.Single(result.Students);
-            
+
             Assert.Equal(student.Id, result.Students.First().Id);
             Assert.Equal(presenceDay.Id, result.PresenceDay.Id);
         }

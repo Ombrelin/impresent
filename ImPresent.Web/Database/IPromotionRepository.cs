@@ -15,6 +15,6 @@ namespace Impresent.Web.Database
         Task<Promotion> GetById(Guid promotionId);
         Task<Promotion> Update(Promotion p);
         Task<Promotion> GetByName(string name);
-        Task<List<Student>> GetDesignated(Guid promoId, int number);
+        Task<List<Student>> GetDesignated(Guid promoId, Guid dayId, int number);
     }
 }
