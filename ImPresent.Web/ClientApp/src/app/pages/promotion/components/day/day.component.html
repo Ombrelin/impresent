@@ -1,8 +1,8 @@
 <div *ngIf="loaded" class="w-full bg-white p-4 rounded-lg select-none">
   <div *ngIf="error == null" class="w-72 md:w-screen max-w-2xl">
     <div class="flex flex-col justify-center items-center">
-      <h1 class="text-3xl text-green-500 md:text-center">Promotion {{ promotion.className }}</h1>
-      <h2 class="ml-2 text-2xl text-green-500 md:text-center">{{ toDate(day.date) | date:'d MMMM y' }}</h2>
+      <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
+      <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'d MMMM y' }}</h2>
     </div>
     <h2 *ngIf="volunteers.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4">There is no volunteers for this day</h2>
     <mat-list *ngIf="volunteers.length !== 0" class="list">
@@ -29,7 +29,7 @@
       <button (click)="export()" class="bg-blue-500" appButton>Export</button>
     </div>
   </div>
-  <div *ngIf="error != null">
+  <div *ngIf="error != null" class="w-72">
     <h1 class="text-center font-semibold text-4xl p-3 text-red-500">{{ error }}</h1>
   </div>
 </div>

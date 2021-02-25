@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService } from 'src/app/core/http/api.service';
@@ -23,10 +22,7 @@ export class DayComponent implements OnInit {
 
   error: string | null = null;
   loaded = false;
-  day: DayDto = {
-    id: '',
-    date: ''
-  };
+  day: DayDto | undefined;
   promotion: PromotionDto  = {
     className: '',
     id: '',
@@ -154,8 +150,8 @@ export class DayComponent implements OnInit {
     });
   }
 
-  toDate(date: string): Date {
-    return new Date(date);
+  toDate(date: string | undefined): Date {
+    return date ? new Date(date) : new Date();
   }
 
   export(): void {
