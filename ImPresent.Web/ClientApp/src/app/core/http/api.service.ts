@@ -54,6 +54,13 @@ class ApiService extends BaseService {
     @Path('promoId') promoId: string,
     @Path('dayId') dayId: string,
   ): ApiResponse<Array<VolunteerDto>> { }
+
+  @GET('/promotions/{promoId}/days/{dayId}/designated')
+  getDesignated(
+    @Header('Authorization') authorization: string,
+    @Path('promoId') promoId: string,
+    @Path('dayId') dayId: string,
+  ): ApiResponse<Array<VolunteerDto>> { }
 }
 
 function createApiService(): ApiService {
