@@ -48,7 +48,7 @@ export class StateService {
         snackbarError = 'Expired token';
       }
       else {
-        error = `${res.status} : ${res.data}`;
+        error = `${res.data}`;
       }
     }
     catch (e) {
