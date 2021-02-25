@@ -16,7 +16,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule,
     NgParticlesModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
 })
 export class HomeModule { }
