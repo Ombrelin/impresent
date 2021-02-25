@@ -8,7 +8,9 @@ import {
   PromotionDto,
   StudentDto,
   AddDayDto,
-  DayDto
+  DayDto,
+  AddVolunteerDto,
+  DayVolunteerDto
 } from 'src/app/shared/models/model';
 
 class ApiService extends BaseService {
@@ -37,6 +39,27 @@ class ApiService extends BaseService {
     @Path('id') id: string,
     @Body day: AddDayDto
   ): ApiResponse<DayDto> { }
+
+  @POST('/promotions/{promoId}/days/{dayId}/volunteers')
+  addVolunteer(
+    @Path('promoId') promoId: string,
+    @Path('dayId') dayId: string,
+    @Body day: AddVolunteerDto
+  ): ApiResponse<StudentDto> { }
+
+  @GET('/promotions/{promoId}/days/{dayId}/volunteers')
+  getVolunteers(
+    @Header('Authorization') authorization: string,
+    @Path('promoId') promoId: string,
+    @Path('dayId') dayId: string,
+  ): ApiResponse<DayVolunteerDto> { }
+
+  @GET('/promotions/{promoId}/days/{dayId}/designated')
+  getDesignated(
+    @Header('Authorization') authorization: string,
+    @Path('promoId') promoId: string,
+    @Path('dayId') dayId: string,
+  ): ApiResponse<Array<StudentDto>> { }
 }
 
 function createApiService(): ApiService {

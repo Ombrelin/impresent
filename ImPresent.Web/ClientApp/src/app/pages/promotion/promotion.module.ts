@@ -8,14 +8,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PromotionComponent } from './promotion.component';
 import { CreatePromotionDialogComponent } from '../home/dialogs/create-promotion-dialog/create-promotion-dialog.component';
 import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
-import { VolunteerComponent } from './volunteer/volunteer.component';
+import { VolunteerComponent } from './components/day/components/volunteer/volunteer.component';
 import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
-import { DayComponent } from './day/day.component';
+import { DayComponent } from './components/day/day.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { DayComponent } from './day/day.component';
     MatIconModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatSelectModule
   ],
 })
 export class PromotionModule { }

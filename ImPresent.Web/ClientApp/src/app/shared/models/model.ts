@@ -1,19 +1,24 @@
-import { DayDto } from './day-dto';
 import { AddDayDto } from './add-day-dto';
+import { AddPromotionDto } from './add-promotion-dto';
+import { AddStudentDto } from './add-student-dto';
+import { AddVolunteerDto } from './add-volunteer-dto';
+import { AuthDto } from './auth-dto';
+import { AuthToken } from './auth-token';
+import { DayDto } from './day-dto';
+import { DayVolunteerDto } from './day-volunteer-dto';
 import { PromotionDto } from './promotion';
 import { StudentDto } from './students';
-import { AddStudentDto } from './add-student-dto';
-import { AddPromotionDto } from './add-promotion-dto';
-import { AuthToken } from './auth-token';
-import { AuthDto } from './auth-dto';
 
 export {
-  AuthDto,
-  AuthToken,
+  AddDayDto,
   AddPromotionDto,
   AddStudentDto,
-  StudentDto,
+  AddVolunteerDto,
+  AuthDto,
+  AuthToken,
+  DayDto,
   PromotionDto,
-  AddDayDto,
-  DayDto
+  StudentDto,
+  DayVolunteerDto
 };
+
