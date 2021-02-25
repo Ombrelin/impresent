@@ -6,7 +6,7 @@ import { PromotionDto } from 'src/app/shared/models/model';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading-dialog/loading-dialog.component';
 
-export interface State<T> {
+export interface Fetch<T> {
   data?: T;
   status?: number;
   snackbarError?: string;
@@ -14,7 +14,7 @@ export interface State<T> {
   success: boolean;
 }
 
-export const invalidPromotionId: State<PromotionDto> = {
+export const invalidPromotionId: Fetch<PromotionDto> = {
   snackbarError: 'Invalid promotion id',
   success: false
 };
@@ -22,13 +22,13 @@ export const invalidPromotionId: State<PromotionDto> = {
 @Injectable({
   providedIn: 'root'
 })
-export class StateService {
+export class FetchService {
 
   constructor(
     private readonly dialogService: DialogService,
   ) { }
 
-  async fetch<T>(promise: ApiResponse<T>, loading = false): Promise<State<T>> {
+  async fetch<T>(promise: ApiResponse<T>, loading = false): Promise<Fetch<T>> {
     let loadingDialog: MatDialogRef<LoadingDialogComponent> | null = null;
     if (loading) {
       loadingDialog = this.dialogService.showLoading();
