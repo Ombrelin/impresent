@@ -7,7 +7,7 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="flex justify-between w-full mb-2">
-    <button appButton mat-dialog-close class="bg-red-500">Cancel</button>
+    <button appButton (click)="close()" class="bg-red-500">Cancel</button>
     <button appButton (click)="create()" class="bg-blue-500" [disabled]="!form.valid">Create</button>
   </div>
 </mat-dialog-actions>
