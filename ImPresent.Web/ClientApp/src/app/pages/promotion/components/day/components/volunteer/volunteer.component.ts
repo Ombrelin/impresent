@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { UniversalValidators } from 'ngx-validators';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/core/http/api.service';
-import { invalidPromotionId, State, StateService } from 'src/app/core/services/state/state.service';
-import { DayDto, PromotionDto } from 'src/app/shared/models/model';
+import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { State, StateService } from 'src/app/core/services/state/state.service';
+import { DayDto, PromotionDto, StudentDto } from 'src/app/shared/models/model';
 
 @Component({
   selector: 'app-volunteer',
@@ -15,30 +18,47 @@ import { DayDto, PromotionDto } from 'src/app/shared/models/model';
 export class VolunteerComponent implements OnInit {
 
   form: FormGroup;
-
   loaded = false;
   error: string | undefined;
-  promotion: PromotionDto | undefined;
+  success: string | undefined;
+  promotion: PromotionDto  = {
+    className: '',
+    id: '',
+    presenceDays: [],
+    students: []
+  };
   day: DayDto | undefined;
+  filteredStudents: Observable<StudentDto[]> | undefined;
+  selectedStudent: StudentDto | undefined;
 
   constructor(
     private readonly api: ApiService,
     private readonly route: ActivatedRoute,
     private readonly stateService: StateService,
+    private readonly snackbarService: SnackbarService,
+    private readonly dialogService: DialogService,
     private fb: FormBuilder,
   ) {
     this.form = this.fb.group({
       student: ['', [
-        UniversalValidators.noEmptyString,
-        Validators.required
-      ]],
-      day: ['', [
         Validators.required
       ]]
     });
+
+    const input = this.form.get('student');
+
+    if (input != null) {
+      this.filteredStudents = input.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value.name),
+          map(name => name ? this._filter(name) : this.promotion.students.slice())
+        );
+    }
   }
 
   ngOnInit(): void {
+
     this.route.params.subscribe(async (params) => {
       if (params.promotionId != null && params.dayId != null) {
         this.setData(params.promotionId, params.dayId, true);
@@ -59,7 +79,7 @@ export class VolunteerComponent implements OnInit {
     if (state.error != null || state.snackbarError != null) {
       this.error = state.error;
     }
-    else if (state.success) {
+    else if (state.success && state.data != null) {
       this.promotion = state.data;
       this.day = this.promotion?.presenceDays.find((val) => val.id === dayId);
       if (this.day == null) {
@@ -73,14 +93,63 @@ export class VolunteerComponent implements OnInit {
     this.loaded = true;
   }
 
-  dateFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    return day !== 0 && day !== 6;
+  private _filter(input: string): StudentDto[] {
+    return this.promotion.students.filter(el => el.fullName.startsWith(input));
   }
 
-  volunteer(): void {
+  displayStudent(student: StudentDto): string {
+    return student?.fullName ?? '';
+  }
+
+  toDate(date: string | undefined): Date {
+    return date ? new Date(date) : new Date();
+  }
+
+  selectStudent(student: StudentDto): void {
+    console.log(student);
+    this.selectedStudent = student;
+  }
+
+  async volunteer(): Promise<void> {
     if (this.form.valid) {
-      //todo: use api
+      if (this.selectedStudent != null) {
+        await this.addVolunteer(this.selectedStudent.id);
+      }
+      else {
+        this.snackbarService.show('Student is not selected', {
+          duration: 3000
+        });
+      }
+    }
+  }
+
+  private async addVolunteer(studentId: string): Promise<void> {
+    if (this.day != null) {
+      const loading = this.dialogService.showLoading();
+      let error: string | undefined;
+      try {
+        const res = await this.api.addVolunteer(this.promotion.id, this.day.id, {
+          studentId: studentId
+        });
+
+        if (res.status === 200) {
+          this.success = 'You are a volunteer for this date';
+        }
+        else {
+          error = `${res.status} : ${res.data}`;
+        }
+      }
+      catch(e) {
+        error = 'Request timeout';
+      }
+
+      loading.close();
+
+      if (error != null) {
+        this.snackbarService.show(error, {
+          duration: 3000
+        })
+      }
     }
   }
 }
