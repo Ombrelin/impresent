@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UniversalValidators } from 'ngx-validators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,13 +9,14 @@ import { CreatePromotionDialogComponent } from 'src/app/pages/home/dialogs/creat
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
+import { Page, PageComponent } from 'src/app/shared/components/page/page.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends Page {
 
   form: FormGroup;
 
@@ -28,6 +29,10 @@ export class HomeComponent implements OnInit {
     private readonly dialog: MatDialog,
     private fb: FormBuilder,
   ) {
+    super();
+
+    this.loaded = true;
+
     this.form = this.fb.group({
       name: ['', [
         UniversalValidators.noEmptyString,
@@ -38,9 +43,6 @@ export class HomeComponent implements OnInit {
         Validators.required
       ]]
     });
-  }
-
-  ngOnInit(): void {
   }
 
   async login(): Promise<void> {
