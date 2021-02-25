@@ -1,7 +1,9 @@
-<div *ngIf="loaded" class="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 select-none">
+<div *ngIf="loaded" class="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 select-none max-w-2xl">
   <div *ngIf="error == null && success == null">
-    <h1 class="text-center font-semibold text-4xl p-3 text-green-500">Promotion : {{ promotion.className }}</h1>
-    <h1 class="text-center font-semibold text-3xl p-3 text-green-500">Day : {{ toDate(day?.date) | date:'d MMMM y' }}</h1>
+    <div class="flex flex-col justify-center items-center">
+      <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
+      <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'d MMMM y' }}</h2>
+    </div>
     <div class="w-full p-4 flex flex-col" [formGroup]="form">
       <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
       <mat-autocomplete (optionSelected)="selectStudent($event.option.value)" #auto="matAutocomplete" [displayWith]="displayStudent">
@@ -12,10 +14,10 @@
       <button appButton (click)="volunteer()" class="w-full bg-blue-500" [disabled]="!form.valid">Volunteer</button>
     </div>
   </div>
-  <div *ngIf="error != null">
+  <div *ngIf="error != null" class="w-72 md:w-full">
     <h1 class="text-center font-semibold text-4xl p-3 text-red-500">{{ error }}</h1>
   </div>
-  <div *ngIf="success != null">
+  <div *ngIf="success != null" class="w-72 md:w-full">
     <h1 class="text-center font-semibold text-4xl p-3 text-green-500">{{ success }}</h1>
   </div>
 </div>
