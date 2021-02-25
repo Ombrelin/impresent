@@ -108,7 +108,6 @@ export class DayComponent implements OnInit {
     }
     else if (state.success && state.data != null) {
       this.volunteers = state.data;
-      console.log(this.volunteers);
     }
     else if (this.error == null) {
       this.error = 'Invalid promotion or day';
