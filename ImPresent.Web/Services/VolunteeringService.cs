@@ -40,9 +40,10 @@ namespace Impresent.Web.Services
         public async Task<VolunteeringsDto> GetsVolunteers(Guid promoId, Guid dayId)
         {
             var volunteerings = await this.volunteeringRepository.GetFromPromoAndDay(promoId, dayId);
+            var promo = await promotionRepository.GetByIdWithDays(promoId);
             return new VolunteeringsDto()
             {
-                PresenceDay = new PresenceDayDto(volunteerings.First().PresenceDay),
+                PresenceDay = new PresenceDayDto(promo.PresenceDays.First(d => d.Id == dayId)),
                 Students = volunteerings.Select(v => new StudentDto(v.Student)).ToList()
             };
         }
