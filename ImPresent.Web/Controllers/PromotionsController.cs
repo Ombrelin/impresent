@@ -104,6 +104,7 @@ namespace Impresent.Web.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{promoId:Guid}/days/{dayId:Guid}/volunteers")]
         public async Task<ActionResult<VolunteeringsDto>> GetVolunteers(Guid promoId, Guid dayId)
         {
@@ -117,6 +118,7 @@ namespace Impresent.Web.Controllers
             }
         }
         
+        [Authorize]
         [HttpPost("{promoId:Guid}/days/{dayId:Guid}/validate")]
         public async Task<IActionResult> ValidateList(Guid promoId, Guid dayId, [FromBody] List<Guid> listIds)
         {
