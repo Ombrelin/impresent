@@ -45,7 +45,7 @@ export class DayComponent extends DayPage implements OnInit {
 
     this.route.params.subscribe(async (params) => {
       if (params.promotionId != null && params.dayId != null) {
-        await this.setDay(params.promotionId, params.dayId);
+        await this.setDay(params.promotionId, params.dayId, true, true);
         if (this.promotion != null && this.dayVolunteers != null) {
           this.process();
           this.loaded = true;

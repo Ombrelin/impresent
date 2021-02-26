@@ -1,44 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/core/http/api.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { Fetch, FetchService } from 'src/app/core/services/fetch/fetch.service';
-import { DayDto, PromotionDto, StudentDto } from 'src/app/shared/models/model';
+import { FetchService } from 'src/app/core/services/fetch/fetch.service';
+import { StudentDto } from 'src/app/shared/models/model';
+import { DayPage } from 'src/app/pages/promotion/components/day/day-page';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 
 @Component({
   selector: 'app-volunteer',
   templateUrl: './volunteer.component.html',
   styleUrls: ['./volunteer.component.scss']
 })
-export class VolunteerComponent implements OnInit {
+export class VolunteerComponent extends DayPage implements OnInit {
 
   form: FormGroup;
-  loaded = false;
-  error: string | undefined;
-  success: string | undefined;
-  promotion: PromotionDto  = {
-    className: '',
-    id: '',
-    presenceDays: [],
-    students: []
-  };
-  day: DayDto | undefined;
   filteredStudents: Observable<StudentDto[]> | undefined;
   selectedStudent: StudentDto | undefined;
 
   constructor(
-    private readonly api: ApiService,
-    private readonly route: ActivatedRoute,
-    private readonly stateService: FetchService,
-    private readonly snackbarService: SnackbarService,
+    api: ApiService,
+    fetchService: FetchService,
+    snackbarService: SnackbarService,
+    router: Router,
+    storageService: StorageService,
     private readonly dialogService: DialogService,
+    private readonly route: ActivatedRoute,
     private fb: FormBuilder,
   ) {
+    super(
+      snackbarService,
+      fetchService,
+      api,
+      router,
+      storageService,
+      false
+    );
+
     this.form = this.fb.group({
       student: ['', [
         Validators.required
@@ -61,36 +64,10 @@ export class VolunteerComponent implements OnInit {
 
     this.route.params.subscribe(async (params) => {
       if (params.promotionId != null && params.dayId != null) {
-        this.setData(params.promotionId, params.dayId, true);
-      }
-      else {
+        await this.setDay(params.promotionId, params.dayId, false, true);
         this.loaded = true;
-        this.error = 'Missing promotion or day id';
       }
     });
-  }
-
-  private async setData(promotionId: string, dayId: string, loading = false): Promise<void> {
-    const state = await this.stateService.fetch(this.api.getPromotion(promotionId), loading);
-    this.manageData(state, dayId);
-  }
-
-  private manageData(state: Fetch<PromotionDto>, dayId: string): void {
-    if (state.error != null || state.snackbarError != null) {
-      this.error = state.error;
-    }
-    else if (state.success && state.data != null) {
-      this.promotion = state.data;
-      this.day = this.promotion?.presenceDays.find((val) => val.id === dayId);
-      if (this.day == null) {
-        this.error = 'Invalid day';
-      }
-    }
-    else {
-      this.error = 'Invalid promotion';
-    }
-
-    this.loaded = true;
   }
 
   private _filter(input: string): StudentDto[] {
@@ -110,25 +87,24 @@ export class VolunteerComponent implements OnInit {
   }
 
   async volunteer(): Promise<void> {
-    if (this.form.valid) {
-      if (this.selectedStudent != null) {
-        await this.addVolunteer(this.selectedStudent.id);
-      }
-      else {
-        this.snackbarService.show('Student is not selected', {
-          duration: 3000
-        });
-      }
+    if (this.form.valid && this.selectedStudent != null) {
+      await this.addVolunteer(this.selectedStudent.id);
+    }
+    else {
+      this.snackbarService.show('There is no student selected', {
+        duration: 3000
+      });
     }
   }
 
   private async addVolunteer(studentId: string): Promise<void> {
+    console.log(this.day);
     if (this.day != null) {
       const loading = this.dialogService.showLoading();
       let error: string | undefined;
       try {
         const res = await this.api.addVolunteer(this.promotion.id, this.day.id, {
-          studentId: studentId
+          studentId
         });
 
         if (res.status === 200) {
@@ -138,7 +114,7 @@ export class VolunteerComponent implements OnInit {
           error = `${res.status} : ${res.data}`;
         }
       }
-      catch(e) {
+      catch (e) {
         error = 'Request timeout';
       }
 
@@ -147,7 +123,7 @@ export class VolunteerComponent implements OnInit {
       if (error != null) {
         this.snackbarService.show(error, {
           duration: 3000
-        })
+        });
       }
     }
   }
