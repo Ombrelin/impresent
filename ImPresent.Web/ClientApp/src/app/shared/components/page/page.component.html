@@ -1,5 +1,5 @@
 <div *ngIf="loaded" class="w-full bg-white p-4 rounded-lg select-none max-w-xs md:max-w-2xl break-words overflow-y-auto" style="max-height: 80vh;">
-  <div *ngIf="error == null && success == null" class="w-full">
+  <div *ngIf="error == null && success == null" class="block w-72 md:w-screen md:max-w-screen-sm">
     <ng-content></ng-content>
   </div>
   <div *ngIf="error != null">
