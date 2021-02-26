@@ -60,6 +60,13 @@ class ApiService extends BaseService {
     @Path('promoId') promoId: string,
     @Path('dayId') dayId: string,
   ): ApiResponse<Array<StudentDto>> { }
+
+  @POST('/promotions/{promoId}/days/{dayId}/validate')
+  validate(
+    @Header('Authorization') authorization: string,
+    @Path('promoId') promoId: string,
+    @Path('dayId') dayId: string,
+  ): ApiResponse { }
 }
 
 function createApiService(): ApiService {
