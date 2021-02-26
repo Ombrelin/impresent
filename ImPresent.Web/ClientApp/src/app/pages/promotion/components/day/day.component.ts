@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 import { ApiService } from 'src/app/core/http/api.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
@@ -23,6 +24,7 @@ export class DayComponent extends DayPage implements OnInit {
   volunteers: Volunteer[] = [];
 
   constructor(
+    private readonly clipboard: Clipboard,
     private readonly route: ActivatedRoute,
     router: Router,
     storageService: StorageService,
@@ -79,6 +81,14 @@ export class DayComponent extends DayPage implements OnInit {
 
   toDate(date: string | undefined): Date {
     return date ? new Date(date) : new Date();
+  }
+
+  share(): void {
+    this.clipboard.copy(`${window.location.href}/volunteer`);
+    this.snackbarService.show('Url copied');
+  }
+
+  save(): void {
   }
 
   export(): void {

@@ -24,8 +24,11 @@
       </div>
     </mat-list-item>
   </mat-list>
-  <div class="flex justify-end mt-4">
-    <button (click)="export()" class="bg-blue-500 mr-2" appButton>Save</button>
-    <button (click)="export()" class="bg-blue-500" appButton>Export</button>
+  <div class="flex justify-between mt-4">
+    <button (click)="share()" class="bg-blue-500" appButton>Share</button>
+    <div class="flex justify-end">
+      <button (click)="save()" class="bg-blue-500 mr-2" appButton>Save</button>
+      <button (click)="export()" class="bg-blue-500" appButton>Export</button>
+    </div>
   </div>
 </app-page>
