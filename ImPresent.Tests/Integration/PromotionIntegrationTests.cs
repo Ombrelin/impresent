@@ -370,6 +370,9 @@ namespace ImPresent.Tests.Integration
             var volunteering = new Volunteering() {Student = student, PresenceDay = presenceDay};
             await db.Volunteerings.AddAsync(volunteering);
             await db.SaveChangesAsync();
+            
+            var login = await Login(promo.ClassName, "TestTest1");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",login);
 
             // When
             var volunteers = await client.GetAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers");
@@ -383,6 +386,14 @@ namespace ImPresent.Tests.Integration
             Assert.Equal(presenceDay.Id, result.PresenceDay.Id);
         }
 
+        private async Task<string> Login(string name, string password)
+        {
+            var loginDto = new AuthDto() {PromotionName = name, Password = password};
+            var login = await client.PostAsJsonAsync("api/auth", loginDto);
+            var tokenDto = await login.Content.ReadAsAsync<TokenDto>();
+            return tokenDto.Token;
+        }
+        
         [Fact]
         public async Task ValidateList()
         {
@@ -403,7 +414,9 @@ namespace ImPresent.Tests.Integration
             await db.SaveChangesAsync();
 
             var listIds = promo.Students.Select(s => s.Id).ToList();
-
+            var login = await Login(promo.ClassName, "TestTest1");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",login);
+            
             // When
             var validateList =
                 await client.PostAsJsonAsync($"api/promotions/{promo.Id}/days/{presenceDay.Id}/validate", listIds);
