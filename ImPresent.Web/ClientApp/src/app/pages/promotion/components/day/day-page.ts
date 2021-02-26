@@ -25,12 +25,14 @@ export class DayPage extends PromotionPage {
     api: ApiService,
     router: Router,
     protected readonly storageService: StorageService,
+    isUnauthorized = false,
   ) {
     super(
       snackbarService,
       fetchService,
       api,
-      router
+      router,
+      isUnauthorized
     );
 
     const token = this.storageService.getToken();
@@ -39,10 +41,18 @@ export class DayPage extends PromotionPage {
     }
   }
 
-  protected async setDay(promotionId: string, dayId: string, loading = false): Promise<void> {
+  protected async setDay(promotionId: string, dayId: string, getVolunteers = false, loading = false): Promise<void> {
     await this.setPromotion(promotionId, loading);
 
-    if (this.error == null && this.token != null) {
+    const day = this.promotion.presenceDays.find((el) => el.id === dayId);
+    if (day != null) {
+      this.day = day;
+    }
+    else {
+      this.error = 'Invalid day';
+    }
+
+    if (getVolunteers && this.error == null && this.token != null) {
       const stateVolunteers = await this.fetchService.fetch(this.api.getVolunteers(this.token, promotionId, dayId), loading);
       this.manageVolunteers(stateVolunteers);
     }

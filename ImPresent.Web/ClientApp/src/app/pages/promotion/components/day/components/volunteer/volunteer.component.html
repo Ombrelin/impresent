@@ -1,23 +1,15 @@
-<div *ngIf="loaded" class="flex flex-col items-center bg-white rounded-lg shadow-lg p-4 select-none max-w-2xl">
-  <div *ngIf="error == null && success == null">
-    <div class="flex flex-col justify-center items-center">
-      <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
-      <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'d MMMM y' }}</h2>
-    </div>
-    <div class="w-full p-4 flex flex-col" [formGroup]="form">
-      <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
-      <mat-autocomplete (optionSelected)="selectStudent($event.option.value)" #auto="matAutocomplete" [displayWith]="displayStudent">
-        <mat-option *ngFor="let student of filteredStudents | async | slice : 0 : 5" [value]="student">
-          {{ student.fullName }}
-        </mat-option>
-      </mat-autocomplete>
-      <button appButton (click)="volunteer()" class="w-full bg-blue-500" [disabled]="!form.valid">Volunteer</button>
-    </div>
+<app-page [loaded]="loaded" [error]="error" [success]="success" class="block w-80">
+  <div class="flex flex-col justify-center items-center">
+    <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
+    <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'d MMMM y' }}</h2>
   </div>
-  <div *ngIf="error != null" class="w-72 md:w-full">
-    <h1 class="text-center font-semibold text-4xl p-3 text-red-500">{{ error }}</h1>
+  <div class="w-full p-4 flex flex-col" [formGroup]="form">
+    <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
+    <mat-autocomplete (optionSelected)="selectStudent($event.option.value)" #auto="matAutocomplete" [displayWith]="displayStudent">
+      <mat-option *ngFor="let student of filteredStudents | async | slice : 0 : 5" [value]="student">
+        {{ student.fullName }}
+      </mat-option>
+    </mat-autocomplete>
+    <button appButton (click)="volunteer()" class="w-full bg-blue-500" [disabled]="!form.valid">Volunteer</button>
   </div>
-  <div *ngIf="success != null" class="w-72 md:w-full">
-    <h1 class="text-center font-semibold text-4xl p-3 text-green-500">{{ success }}</h1>
-  </div>
-</div>
+</app-page>
