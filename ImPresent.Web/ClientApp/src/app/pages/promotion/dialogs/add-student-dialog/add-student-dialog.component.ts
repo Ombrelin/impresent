@@ -6,6 +6,7 @@ import { UniversalValidators } from 'ngx-validators';
 
 import { ApiService } from 'src/app/core/http/api.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { AddStudentDto } from 'src/app/shared/models/model';
@@ -26,9 +27,10 @@ export class AddStudentDialogComponent implements OnInit {
     private readonly api: ApiService,
     private readonly snackbarService: SnackbarService,
     private readonly dialogService: DialogService,
-    @Inject(MAT_DIALOG_DATA) private readonly data: string,
+    @Inject(MAT_DIALOG_DATA) private readonly promotionId: string,
     private readonly dialog: MatDialogRef<AddStudentDialogComponent>,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly fetchService: FetchService
   ) {
     this.form = this.fb.group({
       name: ['', [
@@ -48,38 +50,28 @@ export class AddStudentDialogComponent implements OnInit {
 
   async add(): Promise<void>{
     if (this.form.valid) {
-      const loadingDialog = this.dialogService.showLoading();
-      const data: AddStudentDto = {
+      const fetch = await this.fetchService.fetch(this.api.addStudent(this.token, this.promotionId, {
         fullName: this.form.value.name,
         lastPresence: new Date().toISOString()
-      };
-      let error: string | null = null;
+      }), true);
 
-      try {
-        const res = await this.api.addStudent(this.token, this.data, data);
+      let error: string | undefined;
 
-        if (res.status === 200) {
-          this.dialog.close(res.data);
-        }
-        else if (res.status === 401) {
-          error = 'Expired token';
-          this.router.navigate(['']);
-        }
-        else {
-          error = `${res.status} : ${res.data}`;
-        }
+      if (!fetch.success) {
+        error = fetch.error ?? fetch.snackbarError;
       }
-      catch (e) {
-        error = 'Request timeout';
+      else if (fetch.status === 401) {
+        error = 'Expired token';
+        this.router.navigate(['']);
       }
 
-      loadingDialog.close();
-
-      if (error != null) {
-        this.snackbarService.show(error, {
-          duration: 3000
-        });
+      if (error == null) {
+        this.dialog.close(fetch.data);
       }
+
+      this.snackbarService.show(error ?? 'Student successfully added', {
+        duration: 3000
+      });
     }
   }
 }
