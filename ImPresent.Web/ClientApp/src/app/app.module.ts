@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgParticlesModule } from 'ng-particles';
@@ -29,7 +29,12 @@ axios.defaults.validateStatus = () => {
     HomeModule,
     PromotionModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: navigator.language
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
