@@ -4,7 +4,7 @@
   <mat-list *ngIf="promotion.presenceDays.length !== 0" class="list mt-2">
     <mat-list-item *ngFor="let day of promotion.presenceDays" class="mb-2">
       <div class="w-full flex justify-center">
-        <button (click)="openDay(day)" appButton class="bg-green-500 mr-2">{{ toDate(day.date) | date:'d MMMM y' }}</button>
+        <button (click)="openDay(day)" appButton class="bg-green-500 mr-2">{{ toDate(day.date) | date:'EEEE d MMMM y' }}</button>
       </div>
     </mat-list-item>
   </mat-list>

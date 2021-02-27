@@ -1,7 +1,7 @@
 <app-page [loaded]="loaded" [error]="error" [success]="success" class="block w-72 md:w-screen md:max-w-screen-sm">
   <div class="flex flex-col justify-center items-center">
     <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
-    <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'d MMMM y' }}</h2>
+    <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'EEEE d MMMM y' }}</h2>
   </div>
   <h2 *ngIf="volunteers.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4">There is no volunteers for this day</h2>
   <mat-list *ngIf="volunteers.length !== 0" class="list">
@@ -14,7 +14,7 @@
           </div>
           <div class="flex items-center">
             <mat-icon class="mr-1 text-blue-400">date_range</mat-icon>
-            <p class="font-semibold text-green-400 text-sm">{{ toDate(volunteer.student.lastPresence) | date:'d MMMM y' }}</p>
+            <p class="font-semibold text-green-400 text-sm">{{ toDate(volunteer.student.lastPresence) | date:'EEEE d MMMM y' }}</p>
           </div>
         </div>
         <div class="mr-2">
