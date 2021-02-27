@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { ApiService } from 'src/app/core/http/api.service';
 import { FetchService } from 'src/app/core/services/fetch/fetch.service';
@@ -25,7 +26,8 @@ export class AddDayDialogComponent implements OnInit {
     private readonly snackbarService: SnackbarService,
     @Inject(MAT_DIALOG_DATA) private readonly promotionId: string,
     private readonly dialog: MatDialogRef<AddDayDialogComponent>,
-    private readonly fetchService: FetchService
+    private readonly fetchService: FetchService,
+    private readonly router: Router
   ) {
     this.form = this.fb.group({
       day: ['', [
@@ -52,6 +54,10 @@ export class AddDayDialogComponent implements OnInit {
 
       if (!fetch.success) {
         error = fetch.error ?? fetch.snackbarError;
+      }
+      else if (fetch.status === 401) {
+        error = 'Expired token';
+        this.router.navigate(['']);
       }
 
       if (error == null) {
