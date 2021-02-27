@@ -45,14 +45,14 @@ export class FetchService {
         data = res.data;
       }
       else if (res.status === 401) {
-        snackbarError = 'Expired token';
+        snackbarError = $localize`Expired token`;
       }
       else {
         error = `${res.data}`;
       }
     }
     catch (e) {
-      snackbarError = 'Request timeout';
+      snackbarError = $localize`Request timeout`;
     }
 
     if (loadingDialog != null) {

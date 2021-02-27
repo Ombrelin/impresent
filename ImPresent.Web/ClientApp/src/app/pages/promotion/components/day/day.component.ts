@@ -84,28 +84,26 @@ export class DayComponent extends DayPage implements OnInit {
 
   share(): void {
     this.clipboard.copy(`${window.location.href}/volunteer`);
-    this.snackbarService.show('Url copied');
+    this.snackbarService.show($localize`Url copied`);
   }
 
   async save(): Promise<void> {
 
     let error: string | undefined;
-    try {
-      const res = await this.api.validate(this.token, this.promotion.id, this.day?.id);
+    const fetch = await this.fetchService.fetch(
+      this.api.validate(this.token, this.promotion.id, this.day?.id),
+      true
+    );
 
-      if (res.status === 200) {}
-      else if (res.status === 401) {
-        error = 'Expired token';
-      }
-      else {
-        error = `${res.data}`;
-      }
+    if (!fetch.success) {
+      error = fetch.error ?? fetch.snackbarError;
     }
-    catch (e) {
-      error = 'Request timeout';
+    else if (fetch.status === 401) {
+      error = $localize`Expired token`;
+      this.router.navigate(['']);
     }
 
-    const msg = error ?? 'Successfully saved';
+    const msg = error ?? $localize`Successfully saved`;
 
     this.snackbarService.show(msg, {
       duration: 3000

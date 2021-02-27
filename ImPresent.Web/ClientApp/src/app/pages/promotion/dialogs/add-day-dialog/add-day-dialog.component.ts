@@ -56,7 +56,7 @@ export class AddDayDialogComponent implements OnInit {
         error = fetch.error ?? fetch.snackbarError;
       }
       else if (fetch.status === 401) {
-        error = 'Expired token';
+        error = $localize`Expired token`;
         this.router.navigate(['']);
       }
 
@@ -64,7 +64,7 @@ export class AddDayDialogComponent implements OnInit {
         this.dialog.close(fetch.data);
       }
 
-      this.snackbarService.show(error ?? 'Day successfully added', {
+      this.snackbarService.show(error ?? $localize`Day successfully added`, {
         duration: 3000
       });
     }

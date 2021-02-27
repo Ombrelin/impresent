@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="3633072185998631215" datatype="html">
+        <source>Expired token</source>
+        <target>Jeton expiré</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/fetch/fetch.service.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/components/volunteer/volunteer.component.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day.component.ts</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-day-dialog/add-day-dialog.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-student-dialog/add-student-dialog.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="441281672780182235" datatype="html">
+        <source>Request timeout</source>
+        <target>Requête expirée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/fetch/fetch.service.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4869352450681402767" datatype="html">
+        <source>Create a new promotion</source>
+        <target>Créer une nouvelle promotion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8953033926734869941" datatype="html">
+        <source>Name</source>
+        <target>Nom</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/home.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-student-dialog/add-student-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1431416938026210429" datatype="html">
+        <source>Password</source>
+        <target>Mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/home.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2159130950882492111" datatype="html">
+        <source>Cancel</source>
+        <target>Annuler</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-day-dialog/add-day-dialog.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-student-dialog/add-student-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5674286808255988565" datatype="html">
+        <source>Create</source>
+        <target>Créer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/home.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2454050363478003966" datatype="html">
+        <source>Login</source>
+        <target>Connexion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/home.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="117244989251186923" datatype="html">
+        <source>Student name</source>
+        <target>Nom de l'élève</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/components/volunteer/volunteer.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4262855819860120197" datatype="html">
+        <source>Volunteer</source>
+        <target>Volontaire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/components/volunteer/volunteer.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7862964662598450310" datatype="html">
+        <source>There is no student selected</source>
+        <target>Il n'y a aucun élève de sélectionné</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/components/volunteer/volunteer.component.ts</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1473206664423964370" datatype="html">
+        <source>You are a volunteer for this date</source>
+        <target>Vous êtes un volontaire pour cette date</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/components/volunteer/volunteer.component.ts</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2431108069221729385" datatype="html">
+        <source>Invalid day</source>
+        <target>Jour invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day-page.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="260830922171478516" datatype="html">
+        <source>Invalid promotion or day</source>
+        <target>Promotion ou jour invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day-page.ts</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7301212399583774360" datatype="html">
+        <source>There is no volunteers for this day</source>
+        <target>Il n'y a pas de volontaires pour cette date</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7419704019640008953" datatype="html">
+        <source>Share</source>
+        <target>Partager</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3768927257183755959" datatype="html">
+        <source>Save</source>
+        <target>Sauvegarder</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7462301153729425254" datatype="html">
+        <source>Export</source>
+        <target>Exporter</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="787515936716120848" datatype="html">
+        <source>Url copied</source>
+        <target>Url copiée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day.component.ts</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7854114855772201323" datatype="html">
+        <source>Successfully saved</source>
+        <target>Sauvegarde réussie</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/components/day/day.component.ts</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8711670173097417023" datatype="html">
+        <source>Add a day</source>
+        <target>Ajouter un jour</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-day-dialog/add-day-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1286983255645370171" datatype="html">
+        <source>Day</source>
+        <target>Jour</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-day-dialog/add-day-dialog.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3249513483374643425" datatype="html">
+        <source>Add</source>
+        <target>Ajouter</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-day-dialog/add-day-dialog.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-student-dialog/add-student-dialog.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8111318936798828091" datatype="html">
+        <source>Day successfully added</source>
+        <target>Jour ajouté avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-day-dialog/add-day-dialog.component.ts</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4454446661515849392" datatype="html">
+        <source>Add a student</source>
+        <target>Ajouter un élève</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-student-dialog/add-student-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5208728132850297214" datatype="html">
+        <source>Student successfully added</source>
+        <target>Élève ajouté avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/dialogs/add-student-dialog/add-student-dialog.component.ts</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1981479625381752345" datatype="html">
+        <source>Invalid promotion</source>
+        <target>Promotion invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/promotion-page.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5470830539742989233" datatype="html">
+        <source>There is no day in this promotion</source>
+        <target>Il n'y a aucun jour pour cette promotion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/promotion.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5941953510453043193" datatype="html">
+        <source>Add day</source>
+        <target>Ajouter un jour</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/promotion.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4562121420302634497" datatype="html">
+        <source>Add student</source>
+        <target>Ajouter un élève</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/promotion.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
