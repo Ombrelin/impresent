@@ -22,6 +22,7 @@ interface Volunteer {
 export class DayComponent extends DayPage implements OnInit {
 
   volunteers: Volunteer[] = [];
+  volunteersStudent = new Map<string, StudentDto>();
 
   constructor(
     private readonly clipboard: Clipboard,
@@ -65,16 +66,14 @@ export class DayComponent extends DayPage implements OnInit {
 
   private process(): void {
 
-    const volunteers = new Map<string, StudentDto>();
-
     this.dayVolunteers.students.forEach((volunteer) => {
-      volunteers.set(volunteer.id, volunteer);
+      this.volunteersStudent.set(volunteer.id, volunteer);
     });
 
     this.promotion.students.forEach((student) => {
       this.volunteers.push({
         student,
-        present: volunteers.has(student.id)
+        present: this.volunteersStudent.has(student.id)
       });
     });
   }
@@ -92,5 +91,21 @@ export class DayComponent extends DayPage implements OnInit {
   }
 
   export(): void {
+    const csv = ['Name'];
+    this.volunteersStudent.forEach((volunteer) => {
+      csv.push(volunteer.fullName);
+    });
+
+    const data = csv.join('\r\n');
+
+    const a = document.createElement('a');
+    const blob = new Blob([data], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+
+    a.href = url;
+    a.download = `volunteers-${this.day?.date}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
   }
 }
