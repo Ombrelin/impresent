@@ -9,7 +9,6 @@ import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
-import { AddStudentDto } from 'src/app/shared/models/model';
 
 @Component({
   selector: 'app-add-student-dialog',
@@ -61,7 +60,7 @@ export class AddStudentDialogComponent implements OnInit {
         error = fetch.error ?? fetch.snackbarError;
       }
       else if (fetch.status === 401) {
-        error = 'Expired token';
+        error = $localize`Expired token`;
         this.router.navigate(['']);
       }
 
@@ -69,7 +68,7 @@ export class AddStudentDialogComponent implements OnInit {
         this.dialog.close(fetch.data);
       }
 
-      this.snackbarService.show(error ?? 'Student successfully added', {
+      this.snackbarService.show(error ?? $localize`Student successfully added`, {
         duration: 3000
       });
     }

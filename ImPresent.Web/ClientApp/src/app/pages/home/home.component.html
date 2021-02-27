@@ -2,9 +2,9 @@
   <img src="assets/logo.png">
   <h1 class="text-center font-semibold text-4xl md:text-5xl p-3 text-green-500">I'm present !</h1>
   <div class="w-72 md:w-full p-4 flex flex-col" [formGroup]="form">
-    <input class="mb-4"appInput type="text" placeholder="Name" formControlName="name"/>
-    <input class="mb-6" appInput type="password" placeholder="Password" formControlName="password"/>
-    <button appButton (click)="login()" class="w-full bg-blue-500" [disabled]="!form.valid">Login</button>
-    <button appButton (click)="create()" class="w-full bg-green-500 mt-4">Create</button>
+    <input class="mb-4"appInput type="text" i18n-placeholder placeholder="Name" formControlName="name"/>
+    <input class="mb-6" appInput type="password" i18n-placeholder placeholder="Password" formControlName="password"/>
+    <button appButton (click)="login()" class="w-full bg-blue-500" [disabled]="!form.valid" i18n>Login</button>
+    <button appButton (click)="create()" class="w-full bg-green-500 mt-4" i18n>Create</button>
   </div>
 </app-page>

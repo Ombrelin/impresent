@@ -1,6 +1,6 @@
 <app-page [loaded]="loaded" [error]="error" [success]="success">
   <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
-  <h2 *ngIf="promotion.presenceDays.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4">There is no day in this promotion</h2>
+  <h2 *ngIf="promotion.presenceDays.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4" i18n>There is no day in this promotion</h2>
   <mat-list *ngIf="promotion.presenceDays.length !== 0" class="list mt-2">
     <mat-list-item *ngFor="let day of promotion.presenceDays" class="mb-2">
       <div class="w-full flex justify-center">
@@ -9,7 +9,7 @@
     </mat-list-item>
   </mat-list>
   <div class="flex justify-center md:justify-end mt-4">
-    <button (click)="addDay()" class="bg-blue-500 mr-2" appButton>Add day</button>
-    <button (click)="addStudent()" class="bg-blue-500" appButton>Add student</button>
+    <button (click)="addDay()" class="bg-blue-500 mr-2" appButton i18n>Add day</button>
+    <button (click)="addStudent()" class="bg-blue-500" appButton i18n>Add student</button>
   </div>
 </app-page>

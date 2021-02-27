@@ -1,12 +1,12 @@
 <mat-dialog-content class="flex flex-col justify-center items-center select-none">
-  <h1 class="text-green-500 text-3xl text-center font-semibold">Add a student</h1>
+  <h1 class="text-green-500 text-3xl text-center font-semibold" i18n>Add a student</h1>
   <div class="w-64 pt-5" [formGroup]="form">
-    <input class="w-full mb-4" appInput type="text" placeholder="Name" formControlName="name"/>
+    <input class="w-full mb-4" appInput type="text" i18n-placeholder placeholder="Name" formControlName="name"/>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="flex justify-between w-full mb-2">
-    <button appButton mat-dialog-close class="bg-red-500">Cancel</button>
-    <button appButton (click)="add()" class="bg-blue-500" [disabled]="!form.valid">Add</button>
+    <button appButton mat-dialog-close class="bg-red-500" i18n>Cancel</button>
+    <button appButton (click)="add()" class="bg-blue-500" [disabled]="!form.valid" i18n>Add</button>
   </div>
 </mat-dialog-actions>

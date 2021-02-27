@@ -5,12 +5,12 @@
     <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'EEEE d MMMM y' }}</h2>
   </div>
   <div class="w-full p-4 flex flex-col" [formGroup]="form">
-    <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
+    <input class="mb-4" appInput type="text" i18n-placeholder placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
     <mat-autocomplete (optionSelected)="selectStudent($event.option.value)" #auto="matAutocomplete" [displayWith]="displayStudent">
       <mat-option *ngFor="let student of filteredStudents | async | slice : 0 : 5" [value]="student">
         {{ student.fullName }}
       </mat-option>
     </mat-autocomplete>
-    <button appButton (click)="volunteer()" class="w-full bg-blue-500" [disabled]="!form.valid">Volunteer</button>
+    <button appButton (click)="volunteer()" class="w-full bg-blue-500" [disabled]="!form.valid" i18n>Volunteer</button>
   </div>
 </app-page>

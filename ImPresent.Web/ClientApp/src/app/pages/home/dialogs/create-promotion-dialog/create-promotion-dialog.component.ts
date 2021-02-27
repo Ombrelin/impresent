@@ -4,10 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { UniversalValidators } from 'ngx-validators';
 
 import { ApiService } from 'src/app/core/http/api.service';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { AddPromotionDto } from 'src/app/shared/models/model';
 
 @Component({
   selector: 'app-create-promotion-dialog',

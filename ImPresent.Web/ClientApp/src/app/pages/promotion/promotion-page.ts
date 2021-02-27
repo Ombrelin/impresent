@@ -50,7 +50,7 @@ export class PromotionPage extends Page {
       this.promotion = fetch.data;
     }
     else {
-      this.error = 'Invalid promotion';
+      this.error = $localize`Invalid promotion`;
     }
   }
 }

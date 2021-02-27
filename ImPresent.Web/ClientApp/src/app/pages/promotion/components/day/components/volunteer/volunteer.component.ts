@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/core/http/api.service';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { StudentDto } from 'src/app/shared/models/model';
@@ -29,7 +28,6 @@ export class VolunteerComponent extends DayPage implements OnInit {
     snackbarService: SnackbarService,
     router: Router,
     storageService: StorageService,
-    private readonly dialogService: DialogService,
     private readonly route: ActivatedRoute,
     private fb: FormBuilder,
   ) {
@@ -94,32 +92,31 @@ export class VolunteerComponent extends DayPage implements OnInit {
       await this.addVolunteer(this.selectedStudent.id);
     }
     else {
-      this.snackbarService.show('There is no student selected', {
+      this.snackbarService.show($localize`There is no student selected`, {
         duration: 3000
       });
     }
   }
 
   private async addVolunteer(studentId: string): Promise<void> {
-    const loading = this.dialogService.showLoading();
     let error: string | undefined;
-    try {
-      const res = await this.api.addVolunteer(this.promotion.id, this.day.id, {
+    const fetch = await this.fetchService.fetch(
+      this.api.addVolunteer(this.promotion.id, this.day.id, {
         studentId
-      });
+      }),
+      true
+    );
 
-      if (res.status === 200) {
-        this.success = 'You are a volunteer for this date';
-      }
-      else {
-        error = `${res.data}`;
-      }
+    if (fetch.success) {
+      this.success = $localize`You are a volunteer for this date`;
     }
-    catch (e) {
-      error = 'Request timeout';
+    else if (fetch.status === 401) {
+      error = $localize`Expired token`;
+      this.router.navigate(['']);
     }
-
-    loading.close();
+    else {
+      error = fetch.error ?? fetch.snackbarError;
+    }
 
     if (error != null) {
       this.snackbarService.show(error, {

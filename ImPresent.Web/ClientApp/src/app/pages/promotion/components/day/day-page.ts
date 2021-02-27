@@ -52,7 +52,7 @@ export class DayPage extends PromotionPage {
       this.day = day;
     }
     else {
-      this.error = 'Invalid day';
+      this.error = $localize`Invalid day`;
     }
 
     if (getVolunteers && this.error == null && this.token != null) {
@@ -77,7 +77,7 @@ export class DayPage extends PromotionPage {
       this.dayVolunteers = state.data;
     }
     else if (this.error == null) {
-      this.error = 'Invalid promotion or day';
+      this.error = $localize`Invalid promotion or day`;
     }
   }
 }
