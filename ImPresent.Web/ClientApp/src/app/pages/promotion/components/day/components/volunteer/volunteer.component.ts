@@ -112,7 +112,7 @@ export class VolunteerComponent extends DayPage implements OnInit {
         this.success = 'You are a volunteer for this date';
       }
       else {
-        error = `${res.status} : ${res.data}`;
+        error = `${res.data}`;
       }
     }
     catch (e) {
