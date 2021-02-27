@@ -20,7 +20,7 @@
       "sourceRoot": "src",
       "prefix": "app",
       "i18n": {
-        "sourceLocale": "en-US",
+        "sourceLocale": "en",
         "locales": {
           "fr": "src/locale/messages.fr.xlf"
         }
@@ -53,6 +53,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "baseHref": "",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -73,8 +74,13 @@
                 }
               ]
             },
+            "en": {
+              "localize": ["en"],
+              "baseHref": "en"
+            },
             "fr": {
-              "localize": ["fr"]
+              "localize": ["fr"],
+              "baseHref": "fr"
             }
           }
         },
