@@ -101,32 +101,30 @@ export class VolunteerComponent extends DayPage implements OnInit {
   }
 
   private async addVolunteer(studentId: string): Promise<void> {
-    if (this.day != null) {
-      const loading = this.dialogService.showLoading();
-      let error: string | undefined;
-      try {
-        const res = await this.api.addVolunteer(this.promotion.id, this.day.id, {
-          studentId
-        });
+    const loading = this.dialogService.showLoading();
+    let error: string | undefined;
+    try {
+      const res = await this.api.addVolunteer(this.promotion.id, this.day.id, {
+        studentId
+      });
 
-        if (res.status === 200) {
-          this.success = 'You are a volunteer for this date';
-        }
-        else {
-          error = `${res.status} : ${res.data}`;
-        }
+      if (res.status === 200) {
+        this.success = 'You are a volunteer for this date';
       }
-      catch (e) {
-        error = 'Request timeout';
+      else {
+        error = `${res.status} : ${res.data}`;
       }
+    }
+    catch (e) {
+      error = 'Request timeout';
+    }
 
-      loading.close();
+    loading.close();
 
-      if (error != null) {
-        this.snackbarService.show(error, {
-          duration: 3000
-        });
-      }
+    if (error != null) {
+      this.snackbarService.show(error, {
+        duration: 3000
+      });
     }
   }
 }

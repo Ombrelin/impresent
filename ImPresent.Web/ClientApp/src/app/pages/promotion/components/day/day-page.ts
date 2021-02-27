@@ -9,8 +9,11 @@ import { DayDto, DayVolunteerDto } from 'src/app/shared/models/model';
 
 export class DayPage extends PromotionPage {
 
-  token: string | undefined;
-  day: DayDto | undefined;
+  token = '';
+  day: DayDto = {
+    id: '',
+    date: ''
+  };
   dayVolunteers: DayVolunteerDto = {
     presenceDay: {
       id: '',
