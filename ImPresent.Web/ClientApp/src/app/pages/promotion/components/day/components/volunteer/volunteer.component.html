@@ -2,7 +2,7 @@
   <img src="assets/logo.png" class="mb-2">
   <div class="flex flex-col justify-center items-center">
     <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
-    <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'d MMMM y' }}</h2>
+    <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'EEEE d MMMM y' }}</h2>
   </div>
   <div class="w-full p-4 flex flex-col" [formGroup]="form">
     <input class="mb-4" appInput type="text" placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
