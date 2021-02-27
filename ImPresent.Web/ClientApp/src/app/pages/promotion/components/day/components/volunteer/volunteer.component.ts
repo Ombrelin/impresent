@@ -47,17 +47,6 @@ export class VolunteerComponent extends DayPage implements OnInit {
         Validators.required
       ]]
     });
-
-    const input = this.form.get('student');
-
-    if (input != null) {
-      this.filteredStudents = input.valueChanges
-        .pipe(
-          startWith(''),
-          map(value => typeof value === 'string' ? value : value.name),
-          map(name => name ? this._filter(name) : this.promotion.students.slice())
-        );
-    }
   }
 
   ngOnInit(): void {
@@ -65,12 +54,26 @@ export class VolunteerComponent extends DayPage implements OnInit {
     this.route.params.subscribe(async (params) => {
       if (params.promotionId != null && params.dayId != null) {
         await this.setDay(params.promotionId, params.dayId, false, true);
+        this.setupStudents();
         this.loaded = true;
       }
     });
   }
 
-  private _filter(input: string): StudentDto[] {
+  private setupStudents(): void {
+    const input = this.form.get('student');
+
+    if (input != null) {
+      this.filteredStudents = input.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value.name),
+          map(name => name ? this.filter(name) : this.promotion.students.slice())
+        );
+    }
+  }
+
+  private filter(input: string): StudentDto[] {
     return this.promotion.students.filter(el => el.fullName.startsWith(input));
   }
 
@@ -98,7 +101,6 @@ export class VolunteerComponent extends DayPage implements OnInit {
   }
 
   private async addVolunteer(studentId: string): Promise<void> {
-    console.log(this.day);
     if (this.day != null) {
       const loading = this.dialogService.showLoading();
       let error: string | undefined;
