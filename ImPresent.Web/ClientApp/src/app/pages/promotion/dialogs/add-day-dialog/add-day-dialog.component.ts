@@ -1,13 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UniversalValidators } from 'ngx-validators';
 
 import { ApiService } from 'src/app/core/http/api.service';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
-import { AddDayDto } from 'src/app/shared/models/model';
 
 @Component({
   selector: 'app-add-day-dialog',
@@ -25,9 +23,9 @@ export class AddDayDialogComponent implements OnInit {
     private readonly storageService: StorageService,
     private readonly api: ApiService,
     private readonly snackbarService: SnackbarService,
-    private readonly dialogService: DialogService,
-    @Inject(MAT_DIALOG_DATA) private readonly data: string,
-    private readonly dialog: MatDialogRef<AddDayDialogComponent>
+    @Inject(MAT_DIALOG_DATA) private readonly promotionId: string,
+    private readonly dialog: MatDialogRef<AddDayDialogComponent>,
+    private readonly fetchService: FetchService
   ) {
     this.form = this.fb.group({
       day: ['', [
@@ -46,36 +44,23 @@ export class AddDayDialogComponent implements OnInit {
 
   async add(): Promise<void>{
     if (this.form.valid) {
-      const loadingDialog = this.dialogService.showLoading();
-      const data: AddDayDto = {
+      const fetch = await this.fetchService.fetch(this.api.addDay(this.token, this.promotionId, {
         date: this.form.value.day.toISOString(),
-      };
-      let error: string | null = null;
+      }), true);
 
-      try {
-        const res = await this.api.addDay(this.token, this.data, data);
+      let error: string | undefined;
 
-        if (res.status === 200) {
-          this.dialog.close(res.data);
-        }
-        else if (res.status === 401) {
-          error = 'Expired token';
-        }
-        else {
-          error = `${res.status} : ${res.data}`;
-        }
-      }
-      catch (e) {
-        error = 'Request timeout';
+      if (!fetch.success) {
+        error = fetch.error ?? fetch.snackbarError;
       }
 
-      loadingDialog.close();
-
-      if (error != null) {
-        this.snackbarService.show(error, {
-          duration: 3000
-        });
+      if (error == null) {
+        this.dialog.close(fetch.data);
       }
+
+      this.snackbarService.show(error ?? 'Day successfully added', {
+        duration: 3000
+      });
     }
   }
 }
