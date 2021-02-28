@@ -115,6 +115,10 @@ namespace Impresent.Web
                 ;
             
             services.AddControllersWithViews();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist/ImPresent.Web";
+            });
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ApplicationDbContext db)
@@ -142,49 +146,22 @@ namespace Impresent.Web
                 options.RoutePrefix = "docs";
             });
             
-            app.Map("/fr", appFr =>
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.Map("/fr", client =>
             {
-                StaticFileOptions options = new StaticFileOptions
+                client.UseSpa(spa =>
                 {
-                    FileProvider = new PhysicalFileProvider(
-                        Path.Combine(env.ContentRootPath, "ClientApp/dist/ImPresent.Web/fr"))
-                };
-
-
-                appFr.UseSpaStaticFiles(options);
-                appFr.UseSpa(spa =>
-                {
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                    }
-                    else
-                    {
-                        spa.Options.DefaultPageStaticFileOptions = options; // THIS IS IMPORTANT LINE
-                    }
+                    spa.Options.DefaultPage = "/fr/index.html";
                 });
             });
             
-            app.Map("/en", appFr =>
+            app.Map("/en", client =>
             {
-                StaticFileOptions options = new StaticFileOptions
+                client.UseSpa(spa =>
                 {
-                    FileProvider = new PhysicalFileProvider(
-                        Path.Combine(env.ContentRootPath, "ClientApp/dist/ImPresent.Web/en"))
-                };
-
-
-                appFr.UseSpaStaticFiles(options);
-                appFr.UseSpa(spa =>
-                {
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                    }
-                    else
-                    {
-                        spa.Options.DefaultPageStaticFileOptions = options; // THIS IS IMPORTANT LINE
-                    }
+                    spa.Options.DefaultPage = "/en/index.html";
                 });
             });
 
