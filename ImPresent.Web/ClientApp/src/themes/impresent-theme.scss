@@ -1,0 +1,21 @@
+@import '~@angular/material/theming';
+
+@import '~src/themes/palette.scss';
+@import '~src/themes/mixins/snackbar-mixin.scss';
+
+@include mat-core();
+
+$primary: mat-palette($blue);
+$accent: mat-palette($green);
+$warn: mat-palette($mat-red);
+
+$theme: mat-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  )
+));
+
+@include angular-material-theme($theme);
+@include snack-bar-theme($theme);

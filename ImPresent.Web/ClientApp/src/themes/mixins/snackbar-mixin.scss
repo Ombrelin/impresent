@@ -1,0 +1,6 @@
+@mixin snack-bar-theme($config-or-theme) {
+  .mat-snack-bar-container {
+    color: black;
+    background: white;
+  }
+}
