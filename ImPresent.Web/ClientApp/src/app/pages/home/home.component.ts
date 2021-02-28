@@ -59,7 +59,10 @@ export class HomeComponent extends Page {
         this.router.navigate(['/promotion', fetch.data.id]);
       }
       else if (fetch.error != null || fetch.snackbarError != null) {
-        const error = fetch.error ?? fetch.snackbarError;
+        let error = fetch.error ?? fetch.snackbarError;
+        if (fetch.status === 401) {
+          error = $localize`Invalid promotion or password`;
+        }
         if (error != null) {
           this.snackbarService.show(error, {
             duration: 3000
