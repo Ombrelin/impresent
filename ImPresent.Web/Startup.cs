@@ -8,11 +8,10 @@ using Impresent.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -116,7 +115,6 @@ namespace Impresent.Web
                 ;
             
             services.AddControllersWithViews();
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist/ImPresent.Web"; });
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ApplicationDbContext db)
@@ -144,11 +142,51 @@ namespace Impresent.Web
                 options.RoutePrefix = "docs";
             });
             
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
+            app.Map("/fr", appFr =>
             {
-                app.UseSpaStaticFiles();
-            }
+                StaticFileOptions options = new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(
+                        Path.Combine(env.ContentRootPath, "ClientApp/dist/ImPresent.Web/fr"))
+                };
+
+
+                appFr.UseSpaStaticFiles(options);
+                appFr.UseSpa(spa =>
+                {
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    }
+                    else
+                    {
+                        spa.Options.DefaultPageStaticFileOptions = options; // THIS IS IMPORTANT LINE
+                    }
+                });
+            });
+            
+            app.Map("/en", appFr =>
+            {
+                StaticFileOptions options = new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(
+                        Path.Combine(env.ContentRootPath, "ClientApp/dist/ImPresent.Web/en"))
+                };
+
+
+                appFr.UseSpaStaticFiles(options);
+                appFr.UseSpa(spa =>
+                {
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    }
+                    else
+                    {
+                        spa.Options.DefaultPageStaticFileOptions = options; // THIS IS IMPORTANT LINE
+                    }
+                });
+            });
 
             app.UseRouting();
 
@@ -163,19 +201,14 @@ namespace Impresent.Web
             
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/", async context =>
+                {
+                    context.Response.Redirect("/fr");
+                });
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-            });
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
             });
         }
         
