@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="93611374827498730" datatype="html">
+        <source>Promotion not found</source>
+        <target>Promotion ou jour introuvable</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/fetch/fetch.service.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/promotion-page.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/promotion/promotion-page.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="3633072185998631215" datatype="html">
         <source>Expired token</source>
         <target>Jeton expiré</target>
@@ -138,17 +154,17 @@
           <context context-type="linenumber">111</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2431108069221729385" datatype="html">
-        <source>Invalid day</source>
-        <target>Jour invalide</target>
+      <trans-unit id="5926529998228728248" datatype="html">
+        <source>Day not found</source>
+        <target>Jour introuvable</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/promotion/components/day/day-page.ts</context>
           <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="260830922171478516" datatype="html">
-        <source>Invalid promotion or day</source>
-        <target>Promotion ou jour invalide</target>
+      <trans-unit id="5850216047756498512" datatype="html">
+        <source>Promotion or day not found</source>
+        <target>Promotion ou jour introuvable</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/promotion/components/day/day-page.ts</context>
           <context context-type="linenumber">80</context>
@@ -254,17 +270,9 @@
           <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1981479625381752345" datatype="html">
-        <source>Invalid promotion</source>
-        <target>Promotion invalide</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/pages/promotion/promotion-page.ts</context>
-          <context context-type="linenumber">53</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="5470830539742989233" datatype="html">
         <source>There is no day in this promotion</source>
-        <target>Il n'y a aucun jour pour cette promotion</target>
+        <target>Il n'y a aucun jour dans cette promotion</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/promotion/promotion.component.html</context>
           <context context-type="linenumber">3</context>

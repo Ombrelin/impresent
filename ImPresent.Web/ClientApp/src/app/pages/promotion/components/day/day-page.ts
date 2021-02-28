@@ -47,37 +47,39 @@ export class DayPage extends PromotionPage {
   protected async setDay(promotionId: string, dayId: string, getVolunteers = false, loading = false): Promise<void> {
     await this.setPromotion(promotionId, loading);
 
-    const day = this.promotion.presenceDays.find((el) => el.id === dayId);
-    if (day != null) {
-      this.day = day;
-    }
-    else {
-      this.error = $localize`Invalid day`;
+    if (this.error == null) {
+      const day = this.promotion.presenceDays.find((el) => el.id === dayId);
+      if (day != null) {
+        this.day = day;
+      }
+      else {
+        this.error = $localize`Day not found`;
+      }
     }
 
     if (getVolunteers && this.error == null && this.token != null) {
-      const stateVolunteers = await this.fetchService.fetch(this.api.getVolunteers(this.token, promotionId, dayId), loading);
-      this.manageVolunteers(stateVolunteers);
+      const fetch = await this.fetchService.fetch(this.api.getVolunteers(this.token, promotionId, dayId), loading);
+      this.manageVolunteers(fetch);
     }
   }
 
-  private manageVolunteers(state: Fetch<DayVolunteerDto>): void {
-    if (state.error != null) {
-      this.error = state.error;
+  private manageVolunteers(fetch: Fetch<DayVolunteerDto>): void {
+    if (fetch.error != null) {
+      this.error = fetch.error;
     }
-    else if (state.snackbarError != null) {
-      this.snackbarService.show(state.snackbarError, {
+    else if (fetch.snackbarError != null) {
+      this.snackbarService.show(fetch.snackbarError, {
         duration: 3000
       });
-      if (state.status === 401) {
+      if (fetch.status === 401) {
         this.router.navigate(['']);
       }
     }
-    else if (state.success && state.data != null) {
-      this.dayVolunteers = state.data;
+    else if (fetch.success && fetch.data != null) {
+      this.dayVolunteers = fetch.data;
     }
     else if (this.error == null) {
-      this.error = $localize`Invalid promotion or day`;
+      this.error = $localize`Promotion or day not found`;
     }
   }
 }
