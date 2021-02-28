@@ -49,6 +49,7 @@ export class FetchService {
       }
       else {
         error = `${res.data}`;
+        error = error.length > 0 ? error : undefined;
       }
     }
     catch (e) {

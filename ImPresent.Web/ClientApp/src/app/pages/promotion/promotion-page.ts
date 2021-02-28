@@ -45,9 +45,6 @@ export class PromotionPage extends Page {
       if (this.isUnauthorized && fetch.status === 401) {
         this.router.navigate(['']);
       }
-      else if (fetch.status === 404) {
-        this.error = $localize`Promotion not found`;
-      }
     }
     else if (fetch.success && fetch.data != null) {
       this.promotion = fetch.data;

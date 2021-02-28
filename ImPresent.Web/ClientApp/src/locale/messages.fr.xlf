@@ -4,18 +4,14 @@
     <body>
       <trans-unit id="93611374827498730" datatype="html">
         <source>Promotion not found</source>
-        <target>Promotion ou jour introuvable</target>
+        <target>Promotion introuvable</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/services/fetch/fetch.service.ts</context>
           <context context-type="linenumber">18</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/promotion/promotion-page.ts</context>
-          <context context-type="linenumber">49</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/pages/promotion/promotion-page.ts</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3633072185998631215" datatype="html">
@@ -47,7 +43,7 @@
         <target>Requête expirée</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/services/fetch/fetch.service.ts</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4869352450681402767" datatype="html">
@@ -120,6 +116,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/home/home.component.html</context>
           <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7621472730564889333" datatype="html">
+        <source>Invalid promotion or password</source>
+        <target>Promotion ou mot de passe invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/home/home.component.ts</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="117244989251186923" datatype="html">
@@ -292,6 +296,22 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/promotion/promotion.component.html</context>
           <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1519954996184640001" datatype="html">
+        <source>Error</source>
+        <target>Erreur</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/page/page.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4648900870671159218" datatype="html">
+        <source>Success</source>
+        <target>Succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/page/page.component.html</context>
+          <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
     </body>
