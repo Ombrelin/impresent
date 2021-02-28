@@ -8,6 +8,7 @@ using Impresent.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -149,21 +150,32 @@ namespace Impresent.Web
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.Map("/fr", client =>
+            if (env.IsDevelopment())
             {
-                client.UseSpa(spa =>
+                app.UseSpa(spa =>
                 {
-                    spa.Options.DefaultPage = "/fr/index.html";
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.UseAngularCliServer(npmScript: "start");
                 });
-            });
+            }
+            else
+            {
+                app.Map("/fr", client =>
+                {
+                    client.UseSpa(spa =>
+                    {
+                        spa.Options.DefaultPage = "/fr/index.html";
+                    });
+                });
             
-            app.Map("/en", client =>
-            {
-                client.UseSpa(spa =>
+                app.Map("/en", client =>
                 {
-                    spa.Options.DefaultPage = "/en/index.html";
+                    client.UseSpa(spa =>
+                    {
+                        spa.Options.DefaultPage = "/en/index.html";
+                    });
                 });
-            });
+            }
 
             app.UseRouting();
 
