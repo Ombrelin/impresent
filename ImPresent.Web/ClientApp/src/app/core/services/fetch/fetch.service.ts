@@ -15,7 +15,7 @@ export interface Fetch<T> {
 }
 
 export const invalidPromotionId: Fetch<PromotionDto> = {
-  snackbarError: 'Invalid promotion id',
+  snackbarError: $localize`Promotion not found`,
   success: false
 };
 
