@@ -19,12 +19,6 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
-      "i18n": {
-        "sourceLocale": "en",
-        "locales": {
-          "fr": "src/locale/messages.fr.xlf"
-        }
-      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -34,15 +28,13 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "localize": true,
             "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "src/themes/impresent-theme.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -54,7 +46,6 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -74,14 +65,6 @@
                   "maximumError": "4kb"
                 }
               ]
-            },
-            "en": {
-              "localize": ["en"],
-              "baseHref": "en"
-            },
-            "fr": {
-              "localize": ["fr"],
-              "baseHref": "fr"
             }
           }
         },
@@ -93,9 +76,6 @@
           "configurations": {
             "production": {
               "browserTarget": "ImPresent.Web:build:production"
-            },
-            "fr": {
-              "browserTarget": "ImPresent.Web:build:fr"
             }
           }
         },
