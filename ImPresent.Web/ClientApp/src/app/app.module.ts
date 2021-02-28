@@ -29,12 +29,7 @@ axios.defaults.validateStatus = () => {
     HomeModule,
     PromotionModule,
   ],
-  providers: [
-    {
-      provide: LOCALE_ID,
-      useValue: navigator.language
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
