@@ -22,8 +22,10 @@ interface Volunteer {
 })
 export class DayComponent extends DayPage implements OnInit {
 
-  volunteers: Volunteer[] = [];
-  volunteersStudent = new Map<string, StudentDto>();
+  volunteers = new Map<string, Volunteer>();
+  volunteersArray: Volunteer[] = [];
+  dayStudents = new Map<string, StudentDto>();
+  dayStudentsArray: StudentDto[] = [];
 
   constructor(
     private readonly clipboard: Clipboard,
@@ -68,16 +70,23 @@ export class DayComponent extends DayPage implements OnInit {
   private process(): void {
 
     this.dayVolunteers.students.forEach((volunteer) => {
-      this.volunteersStudent.set(volunteer.id, volunteer);
+      this.dayStudents.set(volunteer.id, volunteer);
     });
 
     this.promotion.students.forEach((student) => {
-      this.volunteers.push({
+      this.volunteers.set(student.id, {
         student,
-        present: this.volunteersStudent.has(student.id),
+        present: this.dayStudents.has(student.id),
         added: false
       });
     });
+
+    this.volunteersArray = Array.from(this.volunteers.values());
+    this.updateDayStudents();
+  }
+
+  updateDayStudents(): void {
+    this.dayStudentsArray = Array.from(this.dayStudents.values());
   }
 
   toDate(date: string | undefined): Date {
@@ -86,6 +95,14 @@ export class DayComponent extends DayPage implements OnInit {
 
   toggleMark(volunteer: Volunteer): void {
     volunteer.added = !volunteer.added;
+    if (volunteer.added) {
+      this.dayStudents.set(volunteer.student.id, volunteer.student);
+    }
+    else {
+      this.dayStudents.delete(volunteer.student.id);
+    }
+
+    this.updateDayStudents();
   }
 
   share(): void {
@@ -96,10 +113,8 @@ export class DayComponent extends DayPage implements OnInit {
   async save(): Promise<void> {
 
     const ids: string[] = [];
-    this.volunteers.forEach((volunteer) => {
-      if (this.volunteersStudent.has(volunteer.student.id) || volunteer.added) {
-        ids.push(volunteer.student.id);
-      }
+    this.dayStudents.forEach((student) => {
+      ids.push(student.id);
     });
 
     let error: string | undefined;
@@ -127,7 +142,7 @@ export class DayComponent extends DayPage implements OnInit {
     const csv = ['Name'];
 
     this.volunteers.forEach((volunteer) => {
-      if (this.volunteersStudent.has(volunteer.student.id) || volunteer.added) {
+      if (this.dayStudents.has(volunteer.student.id) || volunteer.added) {
         csv.push(volunteer.student.fullName);
       }
     });
