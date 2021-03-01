@@ -66,6 +66,7 @@ class ApiService extends BaseService {
     @Header('Authorization') authorization: string,
     @Path('promoId') promoId: string,
     @Path('dayId') dayId: string,
+    @Body ids: string[]
   ): ApiResponse { }
 }
 

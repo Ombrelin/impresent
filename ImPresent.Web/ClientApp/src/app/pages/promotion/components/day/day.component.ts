@@ -12,6 +12,7 @@ import { DayPage } from './day-page';
 interface Volunteer {
   student: StudentDto;
   present: boolean;
+  added: boolean;
 }
 
 @Component({
@@ -21,8 +22,10 @@ interface Volunteer {
 })
 export class DayComponent extends DayPage implements OnInit {
 
-  volunteers: Volunteer[] = [];
-  volunteersStudent = new Map<string, StudentDto>();
+  volunteers = new Map<string, Volunteer>();
+  volunteersArray: Volunteer[] = [];
+  dayStudents = new Map<string, StudentDto>();
+  dayStudentsArray: StudentDto[] = [];
 
   constructor(
     private readonly clipboard: Clipboard,
@@ -67,19 +70,39 @@ export class DayComponent extends DayPage implements OnInit {
   private process(): void {
 
     this.dayVolunteers.students.forEach((volunteer) => {
-      this.volunteersStudent.set(volunteer.id, volunteer);
+      this.dayStudents.set(volunteer.id, volunteer);
     });
 
     this.promotion.students.forEach((student) => {
-      this.volunteers.push({
+      this.volunteers.set(student.id, {
         student,
-        present: this.volunteersStudent.has(student.id)
+        present: this.dayStudents.has(student.id),
+        added: false
       });
     });
+
+    this.volunteersArray = Array.from(this.volunteers.values());
+    this.updateDayStudents();
+  }
+
+  updateDayStudents(): void {
+    this.dayStudentsArray = Array.from(this.dayStudents.values());
   }
 
   toDate(date: string | undefined): Date {
     return date ? new Date(date) : new Date();
+  }
+
+  toggleMark(volunteer: Volunteer): void {
+    volunteer.added = !volunteer.added;
+    if (volunteer.added) {
+      this.dayStudents.set(volunteer.student.id, volunteer.student);
+    }
+    else {
+      this.dayStudents.delete(volunteer.student.id);
+    }
+
+    this.updateDayStudents();
   }
 
   share(): void {
@@ -89,9 +112,14 @@ export class DayComponent extends DayPage implements OnInit {
 
   async save(): Promise<void> {
 
+    const ids: string[] = [];
+    this.dayStudents.forEach((student) => {
+      ids.push(student.id);
+    });
+
     let error: string | undefined;
     const fetch = await this.fetchService.fetch(
-      this.api.validate(this.token, this.promotion.id, this.day?.id),
+      this.api.validate(this.token, this.promotion.id, this.day?.id, ids),
       true
     );
 
@@ -112,14 +140,17 @@ export class DayComponent extends DayPage implements OnInit {
 
   export(): void {
     const csv = ['Name'];
-    this.volunteersStudent.forEach((volunteer) => {
-      csv.push(volunteer.fullName);
+
+    this.volunteers.forEach((volunteer) => {
+      if (this.dayStudents.has(volunteer.student.id) || volunteer.added) {
+        csv.push(volunteer.student.fullName);
+      }
     });
 
-    const data = csv.join('\r\n');
+    const data = `\ufeff${csv.join('\r\n')}`;
 
     const a = document.createElement('a');
-    const blob = new Blob([data], { type: 'text/csv' });
+    const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
 
     a.href = url;
