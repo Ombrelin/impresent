@@ -95,9 +95,16 @@ export class DayComponent extends DayPage implements OnInit {
 
   async save(): Promise<void> {
 
+    const ids: string[] = [];
+    this.volunteers.forEach((volunteer) => {
+      if (this.volunteersStudent.has(volunteer.student.id) || volunteer.added) {
+        ids.push(volunteer.student.id);
+      }
+    });
+
     let error: string | undefined;
     const fetch = await this.fetchService.fetch(
-      this.api.validate(this.token, this.promotion.id, this.day?.id),
+      this.api.validate(this.token, this.promotion.id, this.day?.id, ids),
       true
     );
 
