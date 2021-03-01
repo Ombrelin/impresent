@@ -18,8 +18,11 @@
           </div>
         </div>
         <div class="mr-2">
-          <mat-icon *ngIf="volunteer.present" class="text-white bg-green-500">check</mat-icon>
-          <mat-icon *ngIf="!volunteer.present" class="text-white bg-red-500">close</mat-icon>
+          <mat-icon *ngIf="volunteer.present" class="text-white bg-green-500 mr-3">check</mat-icon>
+          <button *ngIf="!volunteer.present" appButton (click)="toggleMark(volunteer)">
+            <mat-icon *ngIf="!volunteer.added" class="text-white bg-red-500 ">close</mat-icon>
+            <mat-icon *ngIf="volunteer.added" class="text-white bg-yellow-500 ">add</mat-icon>
+          </button>
         </div>
       </div>
     </mat-list-item>

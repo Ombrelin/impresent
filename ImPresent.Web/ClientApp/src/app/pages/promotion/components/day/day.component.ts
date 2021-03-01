@@ -12,6 +12,7 @@ import { DayPage } from './day-page';
 interface Volunteer {
   student: StudentDto;
   present: boolean;
+  added: boolean;
 }
 
 @Component({
@@ -73,13 +74,18 @@ export class DayComponent extends DayPage implements OnInit {
     this.promotion.students.forEach((student) => {
       this.volunteers.push({
         student,
-        present: this.volunteersStudent.has(student.id)
+        present: this.volunteersStudent.has(student.id),
+        added: false
       });
     });
   }
 
   toDate(date: string | undefined): Date {
     return date ? new Date(date) : new Date();
+  }
+
+  toggleMark(volunteer: Volunteer): void {
+    volunteer.added = !volunteer.added;
   }
 
   share(): void {
@@ -112,14 +118,17 @@ export class DayComponent extends DayPage implements OnInit {
 
   export(): void {
     const csv = ['Name'];
-    this.volunteersStudent.forEach((volunteer) => {
-      csv.push(volunteer.fullName);
+
+    this.volunteers.forEach((volunteer) => {
+      if (this.volunteersStudent.has(volunteer.student.id) || volunteer.added) {
+        csv.push(volunteer.student.fullName);
+      }
     });
 
-    const data = csv.join('\r\n');
+    const data = `\ufeff${csv.join('\r\n')}`;
 
     const a = document.createElement('a');
-    const blob = new Blob([data], { type: 'text/csv' });
+    const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
 
     a.href = url;
