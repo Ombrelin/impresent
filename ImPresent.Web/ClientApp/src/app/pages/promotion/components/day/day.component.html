@@ -1,11 +1,11 @@
-<app-page [loaded]="loaded" [error]="error" [success]="success" class="block w-72 md:w-screen md:max-w-screen-sm">
+<app-page [loaded]="loaded" [error]="error" [success]="success" class="block w-full md:w-screen md:max-w-screen-sm">
   <div class="flex flex-col justify-center items-center">
     <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
     <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'EEEE d MMMM y' }}</h2>
   </div>
-  <h2 *ngIf="volunteers.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4" i18n>There is no volunteers for this day</h2>
-  <mat-list *ngIf="volunteers.length !== 0" class="list">
-    <mat-list-item *ngFor="let volunteer of volunteers" class="mb-2">
+  <h2 *ngIf="volunteersArray.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4" i18n>There is no volunteers for this day</h2>
+  <mat-list *ngIf="volunteersArray.length !== 0" class="list">
+    <mat-list-item *ngFor="let volunteer of volunteersArray" class="mb-2">
       <div class="w-full flex justify-between items-center">
         <div class="w-full md:w-96">
           <div class="flex items-center">
@@ -18,17 +18,23 @@
           </div>
         </div>
         <div class="mr-2">
-          <mat-icon *ngIf="volunteer.present" class="text-white bg-green-500">check</mat-icon>
-          <mat-icon *ngIf="!volunteer.present" class="text-white bg-red-500">close</mat-icon>
+          <mat-icon *ngIf="volunteer.present" class="text-white bg-green-500 mr-3">check</mat-icon>
+          <button *ngIf="!volunteer.present" appButton (click)="toggleMark(volunteer)">
+            <mat-icon *ngIf="!volunteer.added" class="text-white bg-red-500 ">close</mat-icon>
+            <mat-icon *ngIf="volunteer.added" class="text-white bg-yellow-500 ">add</mat-icon>
+          </button>
         </div>
       </div>
     </mat-list-item>
   </mat-list>
-  <div class="flex flex-col md:flex-row md:justify-between mt-4">
+  <div class="mt-1">
+    <h1 class="font-semibold text-green-500 text-center md:text-right md:text-lg">Volunteers {{ dayStudentsArray.length }} / 15</h1>
+  </div>
+  <div class="flex flex-col md:flex-row md:justify-between mt-3">
     <button (click)="share()" class="bg-blue-500 " appButton i18n>Share</button>
-    <div class="flex justify-between md:justify-end mt-2 md:mt-0">
-      <button (click)="save()" class="bg-blue-500 mr-2" appButton i18n>Save</button>
-      <button (click)="export()" class="bg-blue-500" appButton i18n>Export</button>
+    <div class="flex md:justify-end mt-2 md:mt-0">
+      <button (click)="save()" class="bg-blue-500 mr-2 w-full" appButton i18n>Save</button>
+      <button (click)="export()" class="bg-blue-500 w-full" appButton i18n>Export</button>
     </div>
   </div>
 </app-page>
