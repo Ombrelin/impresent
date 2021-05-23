@@ -46,8 +46,10 @@ export class AddDayDialogComponent implements OnInit {
 
   async add(): Promise<void>{
     if (this.form.valid) {
+      const date: Date = this.form.value.day;
+      date.setHours(12);
       const fetch = await this.fetchService.fetch(this.api.addDay(this.token, this.promotionId, {
-        date: this.form.value.day.toISOString(),
+        date: date.toISOString(),
       }), true);
 
       let error: string | undefined;
