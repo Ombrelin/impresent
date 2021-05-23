@@ -14,7 +14,7 @@ export const particlesOptions = {
     move: {
       enable: true,
       random: false,
-      speed: 6,
+      speed: 2,
     },
     number: {
       density: {
