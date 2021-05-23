@@ -72,7 +72,7 @@ export class VolunteerComponent extends DayPage implements OnInit {
   }
 
   private filter(input: string): StudentDto[] {
-    return this.promotion.students.filter(el => el.fullName.toLowerCase().includes(input));
+    return this.promotion.students.filter(el => el.fullName.toLowerCase().includes(input.toLowerCase()));
   }
 
   displayStudent(student: StudentDto): string {
