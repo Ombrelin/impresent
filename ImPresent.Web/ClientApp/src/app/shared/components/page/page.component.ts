@@ -6,7 +6,7 @@ import { Page } from './page';
   templateUrl: './page.component.html',
   styleUrls: ['./page.component.scss']
 })
-export class PageComponent extends Page implements OnInit {
+export class PageComponent extends Page {
 
   @Input() loaded = false;
   @Input() error: string | undefined;
@@ -14,9 +14,6 @@ export class PageComponent extends Page implements OnInit {
 
   constructor() {
     super();
-  }
-
-  ngOnInit(): void {
   }
 
 }

@@ -16,7 +16,7 @@ import { PromotionPage } from './promotion-page';
   templateUrl: './promotion.component.html',
   styleUrls: ['./promotion.component.scss']
 })
-export class PromotionComponent extends PromotionPage implements OnInit {
+export class PromotionComponent extends PromotionPage {
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -42,8 +42,6 @@ export class PromotionComponent extends PromotionPage implements OnInit {
       }
     });
   }
-
-  ngOnInit(): void { }
 
   toDate(date: string): Date {
     return new Date(date);

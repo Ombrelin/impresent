@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 
 import { ApiService } from 'src/app/core/http/api.service';
-import { Fetch, FetchService, invalidPromotionId } from 'src/app/core/services/fetch/fetch.service';
+import { Fetch, FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { PromotionPage } from 'src/app/pages/promotion/promotion-page';
