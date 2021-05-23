@@ -4,7 +4,7 @@ import { ApiResponse } from 'ts-retrofit2';
 
 import { PromotionDto } from 'src/app/shared/models/model';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
-import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading-dialog/loading-dialog.component';
+import { LoadingDialogComponent } from 'src/app/shared/components/dialogs/loading/loading-dialog.component';
 
 export interface Fetch<T> {
   data?: T;

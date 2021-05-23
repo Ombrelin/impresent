@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { AddStudentDialogComponent } from './dialogs/add-student-dialog/add-student-dialog.component';
-import { AddDayDialogComponent } from './dialogs/add-day-dialog/add-day-dialog.component';
+import { AddStudentDialogComponent } from './dialogs/add-student/add-student-dialog.component';
+import { AddDayDialogComponent } from './dialogs/add-day/add-day-dialog.component';
 import { DayDto } from 'src/app/shared/models/model';
 import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { ApiService } from 'src/app/core/http/api.service';

@@ -5,7 +5,7 @@ import { UniversalValidators } from 'ngx-validators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ApiService } from 'src/app/core/http/api.service';
-import { CreatePromotionDialogComponent } from 'src/app/pages/home/dialogs/create-promotion-dialog/create-promotion-dialog.component';
+import { CreatePromotionDialogComponent } from 'src/app/pages/home/dialogs/create-promotion/create-promotion-dialog.component';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { Page } from 'src/app/shared/components/page/page';
