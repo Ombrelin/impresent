@@ -1,12 +1,12 @@
 <div *ngIf="loaded" class="w-full bg-white p-4 rounded-lg select-none max-w-xs md:max-w-2xl break-words overflow-y-auto" style="max-height: 80vh;">
-  <div *ngIf="error === null && success === null">
+  <div *ngIf="error == null && success == null">
     <ng-content></ng-content>
   </div>
-  <div *ngIf="error !== null">
+  <div *ngIf="error != null">
     <h1 class="text-center font-semibold text-3xl p-3 text-red-500" i18n>Error</h1>
     <h1 class="text-center text-2xl p-3 text-red-500">{{ error }}</h1>
   </div>
-  <div *ngIf="error === null && success !== null">
+  <div *ngIf="error == null && success != null">
     <h1 class="text-center font-semibold text-3xl p-3 text-green-500" i18n>Success</h1>
     <h1 class="text-center text-2xl p-3 text-green-500">{{ success }}</h1>
   </div>
