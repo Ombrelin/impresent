@@ -1,4 +1,4 @@
-import { DayDto, StudentDto } from "./model";
+import { DayDto, StudentDto } from './model';
 
 export interface DayVolunteerDto {
     presenceDay: DayDto;
