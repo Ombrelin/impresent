@@ -20,7 +20,7 @@ interface Volunteer {
   templateUrl: './day.component.html',
   styleUrls: ['./day.component.scss']
 })
-export class DayComponent extends DayPage implements OnInit {
+export class DayComponent extends DayPage {
 
   volunteers = new Map<string, Volunteer>();
   volunteersArray: Volunteer[] = [];
@@ -61,10 +61,6 @@ export class DayComponent extends DayPage implements OnInit {
         this.router.navigate(['']);
       }
     });
-  }
-
-  ngOnInit(): void {
-
   }
 
   private process(): void {

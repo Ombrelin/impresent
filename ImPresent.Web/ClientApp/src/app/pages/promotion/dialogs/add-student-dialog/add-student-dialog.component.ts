@@ -15,7 +15,7 @@ import { StorageService } from 'src/app/core/services/storage/storage.service';
   templateUrl: './add-student-dialog.component.html',
   styleUrls: ['./add-student-dialog.component.scss']
 })
-export class AddStudentDialogComponent implements OnInit {
+export class AddStudentDialogComponent {
 
   form: FormGroup;
   token = '';
@@ -42,9 +42,6 @@ export class AddStudentDialogComponent implements OnInit {
     if (token != null) {
       this.token = token;
     }
-  }
-
-  ngOnInit(): void {
   }
 
   async add(): Promise<void>{

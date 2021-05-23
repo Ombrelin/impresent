@@ -13,7 +13,7 @@ import { StorageService } from 'src/app/core/services/storage/storage.service';
   templateUrl: './add-day-dialog.component.html',
   styleUrls: ['./add-day-dialog.component.scss']
 })
-export class AddDayDialogComponent implements OnInit {
+export class AddDayDialogComponent {
 
   form: FormGroup;
   now = new Date();
@@ -39,9 +39,6 @@ export class AddDayDialogComponent implements OnInit {
     if (token != null) {
       this.token = token;
     }
-  }
-
-  ngOnInit(): void {
   }
 
   async add(): Promise<void>{

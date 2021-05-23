@@ -12,7 +12,7 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
   templateUrl: './create-promotion-dialog.component.html',
   styleUrls: ['./create-promotion-dialog.component.scss']
 })
-export class CreatePromotionDialogComponent implements OnInit {
+export class CreatePromotionDialogComponent {
 
   form: FormGroup;
 
@@ -33,9 +33,6 @@ export class CreatePromotionDialogComponent implements OnInit {
         Validators.required
       ]]
     });
-  }
-
-  ngOnInit(): void {
   }
 
   close(): void {
