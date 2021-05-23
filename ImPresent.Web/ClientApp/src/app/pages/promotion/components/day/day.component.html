@@ -4,7 +4,7 @@
     <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'EEEE d MMMM y' }}</h2>
   </div>
   <h2 *ngIf="volunteersArray.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4" i18n>There is no volunteers for this day</h2>
-  <mat-list *ngIf="volunteersArray.length !== 0" class="list">
+  <mat-list *ngIf="volunteersArray.length !== 0" appList appScrollbar>
     <mat-list-item *ngFor="let volunteer of volunteersArray" class="mb-2">
       <div class="w-full flex justify-between items-center">
         <div class="w-full md:w-96">

@@ -6,8 +6,9 @@
   </div>
   <div class="w-full p-4 flex flex-col" [formGroup]="form">
     <input class="mb-4" appInput type="text" i18n-placeholder placeholder="Student name" formControlName="student" [matAutocomplete]="auto" />
-    <mat-autocomplete (optionSelected)="selectStudent($event.option.value)" #auto="matAutocomplete" [displayWith]="displayStudent">
-      <mat-option *ngFor="let student of filteredStudents | async | slice : 0 : 5" [value]="student">
+    <mat-autocomplete class="scrollbar scrollbar-thumb-blue-400 scrollbar-track-blue-100 scrollbar-thin" 
+      (optionSelected)="selectStudent($event.option.value)" #auto="matAutocomplete" [displayWith]="displayStudent">
+      <mat-option *ngFor="let student of filteredStudents | async " [value]="student">
         {{ student.fullName }}
       </mat-option>
     </mat-autocomplete>
