@@ -93,8 +93,10 @@ namespace Impresent.Web
             });
             
             // JWT Auth
-            
-            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
+
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ??
+                            throw new ArgumentException("JWT_SECRET Env variable is not set");
+            var key = Encoding.ASCII.GetBytes(jwtSecret);
 
             services.AddAuthentication(auth =>
                 {
@@ -121,7 +123,7 @@ namespace Impresent.Web
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  ApplicationDbContext db)
         {
-            if (db.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+            if (db.Database.ProviderName != "Microsoft.EntityFrameworkCore.Sqlite")
             {
                 db.Database.Migrate();
             }
@@ -181,7 +183,7 @@ namespace Impresent.Web
         
         private string GetPostgresConnectionString()
         {
-            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ?? throw new ArgumentException("DATABASE_URL Env variable is not set");
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');
 

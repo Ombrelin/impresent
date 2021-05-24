@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Impresent.Web.Model.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Impresent.Web.Services
@@ -14,5 +15,6 @@ namespace Impresent.Web.Services
         Task<PresenceDayDto> AddPresenceDay(Guid id, CreatePresenceDayDto dto);
         Task<List<StudentDto>> GetDesignated(Guid promoId, Guid dayId, int number);
         Task ValidateList(Guid promoId, Guid dayId, List<Guid> listIds);
+        Task<PromotionFullDto> ImportStudents(Guid promoId, IFormFile file);
     }
 }

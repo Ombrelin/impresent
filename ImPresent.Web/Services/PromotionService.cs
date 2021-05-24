@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Impresent.Web.Database;
 using Impresent.Web.Model;
 using Impresent.Web.Model.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace Impresent.Web.Services
 {
@@ -77,7 +79,7 @@ namespace Impresent.Web.Services
 
         public async Task<List<StudentDto>> GetDesignated(Guid promoId, Guid dayId, int number)
         {
-            var designated = await repository.GetDesignated(promoId, dayId,number);
+            var designated = await repository.GetDesignated(promoId, dayId, number);
             return designated
                 .Select(s => new StudentDto(s))
                 .ToList();
@@ -88,7 +90,7 @@ namespace Impresent.Web.Services
             var promo = await repository.GetByIdWithDaysAndStudents(promoId);
             var date = promo.PresenceDays.First(pd => pd.Id == dayId).Date;
 
-            
+
             foreach (var student in promo.Students)
             {
                 student.LastPresence = date;
@@ -97,19 +99,31 @@ namespace Impresent.Web.Services
             await repository.Update(promo);
         }
 
+        public async Task<PromotionFullDto> ImportStudents(Guid promoId, IFormFile file)
+        {
+            using var streamReader = new StreamReader(file.OpenReadStream());
+            var studentsNames = (await streamReader.ReadToEndAsync()).Split("\n");
+            var students = studentsNames.Select(name => new Student()
+            {
+                FullName = name.Trim(),
+                LastPresence = new DateTime(1970, 1, 1)
+            }).ToList();
+
+            var promo = await repository.GetByIdWithDaysAndStudents(promoId);
+            foreach (var student in students)
+            {
+                promo.Students.Add(student);
+            }
+
+            await repository.Update(promo);
+
+            return new PromotionFullDto(promo);
+        }
+
 
         public async Task<PromotionFullDto> GetPromotion(Guid promotionId)
         {
-            var promo = await repository.GetByIdWithDaysAndStudents(promotionId);
-            return new PromotionFullDto()
-            {
-                Id = promo.Id,
-                ClassName = promo.ClassName,
-                Students = promo.Students.Select(s => new StudentDto(s)).ToList(),
-                PresenceDays = promo.PresenceDays
-                    .Select(pd => new PresenceDayDto(pd))
-                    .ToList()
-            };
+            return new PromotionFullDto(await repository.GetByIdWithDaysAndStudents(promotionId));
         }
 
 
