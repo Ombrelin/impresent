@@ -6,10 +6,7 @@ import { Directive, HostBinding } from '@angular/core';
 export class ListDirective {
 
   @HostBinding('class')
-  class = 'w-full overflow-y-auto overflow-x-hidden';
-
-  @HostBinding('style')
-  style = 'max-height: 60vh';
+  class = 'w-full overflow-y-auto overflow-x-hidden max-h-40-vh md:max-h-60-vh';
 
   constructor() { }
 

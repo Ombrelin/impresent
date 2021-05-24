@@ -1,14 +1,27 @@
-<app-page [loaded]="loaded" [error]="error" [success]="success">
+<app-page [loaded]="loaded" [error]="error" [success]="success" class="block w-full md:w-screen md:max-w-screen-sm">
   <h1 class="text-3xl font-semibold text-green-500 text-center">{{ promotion.className }}</h1>
-  <h2 *ngIf="promotion.presenceDays.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4" i18n>There is no day in this promotion</h2>
-  <mat-list *ngIf="promotion.presenceDays.length !== 0" class="mt-2" appList appScrollbar>
-    <mat-list-item *ngFor="let day of promotion.presenceDays" class="mb-2">
-      <div class="w-full flex justify-center">
-        <button (click)="openDay(day)" appButton class="bg-green-500 mr-2">{{ toDate(day.date) | date:'EEEE d MMMM y' }}</button>
-      </div>
-    </mat-list-item>
-  </mat-list>
-  <div class="flex flex-col md:flex-row md:items-center justify-center md:justify-end mt-4">
+  <div class="flex md:flex-row w-full justify-center">
+    <div class="flex flex-col md:w-1/2 md:mr-8">
+      <h2 class="text-2xl text-green-500 text-center">Days</h2>
+      <h2 *ngIf="promotion.presenceDays.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4" i18n>There is no days in this promotion</h2>
+      <mat-list *ngIf="promotion.presenceDays.length !== 0" class="mt-2" appList appScrollbar>
+        <mat-list-item *ngFor="let day of promotion.presenceDays" class="mb-3">
+          <div class="w-full flex justify-center">
+            <button (click)="openDay(day)" appButton class="w-full bg-green-500 mr-2">{{ toDate(day.date) | date:'EEEE d MMMM y' }}</button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="hidden md:flex flex-col w-1/2">
+      <h2 class="text-2xl text-green-500 text-center">Students</h2>
+      <mat-list *ngIf="promotion.students.length !== 0" class="mt-2" appList appScrollbar>
+        <mat-list-item *ngFor="let student of promotion.students" class="mb-3">
+          <app-student-item [student]="student"></app-student-item>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row justify-between mt-4">
     <button (click)="addDay()" class="bg-blue-500 md:mr-2" appButton i18n>Add day</button>
     <button (click)="addStudent()" class="bg-blue-500 mt-2 md:mt-0" appButton i18n>Add student</button>
   </div>

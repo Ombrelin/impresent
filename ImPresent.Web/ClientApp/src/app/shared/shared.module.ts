@@ -8,10 +8,13 @@ import { LoadingDialogComponent } from './components/dialogs/loading/loading-dia
 import { PageComponent } from './components/page/page.component';
 import { ScrollbarDirective } from './directives/scrollbar/scrollbar.directive';
 import { ListDirective } from './directives/list/list.directive';
+import { StudentItemComponent } from './components/student-item/student-item.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
     CommonModule,
+    MatIconModule,
     MatProgressSpinnerModule,
   ],
   declarations: [
@@ -21,6 +24,7 @@ import { ListDirective } from './directives/list/list.directive';
     PageComponent,
     ScrollbarDirective,
     ListDirective,
+    StudentItemComponent,
   ],
   exports: [
     InputDirective,
@@ -29,6 +33,7 @@ import { ListDirective } from './directives/list/list.directive';
     PageComponent,
     ScrollbarDirective,
     ListDirective,
+    StudentItemComponent,
   ]
 })
 export class SharedModule { }

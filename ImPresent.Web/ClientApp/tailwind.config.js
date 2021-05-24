@@ -8,7 +8,12 @@ module.exports = {
   },
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      maxHeight: {
+        '40-vh': '40vh',
+        '60-vh': '60vh',
+      }
+    },
   },
   variants: {
     extend: {
