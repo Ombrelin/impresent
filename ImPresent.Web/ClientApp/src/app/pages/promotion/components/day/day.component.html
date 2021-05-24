@@ -4,19 +4,10 @@
     <h2 class="ml-2 text-2xl text-green-500 text-center">{{ toDate(day?.date) | date:'EEEE d MMMM y' }}</h2>
   </div>
   <h2 *ngIf="volunteersArray.length === 0" class="text-xl text-center text-red-400 mt-4 mb-4" i18n>There is no volunteers for this day</h2>
-  <mat-list *ngIf="volunteersArray.length !== 0" class="list">
-    <mat-list-item *ngFor="let volunteer of volunteersArray" class="mb-2">
+  <mat-list *ngIf="volunteersArray.length !== 0" appList appScrollbar>
+    <mat-list-item *ngFor="let volunteer of volunteersArray" class="mb-3">
       <div class="w-full flex justify-between items-center">
-        <div class="w-full md:w-96">
-          <div class="flex items-center">
-            <mat-icon class="mr-1 text-blue-400">person</mat-icon>
-            <p class="w-full text-blue-600 text-xl font-semibold truncate mr-2 select-text">{{ volunteer.student.fullName }}</p>
-          </div>
-          <div class="flex items-center">
-            <mat-icon class="mr-1 text-blue-400">date_range</mat-icon>
-            <p class="font-semibold text-green-400 text-sm">{{ toDate(volunteer.student.lastPresence) | date:'EEEE d MMMM y' }}</p>
-          </div>
-        </div>
+        <app-student-item [student]="volunteer.student"></app-student-item>
         <div class="mr-2">
           <mat-icon *ngIf="volunteer.present" class="text-white bg-green-500 mr-3">check</mat-icon>
           <button *ngIf="!volunteer.present" appButton (click)="toggleMark(volunteer)">
