@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,12 +23,17 @@ namespace ImPresent.Tests.Integration
         {
             this.client = factory.CreateClient();
             this.db = factory.Context;
-            factory.Context.Database.EnsureDeleted();
+            this.db.Database.EnsureDeleted();
+            this.db.Database.ExecuteSqlRaw("DELETE FROM Volunteerings");
+            this.db.Database.ExecuteSqlRaw("DELETE FROM PresenceDay");
+            this.db.Database.ExecuteSqlRaw("DELETE FROM Promotions");
+            this.db.Database.ExecuteSqlRaw("DELETE FROM Student");
         }
 
         [Fact]
         public async Task<Guid> CreatePromotion()
         {
+
             var registerDto = new CreatePromotionDto()
             {
                 Name = "M1 APP LSI 1",
@@ -432,6 +438,38 @@ namespace ImPresent.Tests.Integration
             {
                 Assert.Equal(presenceDay.Date, student.LastPresence);
             }
+        }
+
+        [Fact]
+        public async Task ImportStudents()
+        {
+            // Given
+            var promo = await CreateTestPromotion();
+            
+            var login = await Login(promo.ClassName, "TestTest1");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",login);
+
+            using var fileReader = new StreamReader("../../../test-student.csv");
+            
+            using var content = new MultipartFormDataContent
+            {
+                {new StreamContent(fileReader.BaseStream), "students", "test-student.csv"}
+            };
+
+            // When
+            var import =
+                await client.PostAsync($"api/promotions/{promo.Id}/import", content);
+            
+            // Then
+            Assert.True(import.IsSuccessStatusCode);
+            var getPromotion = await client.GetAsync($"api/promotions/{promo.Id}");
+            Assert.True(getPromotion.IsSuccessStatusCode);
+            var result = await getPromotion.Content.ReadAsAsync<PromotionFullDto>();
+            Assert.Equal(5,result.Students.Count);
+            Assert.Contains("Arsène LAPOSTOLET", result.Students.Select(s => s.FullName));
+            Assert.Contains("Jean-Michel REMEUR", result.Students.Select(s => s.FullName));
+            Assert.Contains("Thomas LACAZE", result.Students.Select(s => s.FullName));
+            Assert.Contains("Maud GELLEE", result.Students.Select(s => s.FullName));
         }
     }
 }
