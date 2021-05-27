@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { AddDayDialogComponent } from './dialogs/add-day/add-day-dialog.componen
 import { DayDto } from 'src/app/shared/models/model';
 import { FetchService } from 'src/app/core/services/fetch/fetch.service';
 import { ApiService } from 'src/app/core/http/api.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { PromotionPage } from './promotion-page';
 
 
@@ -18,6 +19,10 @@ import { PromotionPage } from './promotion-page';
 })
 export class PromotionComponent extends PromotionPage {
 
+  @ViewChild('upload') upload: ElementRef | undefined;
+
+  private token: string | undefined;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly dialog: MatDialog,
@@ -25,6 +30,7 @@ export class PromotionComponent extends PromotionPage {
     snackbarService: SnackbarService,
     fetchService: FetchService,
     api: ApiService,
+    private readonly storageService: StorageService,
   ) {
     super(
       snackbarService,
@@ -41,6 +47,11 @@ export class PromotionComponent extends PromotionPage {
         this.router.navigate(['']);
       }
     });
+
+    const token = this.storageService.getToken();
+    if (token != null) {
+      this.token = token;
+    }
   }
 
   toDate(date: string): Date {
@@ -48,26 +59,53 @@ export class PromotionComponent extends PromotionPage {
   }
 
   openDay(day: DayDto): void {
-    this.router.navigate(['promotion', this.promotion?.id, 'day', day.id]);
+    this.router.navigate(['promotion', this.promotion.id, 'day', day.id]);
   }
 
   addDay(): void {
     const dialog = this.dialog.open(AddDayDialogComponent, {
-      data: this.promotion?.id
+      data: this.promotion.id
     });
 
     dialog.afterClosed().subscribe(async () => {
-      this.setPromotion(this.promotion?.id);
+      this.setPromotion(this.promotion.id);
     });
   }
 
   addStudent(): void {
     const dialog = this.dialog.open(AddStudentDialogComponent, {
-      data: this.promotion?.id
+      data: this.promotion.id
     });
 
     dialog.afterClosed().subscribe(async () => {
-      this.setPromotion(this.promotion?.id);
+      this.setPromotion(this.promotion.id);
     });
+  }
+
+  openUpload(): void {
+    if (this.upload != null) {
+      this.upload.nativeElement.click();
+    }
+  }
+
+  async importStudents(target: any): Promise<void> {
+    if (target != null && target.files.length > 0) {
+      const file = target.files.item(0);
+      if (this.token != null) {
+        const state = await this.fetchService.fetch(this.api.importStudents(this.token, this.promotion.id, {
+          value: file,
+          filename: file.name
+        }), true);
+        if (state.success) {
+          this.setPromotion(this.promotion.id);
+        }
+        else {
+          this.snackbarService.show($localize`Failed to import the students: ${state.status}`);
+        }
+      }
+    }
+    else {
+      this.snackbarService.show($localize`No file selected`);
+    }
   }
 }
