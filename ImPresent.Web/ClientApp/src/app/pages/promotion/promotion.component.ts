@@ -98,6 +98,7 @@ export class PromotionComponent extends PromotionPage {
         }), true);
         if (state.success) {
           this.setPromotion(this.promotion.id);
+          this.snackbarService.show($localize`Students imported successfully`);
         }
         else {
           this.snackbarService.show($localize`Failed to import the students: ${state.status}`);
