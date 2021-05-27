@@ -1,4 +1,15 @@
-import { ApiResponse, BaseService, Body, GET, Header, Path, POST, ServiceBuilder } from 'ts-retrofit2';
+import { 
+  ApiResponse, 
+  BaseService, 
+  Body, 
+  GET, 
+  Header, 
+  Multipart, 
+  Part, 
+  Path, 
+  POST, 
+  ServiceBuilder
+} from 'ts-retrofit2';
 import { API_URL } from 'src/app/core/constants/api-constants';
 import {
   AuthDto,
@@ -12,6 +23,7 @@ import {
   AddVolunteerDto,
   DayVolunteerDto
 } from 'src/app/shared/models/model';
+import { PartDescriptor } from 'ts-retrofit2/dist/constants';
 
 class ApiService extends BaseService {
 
@@ -67,6 +79,14 @@ class ApiService extends BaseService {
     @Path('promoId') promoId: string,
     @Path('dayId') dayId: string,
     @Body ids: string[]
+  ): ApiResponse { }
+
+  @POST('/promotions/{promoId}/import')
+  @Multipart
+  importStudents(
+    @Header('Authorization') authorization: string,
+    @Path('promoId') promoId: string,
+    @Part('students') csv: PartDescriptor<File>
   ): ApiResponse { }
 }
 

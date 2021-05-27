@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Impresent.Web.Model.Dtos;
 using Impresent.Web.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Impresent.Web.Controllers
@@ -126,6 +127,20 @@ namespace Impresent.Web.Controllers
             {
                 await promotionService.ValidateList(promoId, dayId, listIds);
                 return Ok();
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [Authorize]
+        [HttpPost("{promoId:Guid}/import")]
+        public async Task<ActionResult<PromotionFullDto>> ImportStudents(Guid promoId, IFormFile students)
+        {
+            try
+            {
+                return Ok(await promotionService.ImportStudents(promoId, students));
             }
             catch (Exception e) when (e is ArgumentException)
             {
