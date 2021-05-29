@@ -414,12 +414,12 @@ namespace ImPresent.Tests.Integration
             promo.Students.Add(new Student()
             {
                 FullName = "Thomas LACAZE",
-                LastPresence = DateTime.Today.AddDays(-4)
+                LastPresence = DateTime.Today.AddDays(-5)
             });
             db.Promotions.Update(promo);
             await db.SaveChangesAsync();
 
-            var listIds = promo.Students.Select(s => s.Id).ToList();
+            var listIds = new List<Guid> {promo.Students.ToList()[0].Id};
             var login = await Login(promo.ClassName, "TestTest1");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",login);
             
@@ -436,7 +436,15 @@ namespace ImPresent.Tests.Integration
             Assert.Equal(3,result.Students.Count);
             foreach (var student in result.Students)
             {
-                Assert.Equal(presenceDay.Date, student.LastPresence);
+                if (student.FullName == "Arsène LAPOSTOLET")
+                {
+                    Assert.Equal(presenceDay.Date, student.LastPresence);
+                }
+                else
+                {
+                    Assert.Equal(DateTime.Today.AddDays(-5), student.LastPresence);
+                }
+                
             }
         }
 

@@ -91,7 +91,7 @@ namespace Impresent.Web.Services
             var date = promo.PresenceDays.First(pd => pd.Id == dayId).Date;
 
 
-            foreach (var student in promo.Students)
+            foreach (var student in promo.Students.Where(s => listIds.Contains(s.Id)))
             {
                 student.LastPresence = date;
             }
