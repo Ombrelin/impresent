@@ -392,6 +392,31 @@ namespace ImPresent.Tests.Integration
             Assert.Equal(presenceDay.Id, result.PresenceDay.Id);
         }
 
+        [Fact]
+        public async Task Unvolunteer()
+        {
+            // Given
+            var promo = await CreateTestPromotionWithDays();
+            var student = promo.Students.First();
+            var presenceDay = promo.PresenceDays.First();
+            var volunteering = new Volunteering() {Student = student, PresenceDay = presenceDay};
+            await db.Volunteerings.AddAsync(volunteering);
+            await db.SaveChangesAsync();
+            
+            var login = await Login(promo.ClassName, "TestTest1");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",login);
+            
+            // When
+            var result =
+                await client.DeleteAsync(
+                    $"api/promotions/{promo.Id}/days/{presenceDay.Id}/volunteers/{volunteering.Id}");
+            
+            // Then
+            Assert.True(result.IsSuccessStatusCode);
+            Assert.Empty(db.Volunteerings);
+            
+        }
+        
         private async Task<string> Login(string name, string password)
         {
             var loginDto = new AuthDto() {PromotionName = name, Password = password};

@@ -90,6 +90,20 @@ namespace Impresent.Web.Controllers
                 return BadRequest(e.Message);
             }
         }
+        
+        [HttpDelete("{promoId:Guid}/days/{dayId:Guid}/volunteers/{volunteeringId}")]
+        public async Task<IActionResult> Unvolunteer(Guid promoId, Guid dayId, Guid volunteeringId)
+        {
+            try
+            {
+                await volunteeringService.Unvolunteer(promoId, dayId, volunteeringId);
+                return Ok();
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                return NotFound(e.Message);
+            }
+        }
 
         [HttpGet("{promoId}/days/{dayId}/designated")]
         public async Task<ActionResult<List<StudentDto>>> GetDesignated([FromQuery(Name = "number")] int number,

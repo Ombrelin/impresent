@@ -47,5 +47,17 @@ namespace Impresent.Web.Services
                 Students = volunteerings.Select(v => new StudentDto(v.Student)).ToList()
             };
         }
+
+        public async Task Unvolunteer(Guid promoId, Guid dayId, Guid volunteeringId)
+        {
+            if (await volunteeringRepository.ExistsForPromotionAndDay(promoId, dayId, volunteeringId))
+            {
+                await volunteeringRepository.DeleteById(volunteeringId);
+            }
+            else
+            {
+                throw new ArgumentException("No such volunteering");
+            }
+        }
     }
 }
