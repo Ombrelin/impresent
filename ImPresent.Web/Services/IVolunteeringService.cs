@@ -11,5 +11,6 @@ namespace Impresent.Web.Services
         Task<VolunteeringDto> Volunteer(Guid promoId, Guid dayId, CreateVolunteeringDto dto);
         Task<VolunteeringsDto> GetsVolunteers(Guid promoId, Guid dayId);
 
+        Task Unvolunteer(Guid promoId, Guid dayId, Guid volunteeringId);
     }
 }
