@@ -10,8 +10,7 @@ import { ScrollbarDirective } from './directives/scrollbar/scrollbar.directive';
 import { ListDirective } from './directives/list/list.directive';
 import { StudentItemComponent } from './components/student-item/student-item.component';
 import { MatIconModule } from '@angular/material/icon';
-import { LogoDirective } from './directives/logo/logo.directive';
-import { LogoContainerDirective } from './directives/logoContainer/logo-container.directive';
+import { LogoComponent } from './components/logo/logo.component';
 
 @NgModule({
   imports: [
@@ -27,8 +26,7 @@ import { LogoContainerDirective } from './directives/logoContainer/logo-containe
     ScrollbarDirective,
     ListDirective,
     StudentItemComponent,
-    LogoDirective,
-    LogoContainerDirective,
+    LogoComponent,
   ],
   exports: [
     InputDirective,
@@ -38,8 +36,7 @@ import { LogoContainerDirective } from './directives/logoContainer/logo-containe
     ScrollbarDirective,
     ListDirective,
     StudentItemComponent,
-    LogoDirective,
-    LogoContainerDirective,
+    LogoComponent,
   ]
 })
 export class SharedModule { }
