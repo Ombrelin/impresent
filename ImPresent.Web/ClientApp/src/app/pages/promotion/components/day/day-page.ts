@@ -19,7 +19,7 @@ export class DayPage extends PromotionPage {
       id: '',
       date: ''
     },
-    students: []
+    students: [],
   };
 
   constructor(

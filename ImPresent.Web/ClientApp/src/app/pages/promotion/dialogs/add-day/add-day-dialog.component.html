@@ -1,13 +1,14 @@
 <mat-dialog-content class="flex flex-col justify-center items-center select-none">
-    <h1 class="text-green-500 text-3xl text-center font-semibold" i18n>Add a day</h1>
-    <div class="w-64 pt-5" [formGroup]="form">
-      <mat-datepicker #picker></mat-datepicker>
-      <input (click)="picker.open()" [min]="now" [matDatepicker]="picker" class="w-full mb-6 cursor-pointer" appInput type="text" i18n-placeholder placeholder="Day" formControlName="day" readonly/>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <div class="flex justify-between w-full mb-2">
-      <button appButton mat-dialog-close class="bg-red-500" i18n>Cancel</button>
-      <button appButton (click)="add()" class="bg-blue-500" [disabled]="!form.valid" i18n>Add</button>
-    </div>
-  </mat-dialog-actions>
+  <h1 class="text-green-500 text-3xl text-center font-semibold" i18n>Add a day</h1>
+  <div class="w-64 pt-5" [formGroup]="form">
+    <mat-datepicker #picker></mat-datepicker>
+    <input (click)="picker.open()" [min]="now" [matDatepicker]="picker" class="w-full mb-6 cursor-pointer" appInput
+      type="text" i18n-placeholder placeholder="Day" formControlName="day" readonly />
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="flex justify-between w-full mb-2">
+    <button appButton mat-dialog-close class="bg-red-500" i18n>Cancel</button>
+    <button appButton (click)="add()" class="bg-blue-500" [disabled]="!form.valid" i18n>Add</button>
+  </div>
+</mat-dialog-actions>

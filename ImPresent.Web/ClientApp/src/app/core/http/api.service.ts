@@ -2,6 +2,7 @@ import {
   ApiResponse, 
   BaseService, 
   Body, 
+  DELETE, 
   GET, 
   Header, 
   Multipart, 
@@ -87,6 +88,14 @@ class ApiService extends BaseService {
     @Header('Authorization') authorization: string,
     @Path('promoId') promoId: string,
     @Part('students') csv: PartDescriptor<File>
+  ): ApiResponse { }
+
+  @DELETE('/promotions/{promoId}/days/{dayId}/volunteers/{volunteerId}')
+  unvolunteer(
+    @Header('Authorization') authorization: string,
+    @Path('promoId') promoId: string,
+    @Path('dayId') dayId: string,
+    @Path('volunteerId') volunteerId: string,
   ): ApiResponse { }
 }
 
