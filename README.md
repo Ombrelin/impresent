@@ -1,6 +1,6 @@
 # ImPresent
 
-<img src="ImPresent.Web/ClientApp/src/assets/impresent_logo.png" width="300px">
+<img src="ImPresent.Web/ClientApp/src/assets/impresent_logo.png" width="30%">
 
 <br>
 
@@ -9,11 +9,11 @@ Impresent is a Webapp to manage student presence during time of COVID, when scho
 The app should be used by : 
 
 - The class representative
-- the students
+- The students
 
 The workflow is the following
 
-The class rep :
+The class representative :
 
 1. Can create a class (promotion)
 2. Adds the students to his class (csv imports supported)
@@ -31,22 +31,45 @@ Future in developement :
 - Students can unvolunteer
 - Min and max attendees for a given day can be parametered for each day
 
-## Run
+## 🚧 Requirements
 
-### Environnement variables 
+- [NodeJS](https://nodejs.org)
+- [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
+
+Optional :
+
+- [Docker](https://www.docker.com)
+
+For windows : 
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+## 🛠️ Installation Steps
+
+Clone the repo
+
+```sh
+git clone https://github.com/Ombrelin/impresent.git
+```
+
+Environnement variables
+
+Configure those variables inside your terminal or your IDE.
 
 | Name | Description | Exemple Value |
 | ---- | ----------- | ------------- |
 | `DATABASE_URL` | Connection string to the PostgresSQL database | postgres://user:password@host:port/database |
 | `JWT_SECRET` | Secret used to sign JWT tokens | 3myB8HRUokgD2uFejKyev4^4 |
 
-
-Check that you have the .NET 5 SDK installed.
+Install web application dependencies
 
 ```bash
-git clone https://github.com/Ombrelin/impresent.git
 cd ImPresent.Web/ClientApp
 npm install
+```
+
+Run the app
+
+```bash
 cd ..
 dotnet run
 ```
@@ -57,9 +80,9 @@ The app is ready when the following log line is printed :
 Microsoft.AspNetCore.SpaServices[0] Browser application bundle generation complete.
 ```
 
-The WebApi docs are available at the `/docs` routes.
+The WebApi docs are available at the `/docs` route.
 
-## Deploy with Docker
+## 🐳 Deploy with Docker
 
 ```bash
 git clone https://github.com/Ombrelin/impresent.git
@@ -82,6 +105,8 @@ or with `docker-compose` :
     restart: unless-stopped
 ```
 
+## 🌟 You are all set! You have a problem ? Please open an issue
+
 ## Build with
 
 - .NET 5 & C#
@@ -95,5 +120,6 @@ or with `docker-compose` :
 
 ## Thanks
 
-- 
+- [@Ombrelin](https://github.com/Ombrelin) for the backend
+- [@PoloLacoste](https://github.com/PoloLacoste) for the frontend
 - [@Grandkhan](https://github.com/Grandkhan) for the app icon
